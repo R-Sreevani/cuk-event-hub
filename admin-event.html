@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Events - Admin</title>
+    <style>
+        /* Simple inline styles */
+        body { font-family: Arial; margin: 0; background: #f5f5f5; }
+        .header { background: #003366; color: white; padding: 20px; text-align: center; }
+        .navbar { background: #00509E; padding: 15px; }
+        .nav-btn { color: white; text-decoration: none; margin: 0 15px; padding: 10px 20px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 10px; margin: 20px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #003366; color: white; padding: 15px; }
+        td { padding: 15px; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Manage Events - Admin Panel</h1>
+        <p>CUK Event Management System</p>
+    </div>
+    
+    <div class="navbar">
+        <a href="admin-dashboard.html" class="nav-btn">← Back to Dashboard</a>
+        <a href="admin-login.html" class="nav-btn" style="background: #dc3545;">Logout</a>
+        <a href="notifications.html" class="nav-btn" style="position: relative;">
+    <i class="fas fa-bell"></i> Notifications
+    <span class="notification-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">0</span>
+</a>
+
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Event Management</h2>
+            <button onclick="createEvent()" style="background: #FFCC00; color: #003366; padding: 15px 30px; border: none; border-radius: 8px; font-weight: bold; margin: 15px 0;">
+                + Create New Event
+            </button>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>AI Conference</td><td>Mar 15, 2024</td><td><button>Edit</button> <button style="background: #dc3545;">Delete</button></td></tr>
+                    <tr><td>Cultural Fest</td><td>Mar 20, 2024</td><td><button>Edit</button> <button style="background: #dc3545;">Delete</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        function createEvent() {
+            alert('Create Event form will open');
+        }
+        
+        // Check admin login
+        if(!localStorage.getItem('admin')) {
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+    <!-- Integration System -->
+<script src="js/integration.js"></script>
+<script>
+    // Initialize integration on every page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sync data from all pages
+        if (window.cukIntegration) {
+            cukIntegration.syncAllData();
+            cukIntegration.updateNotificationBadge();
+            cukIntegration.updateDashboard();
+            cukIntegration.updateUserUI();
+        }
+    });
+</script>
+</body>
+</html>

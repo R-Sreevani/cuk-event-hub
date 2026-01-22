@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - CUK Event Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">CUK EVENT HUB</div>
+        <h1>Central University of Karnataka</h1>
+        <p class="tagline">Event Management System</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="events.html" class="nav-btn">Events</a>
+        <a href="calendar.html" class="nav-btn">Calendar</a>
+        <a href="about.html" class="nav-btn">About</a>
+        <a href="contact.html" class="nav-btn active">Contact</a>
+        <a href="notifications.html" class="nav-btn" style="position: relative;">
+    <i class="fas fa-bell"></i> Notifications
+    <span class="notification-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">0</span>
+</a>
+
+    </nav>
+
+    <main class="container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+            <!-- Contact Info -->
+            <div class="card">
+                <h2>Contact Information</h2>
+                <div style="margin: 20px 0;">
+                    <p><strong>Address:</strong></p>
+                    <p>Central University of Karnataka<br>
+                    Kadaganchi, Aland Road<br>
+                    Kalaburagi, Karnataka - 585367</p>
+                    
+                    <p style="margin-top: 20px;"><strong>Phone:</strong> 08473-278000</p>
+                    <p><strong>Email:</strong> events@cuk.ac.in</p>
+                    <p><strong>Website:</strong> <a href="https://cuk.ac.in">cuk.ac.in</a></p>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="card">
+                <h2>Send Message</h2>
+                <form id="contact-form" style="margin-top: 20px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Name</label>
+                        <input type="text" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;" required>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Email</label>
+                        <input type="email" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;" required>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Subject</label>
+                        <input type="text" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;" required>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Message</label>
+                        <textarea style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px; height: 150px;" required></textarea>
+                    </div>
+                    
+                    <button type="submit" style="background: var(--cuk-gold); color: var(--cuk-blue); border: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Central University of Karnataka</p>
+        <p>Kadaganchi, Aland Road, Kalaburagi, Karnataka - 585367</p>
+        <p>© <span id="current-year">2024</span> CUK Event Hub | Version 1.0</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will contact you soon.');
+            this.reset();
+        });
+    </script>
+<script>
+    // Initialize integration on every page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sync data from all pages
+        if (window.cukIntegration) {
+            cukIntegration.syncAllData();
+            cukIntegration.updateNotificationBadge();
+            cukIntegration.updateDashboard();
+            cukIntegration.updateUserUI();
+        }
+    });
+</script>
+</body>
+</html>

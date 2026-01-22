@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - CUK Event Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">CUK EVENT HUB</div>
+        <h1>Central University of Karnataka</h1>
+        <p class="tagline">Event Management System</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="events.html" class="nav-btn">Events</a>
+        <a href="calendar.html" class="nav-btn">Calendar</a>
+        <a href="about.html" class="nav-btn active">About</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+        <a href="notifications.html" class="nav-btn" style="position: relative;">
+    <i class="fas fa-bell"></i> Notifications
+    <span class="notification-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">0</span>
+</a>
+    </nav>
+
+    <main class="container">
+        <div class="card">
+            <h2>About CUK Event Hub</h2>
+            <p>This platform is developed to streamline event management at Central University of Karnataka.</p>
+            
+            <h3 style="margin-top: 25px;">Features:</h3>
+            <ul style="margin: 15px 0 15px 20px;">
+                <li>Event listing and discovery</li>
+                <li>Online registration</li>
+                <li>Calendar view</li>
+                <li>Department-wise events</li>
+                <li>Admin panel for event creation</li>
+            </ul>
+            
+            <h3>Departments:</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0;">
+                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">School of Computing</span>
+                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">School of Sciences</span>
+                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">School of Social Sciences</span>
+                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">Cultural Committee</span>
+                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">Sports Department</span>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <p>Central University of Karnataka</p>
+        <p>Kadaganchi, Aland Road, Kalaburagi, Karnataka - 585367</p>
+        <p>© <span id="current-year">2024</span> CUK Event Hub | Version 1.0</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

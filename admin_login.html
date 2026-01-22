@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - CUK Event Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #003366 0%, #00509E 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .admin-login-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .admin-login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .admin-icon {
+            font-size: 60px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .admin-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 25px 0;
+            text-align: left;
+            font-size: 14px;
+        }
+        .admin-title {
+            color: #003366;
+            margin-bottom: 10px;
+        }
+        .back-home {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00509E;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Simple Header -->
+    <div style="background: white; padding: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h1 style="color: #003366; margin: 0;">CUK Event Hub - Admin Portal</h1>
+    </div>
+
+    <div class="admin-login-wrapper">
+        <div class="admin-login-container">
+            <div class="admin-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            
+            <h2 class="admin-title">Administrator Login</h2>
+            <p style="color: #666; margin-bottom: 30px;">Restricted access for authorized personnel only</p>
+
+            <div class="admin-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Security Notice:</strong> This portal is for CUK staff only. Unauthorized access is prohibited.
+            </div>
+
+            <form id="admin-login-form">
+                <div style="margin-bottom: 20px; text-align: left;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #003366;">
+                        <i class="fas fa-user-shield"></i> Admin Username
+                    </label>
+                    <input type="text" id="admin-username" 
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;"
+                           placeholder="Enter admin username" required>
+                </div>
+
+                <div style="margin-bottom: 25px; text-align: left;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #003366;">
+                        <i class="fas fa-key"></i> Password
+                    </label>
+                    <input type="password" id="admin-password" 
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;"
+                           placeholder="Enter password" required>
+                </div>
+
+                <div style="margin-bottom: 25px; text-align: left;">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="remember-admin">
+                        Remember this device
+                    </label>
+                </div>
+
+                <button type="submit" 
+                        style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                    <i class="fas fa-sign-in-alt"></i> Login as Administrator
+                </button>
+
+                <div style="margin-top: 30px; color: #666;">
+                    <p>For testing use: <strong>admin</strong> / <strong>admin123</strong></p>
+                    <a href="index.html" class="back-home">
+                        <i class="fas fa-arrow-left"></i> Back to Homepage
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Simple Footer -->
+    <div style="background: #003366; color: white; text-align: center; padding: 20px; margin-top: auto;">
+        <p>Central University of Karnataka | Admin Portal</p>
+        <p style="font-size: 14px; color: #aaa;">© 2024 CUK Event Management System</p>
+    </div>
+
+    <script>
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value.trim();
+            const password = document.getElementById('admin-password').value;
+            
+            // Simple validation
+            if(!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+            
+            // Accept these demo credentials
+            const validCredentials = [
+                { username: 'admin', password: 'admin123' },
+                { username: 'cukadmin', password: 'cuk@2024' },
+                { username: 'test', password: 'test123' }
+            ];
+            
+            // Check if credentials match
+            const isValid = validCredentials.some(cred => 
+                cred.username === username && cred.password === password);
+            
+            if(isValid) {
+                // Store admin session
+                localStorage.setItem('admin', JSON.stringify({
+                    username: username,
+                    name: 'Administrator',
+                    role: 'admin',
+                    loginTime: new Date().toISOString(),
+                    department: 'System Administration'
+                }));
+                
+                // Redirect to dashboard
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                alert('Invalid credentials! Try: admin / admin123');
+            }
+        });
+        
+        // Auto-fill for testing (remove in production)
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('admin-username').value = 'admin';
+            document.getElementById('admin-password').value = 'admin123';
+        });
+    </script>
+    <!-- Integration System -->
+<script src="js/integration.js"></script>
+<script>
+    // Initialize integration on every page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sync data from all pages
+        if (window.cukIntegration) {
+            cukIntegration.syncAllData();
+            cukIntegration.updateNotificationBadge();
+            cukIntegration.updateDashboard();
+            cukIntegration.updateUserUI();
+        }
+    });
+</script>
+</body>
+</html>

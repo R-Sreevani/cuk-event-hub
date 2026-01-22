@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download CUK Assets</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        a { display: block; margin: 10px 0; }
+        img { max-width: 200px; margin: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>CUK Assets Downloader</h1>
+    <p>Right-click each image → Save Image As...</p>
+    
+    <h2>1. CUK Logo (Save as: images/cuk-logo.png)</h2>
+    <img src="https://cuk.ac.in/assets/images/logo.png" alt="CUK Logo">
+    <a href="https://cuk.ac.in/assets/images/logo.png" target="_blank">Direct Link</a>
+    
+    <h2>2. CUK Favicon (Save as: favicon.ico)</h2>
+    <p>Go to: https://cuk.ac.in/favicon.ico</p>
+    
+    <h2>3. Color Scheme (Write these down):</h2>
+    <div style="display: flex; gap: 20px;">
+        <div style="background:#003366; color:white; padding:10px;">
+            Primary Blue: #003366
+        </div>
+        <div style="background:#FFCC00; padding:10px;">
+            Gold/Yellow: #FFCC00
+        </div>
+        <div style="background:#00509E; color:white; padding:10px;">
+            Accent Blue: #00509E
+        </div>
+    </div>
+    <script>
+    // Initialize integration on every page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sync data from all pages
+        if (window.cukIntegration) {
+            cukIntegration.syncAllData();
+            cukIntegration.updateNotificationBadge();
+            cukIntegration.updateDashboard();
+            cukIntegration.updateUserUI();
+        }
+    });
+</script>
+</body>
+</html>

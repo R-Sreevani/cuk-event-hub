@@ -7,97 +7,168 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Event Details Styles */
-        .event-details-container {
+        :root {
+            --cuk-blue: #003366;
+            --cuk-gold: #FFCC00;
+            --cuk-accent: #00509E;
+            --cuk-red: #dc3545;
+            --cuk-green: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--cuk-blue);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: var(--cuk-gold);
+            color: var(--cuk-blue);
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: var(--cuk-accent);
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--cuk-blue);
+            transform: translateY(-2px);
+        }
+        
+        /* Main Container */
+        .container {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
         
+        /* Event Details Card */
+        .event-detail-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .event-header {
-            background: linear-gradient(135deg, #003366 0%, #00509E 100%);
+            background: linear-gradient(135deg, var(--cuk-blue) 0%, var(--cuk-accent) 100%);
             color: white;
             padding: 40px;
-            border-radius: 15px;
-            margin-bottom: 30px;
             position: relative;
-            overflow: hidden;
         }
         
-        .event-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            transform: translate(30%, -30%);
-        }
-        
-        .event-badge {
-            background: #FFCC00;
-            color: #003366;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: bold;
+        .event-category {
             display: inline-block;
+            background: var(--cuk-gold);
+            color: var(--cuk-blue);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
             margin-bottom: 15px;
+        }
+        
+        .event-title {
+            font-size: 42px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .event-meta {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
         }
         
         .event-content {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
-            margin-top: 30px;
+            padding: 40px;
         }
         
-        .event-info-card {
-            background: white;
-            border-radius: 15px;
+        @media (max-width: 768px) {
+            .event-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* About Section */
+        .about-section {
+            background: #f8f9fa;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .event-sidebar {
-            position: sticky;
-            top: 100px;
-        }
-        
-        .sidebar-card {
-            background: white;
             border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
+        .about-section h3 {
+            color: var(--cuk-blue);
+            margin-bottom: 15px;
+            font-size: 24px;
         }
         
-        .info-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(0,80,158,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #00509E;
-            flex-shrink: 0;
-        }
-        
+        /* Speakers Section */
         .speakers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
@@ -105,172 +176,159 @@
         .speaker-card {
             text-align: center;
             padding: 20px;
-            border: 2px solid #e9ecef;
+            background: white;
             border-radius: 10px;
-            transition: all 0.3s;
-        }
-        
-        .speaker-card:hover {
-            border-color: #00509E;
-            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .speaker-img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
+            background: var(--cuk-accent);
+            color: white;
             border-radius: 50%;
-            background: #e9ecef;
-            margin: 0 auto 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            color: #00509E;
+            margin: 0 auto 15px;
+            font-size: 36px;
+            font-weight: bold;
         }
         
-        .schedule-item {
+        /* Sidebar */
+        .event-sidebar {
             background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #FFCC00;
+            padding: 30px;
+            border-radius: 15px;
         }
         
-        .btn-primary {
-            background: #FFCC00;
-            color: #003366;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 20px;
-        }
-        
-        .btn-primary:hover {
-            background: #FFD700;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255,204,0,0.3);
-        }
-        
-        .btn-secondary {
-            background: #00509E;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        .btn-secondary:hover {
-            background: #003366;
-            transform: translateY(-3px);
-        }
-        
-        .btn-disabled {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: not-allowed;
-            width: 100%;
-            margin-top: 10px;
-            opacity: 0.7;
-        }
-        
-        .countdown-box {
-            background: #003366;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+        .price-box {
             text-align: center;
-            margin-bottom: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--cuk-gold) 0%, #ffd700 100%);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            color: var(--cuk-blue);
         }
         
-        .countdown-timer {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
-        
-        .countdown-unit {
-            background: rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 60px;
-        }
-        
-        .countdown-number {
-            font-size: 24px;
+        .price {
+            font-size: 48px;
             font-weight: bold;
-            display: block;
         }
         
-        .countdown-label {
-            font-size: 12px;
-            color: #aaa;
-        }
-        
-        .progress-container {
+        .register-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--cuk-green);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
             margin: 20px 0;
         }
         
-        .progress-bar {
+        .register-btn:hover {
+            background: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(40,167,69,0.3);
+        }
+        
+        .register-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        #qr-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            min-height: 150px;
+        }
+        
+        .qr-fallback {
+            width: 128px;
+            height: 128px;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%);
+            border: 2px dashed var(--cuk-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: var(--cuk-blue);
+        }
+        
+        /* Capacity Bar */
+        .capacity-bar {
+            background: #e0e0e0;
             height: 10px;
-            background: #e9ecef;
             border-radius: 5px;
+            margin: 15px 0;
             overflow: hidden;
         }
         
-        .progress-fill {
+        .capacity-fill {
+            background: var(--cuk-green);
             height: 100%;
-            background: #28a745;
             border-radius: 5px;
+            transition: width 0.3s;
         }
         
-        .share-buttons {
+        /* Tags */
+        .tags {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
         }
         
-        .share-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
+        .tag {
+            background: #e9ecef;
+            color: var(--cuk-blue);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
         }
         
-        .share-fb { background: #3b5998; color: white; }
-        .share-twitter { background: #1da1f2; color: white; }
-        .share-whatsapp { background: #25d366; color: white; }
-        
-        .share-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 100px;
+            background: white;
+            border-radius: 20px;
         }
         
-        @media (max-width: 992px) {
-            .event-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .event-sidebar {
-                position: static;
-            }
+        .loading i {
+            font-size: 48px;
+            color: var(--cuk-blue);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--cuk-blue);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -279,499 +337,481 @@
     <header class="header">
         <div class="logo">CUK EVENT HUB</div>
         <h1>Central University of Karnataka</h1>
-        <p class="tagline">Event Details</p>
+        <p>Event Details & Registration</p>
     </header>
 
     <!-- NAVIGATION -->
     <nav class="navbar">
         <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
-        <a href="events.html" class="nav-btn"><i class="fas fa-calendar-alt"></i> Events</a>
-        <a href="my-registrations.html" class="nav-btn"><i class="fas fa-clipboard-list"></i> My Registrations</a>
+        <a href="events.html" class="nav-btn active"><i class="fas fa-calendar-alt"></i> Events</a>
         <a href="calendar.html" class="nav-btn"><i class="fas fa-calendar"></i> Calendar</a>
-        <a href="#" class="nav-btn" style="background: #FFCC00; color: #003366;">
-            <i class="fas fa-user-graduate"></i> Student Login
-        </a>
+        <a href="about.html" class="nav-btn"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html" class="nav-btn"><i class="fas fa-envelope"></i> Contact</a>
         <a href="notifications.html" class="nav-btn" style="position: relative;">
-    <i class="fas fa-bell"></i> Notifications
-    <span class="notification-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">0</span>
-</a>
-
+            <i class="fas fa-bell"></i> Notifications
+            <span class="notification-badge" style="display: none;">0</span>
+        </a>
     </nav>
 
-    <main class="event-details-container">
-        <!-- Event Header -->
-        <div class="event-header">
-            <div class="event-badge" id="event-category">CONFERENCE</div>
-            <h1 id="event-title" style="font-size: 36px; margin-bottom: 15px;">Event Title</h1>
-            <p id="event-subtitle" style="font-size: 18px; opacity: 0.9;">Event Subtitle</p>
-            
-            <div style="display: flex; gap: 30px; margin-top: 30px; flex-wrap: wrap;">
-                <div>
-                    <div style="font-size: 14px; opacity: 0.8;">DATE & TIME</div>
-                    <div style="font-size: 18px; font-weight: bold;" id="event-datetime">Loading...</div>
-                </div>
-                <div>
-                    <div style="font-size: 14px; opacity: 0.8;">VENUE</div>
-                    <div style="font-size: 18px; font-weight: bold;" id="event-venue">Loading...</div>
-                </div>
-                <div>
-                    <div style="font-size: 14px; opacity: 0.8;">ORGANIZER</div>
-                    <div style="font-size: 18px; font-weight: bold;" id="event-organizer">Loading...</div>
-                </div>
-            </div>
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading event details...</h3>
         </div>
-
-        <!-- Event Content -->
-        <div class="event-content">
-            <!-- Left Column: Event Details -->
-            <div class="event-info-card">
-                <!-- Event Description -->
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0 0 10px 0; color: #003366;">About This Event</h3>
-                        <p id="event-description" style="color: #666; line-height: 1.8;">
-                            Loading event description...
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Learning Objectives -->
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0 0 10px 0; color: #003366;">Learning Objectives</h3>
-                        <ul id="event-objectives" style="color: #666; line-height: 1.8; padding-left: 20px;">
-                            <li>Objective will be loaded here</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Who Should Attend -->
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0 0 10px 0; color: #003366;">Who Should Attend</h3>
-                        <p id="event-audience" style="color: #666; line-height: 1.8;">
-                            This event is suitable for students, researchers, and faculty members interested in...
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Speakers -->
-                <h3 style="color: #003366; margin-top: 30px;">Featured Speakers</h3>
-                <div class="speakers-grid" id="speakers-container">
-                    <!-- Speakers will be loaded here -->
-                </div>
-
-                <!-- Event Schedule -->
-                <h3 style="color: #003366; margin-top: 40px;">Event Schedule</h3>
-                <div id="event-schedule">
-                    <!-- Schedule will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Right Column: Sidebar -->
-            <div class="event-sidebar">
-                <!-- Registration Status -->
-                <div class="sidebar-card">
-                    <h3 style="color: #003366; margin-bottom: 20px; text-align: center;">
-                        <i class="fas fa-ticket-alt"></i> Registration Status
-                    </h3>
-                    
-                    <div class="progress-container">
-                        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
-                            <span id="seats-registered">0</span> / <span id="seats-total">0</span> seats filled
-                            <span id="seats-percentage">0%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progress-fill"></div>
-                        </div>
-                        <div style="text-align: center; margin-top: 10px; color: #666; font-size: 14px;">
-                            <span id="seats-available">0</span> seats available
-                        </div>
-                    </div>
-                    
-                    <button id="register-btn" class="btn-primary">
-                        <i class="fas fa-user-plus"></i> Register Now
-                    </button>
-                    
-                    <button id="already-registered-btn" class="btn-disabled" style="display: none;">
-                        <i class="fas fa-check-circle"></i> Already Registered
-                    </button>
-                    
-                    <button id="event-full-btn" class="btn-disabled" style="display: none;">
-                        <i class="fas fa-times-circle"></i> Event Full
-                    </button>
-                </div>
-
-                <!-- Event Details -->
-                <div class="sidebar-card">
-                    <h3 style="color: #003366; margin-bottom: 20px;">
-                        <i class="fas fa-calendar-check"></i> Event Details
-                    </h3>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Event Type</div>
-                        <div style="font-weight: bold; color: #003366;" id="event-type">Conference</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Registration Fee</div>
-                        <div style="font-weight: bold; color: #003366;" id="event-fee">₹ 500</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Registration Deadline</div>
-                        <div style="font-weight: bold; color: #003366;" id="event-deadline">March 10, 2024</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Contact Person</div>
-                        <div style="font-weight: bold; color: #003366;" id="event-contact">events@cuk.ac.in</div>
-                    </div>
-                </div>
-
-                <!-- Countdown Timer -->
-                <div class="countdown-box">
-                    <div>Registration closes in:</div>
-                    <div class="countdown-timer">
-                        <div class="countdown-unit">
-                            <span class="countdown-number" id="cd-days">00</span>
-                            <span class="countdown-label">Days</span>
-                        </div>
-                        <div class="countdown-unit">
-                            <span class="countdown-number" id="cd-hours">00</span>
-                            <span class="countdown-label">Hours</span>
-                        </div>
-                        <div class="countdown-unit">
-                            <span class="countdown-number" id="cd-minutes">00</span>
-                            <span class="countdown-label">Minutes</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Share Event -->
-                <div class="sidebar-card">
-                    <h3 style="color: #003366; margin-bottom: 15px;">
-                        <i class="fas fa-share-alt"></i> Share This Event
-                    </h3>
-                    <div class="share-buttons">
-                        <button class="share-btn share-fb" onclick="shareFacebook()">
-                            <i class="fab fa-facebook-f"></i> Facebook
-                        </button>
-                        <button class="share-btn share-twitter" onclick="shareTwitter()">
-                            <i class="fab fa-twitter"></i> Twitter
-                        </button>
-                        <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </button>
-                    </div>
-                </div>
-            </div>
+        
+        <div id="event-detail-card" class="event-detail-card" style="display: none;">
+            <!-- Content will be filled by JavaScript -->
         </div>
     </main>
 
+    <!-- FOOTER -->
     <footer class="footer">
-        <p>Created by R Sreevani</p>
         <p>Central University of Karnataka</p>
-        <p>Kadaganchi, Aland Road, Kalaburagi, Karnataka - 585367</p>
-        <p>© 2024 CUK Event Hub | Event Details</p>
+        <p>Kadaganchi, Aland Road, Kalaburagi - 585367</p>
+        <p>© 2024 CUK Event Hub | Version 2.0</p>
     </footer>
 
     <script>
-        // Event Data
-        const eventData = {
-            id: 1,
-            title: "National Conference on Artificial Intelligence 2024",
-            subtitle: "Exploring the Future of AI in Education and Research",
-            category: "CONFERENCE",
-            date: "2024-03-15",
-            time: "9:00 AM - 5:00 PM",
-            venue: "CUK Main Auditorium",
-            organizer: "School of Computing",
-            description: "Join us for the annual National Conference on Artificial Intelligence, bringing together researchers, academics, and industry experts from across the country. This conference will feature keynote speeches, paper presentations, workshops, and panel discussions on the latest advancements in AI, machine learning, and data science.",
-            objectives: [
-                "Understand recent advancements in AI research",
-                "Learn about AI applications in education",
-                "Network with industry professionals",
-                "Explore career opportunities in AI field",
-                "Present student research projects"
-            ],
-            audience: "This event is open to all students, faculty members, researchers, and industry professionals interested in artificial intelligence, machine learning, and data science.",
-            type: "Academic Conference",
-            fee: "₹ 500 (Students) | ₹ 1000 (Faculty/Industry)",
-            deadline: "2024-03-10",
-            contact: "Dr. Rajesh Kumar | ai-conference@cuk.ac.in | +91-9876543210",
-            seats: {
-                total: 200,
+        // =============== EVENT DETAILS SCRIPT ===============
+        
+        // Sample events database (fallback if localStorage is empty)
+        const SAMPLE_EVENTS = [
+            {
+                id: 1,
+                title: "National Conference on Artificial Intelligence",
+                category: "Conference",
+                date: "2024-03-15",
+                time: "10:00 AM - 5:00 PM",
+                venue: "Main Auditorium",
+                department: "School of Computing",
+                description: "Join us for the National Conference on AI featuring keynote speeches from industry leaders, paper presentations, and networking opportunities.",
+                longDescription: "This conference aims to bring together researchers, practitioners, and students to discuss the latest advancements in Artificial Intelligence. Topics include Machine Learning, Deep Learning, NLP, Computer Vision, and Ethical AI.",
+                speakers: [
+                    { name: "Dr. Rajesh Kumar", title: "Director, AI Research Lab", institution: "IIT Bombay" },
+                    { name: "Prof. Sarah Johnson", title: "Professor of CS", institution: "Stanford University" },
+                    { name: "Dr. Amit Patel", title: "Chief AI Scientist", institution: "Google India" }
+                ],
+                capacity: 200,
                 registered: 145,
-                available: 55
+                fee: "₹500",
+                tags: ["AI", "Machine Learning", "Research", "Conference"],
+                image: "ai-conf.jpg",
+                status: "active"
             },
-            speakers: [
-                { name: "Dr. Rajesh Kumar", role: "AI Researcher, IIT Delhi", expertise: "Machine Learning" },
-                { name: "Prof. Meena Sharma", role: "Head, School of Computing", expertise: "Data Science" },
-                { name: "Mr. Arun Joshi", role: "AI Lead, TechCorp India", expertise: "AI Applications" },
-                { name: "Dr. Priya Patel", role: "Professor, CUK", expertise: "Deep Learning" }
-            ],
-            schedule: [
-                { time: "8:30 AM - 9:00 AM", activity: "Registration & Breakfast", venue: "Main Lobby" },
-                { time: "9:00 AM - 10:30 AM", activity: "Keynote Speech: Future of AI", venue: "Auditorium", speaker: "Dr. Rajesh Kumar" },
-                { time: "10:30 AM - 11:00 AM", activity: "Tea/Coffee Break", venue: "Lobby" },
-                { time: "11:00 AM - 1:00 PM", activity: "Paper Presentations", venue: "Conference Hall" },
-                { time: "1:00 PM - 2:00 PM", activity: "Lunch Break", venue: "Dining Hall" },
-                { time: "2:00 PM - 3:30 PM", activity: "Workshop: AI Tools", venue: "Computer Lab", speaker: "Mr. Arun Joshi" },
-                { time: "3:30 PM - 4:00 PM", activity: "Networking Session", venue: "Lobby" },
-                { time: "4:00 PM - 5:00 PM", activity: "Panel Discussion & Closing", venue: "Auditorium" }
-            ]
-        };
+            {
+                id: 2,
+                title: "Cultural Fest 2024",
+                category: "Cultural",
+                date: "2024-03-20",
+                time: "2:00 PM - 9:00 PM",
+                venue: "Open Air Theatre",
+                department: "Cultural Committee",
+                description: "Annual cultural festival featuring music, dance, drama, and art exhibitions.",
+                longDescription: "Experience the vibrant culture of CUK through various performances, competitions, and food stalls. Open to all students and staff.",
+                speakers: [
+                    { name: "Prof. Meera Sharma", title: "Cultural Coordinator", institution: "CUK" },
+                    { name: "Mr. Ravi Verma", title: "Art Director", institution: "Natya Academy" }
+                ],
+                capacity: 500,
+                registered: 320,
+                fee: "Free",
+                tags: ["Cultural", "Music", "Dance", "Entertainment"],
+                image: "cultural.jpg",
+                status: "active"
+            },
+            {
+                id: 3,
+                title: "Inter-Department Sports Meet",
+                category: "Sports",
+                date: "2024-03-25",
+                time: "9:00 AM - 6:00 PM",
+                venue: "Sports Complex",
+                department: "Physical Education",
+                description: "Annual sports competition between departments.",
+                longDescription: "Compete in various sports including cricket, football, basketball, volleyball, and athletics. Prizes for winners and participation certificates for all.",
+                capacity: 400,
+                registered: 210,
+                fee: "₹100",
+                tags: ["Sports", "Competition", "Outdoor"],
+                image: "sports.jpg",
+                status: "pending"
+            }
+        ];
+
+        // Get event ID from URL
+        function getEventIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
 
         // Load event data
-        document.addEventListener('DOMContentLoaded', function() {
-            // Try to get event from URL parameter or localStorage
-            const urlParams = new URLSearchParams(window.location.search);
-            const eventId = urlParams.get('id') || 1;
+        function loadEventData() {
+            const eventId = getEventIdFromUrl();
             
-            // In real app, fetch event data based on ID
-            loadEventData(eventData);
-            setupEventListeners();
-            startCountdown();
-            checkRegistrationStatus();
-        });
-
-        // Load event data to page
-        function loadEventData(event) {
-            // Basic info
-            document.getElementById('event-title').textContent = event.title;
-            document.getElementById('event-subtitle').textContent = event.subtitle;
-            document.getElementById('event-category').textContent = event.category;
-            document.getElementById('event-datetime').textContent = `${formatDate(event.date)} | ${event.time}`;
-            document.getElementById('event-venue').textContent = event.venue;
-            document.getElementById('event-organizer').textContent = event.organizer;
-            document.getElementById('event-description').textContent = event.description;
-            document.getElementById('event-audience').textContent = event.audience;
-            document.getElementById('event-type').textContent = event.type;
-            document.getElementById('event-fee').textContent = event.fee;
-            document.getElementById('event-deadline').textContent = formatDate(event.deadline);
-            document.getElementById('event-contact').textContent = event.contact;
-            
-            // Objectives
-            const objectivesList = document.getElementById('event-objectives');
-            objectivesList.innerHTML = '';
-            event.objectives.forEach(obj => {
-                const li = document.createElement('li');
-                li.textContent = obj;
-                objectivesList.appendChild(li);
-            });
-            
-            // Seats
-            const registered = event.seats.registered;
-            const total = event.seats.total;
-            const available = event.seats.available;
-            const percentage = Math.round((registered / total) * 100);
-            
-            document.getElementById('seats-registered').textContent = registered;
-            document.getElementById('seats-total').textContent = total;
-            document.getElementById('seats-available').textContent = available;
-            document.getElementById('seats-percentage').textContent = `${percentage}%`;
-            document.getElementById('progress-fill').style.width = `${percentage}%`;
-            
-            // Update button based on availability
-            const registerBtn = document.getElementById('register-btn');
-            const alreadyBtn = document.getElementById('already-registered-btn');
-            const fullBtn = document.getElementById('event-full-btn');
-            
-            if (available <= 0) {
-                registerBtn.style.display = 'none';
-                fullBtn.style.display = 'block';
+            if (!eventId) {
+                showError('No event ID provided');
+                return;
             }
             
-            // Speakers
-            const speakersContainer = document.getElementById('speakers-container');
-            speakersContainer.innerHTML = '';
-            event.speakers.forEach(speaker => {
-                const speakerCard = document.createElement('div');
-                speakerCard.className = 'speaker-card';
-                speakerCard.innerHTML = `
-                    <div class="speaker-img">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <h4 style="margin: 0 0 5px 0; color: #003366;">${speaker.name}</h4>
-                    <p style="color: #666; font-size: 14px; margin: 0 0 5px 0;">${speaker.role}</p>
-                    <span style="font-size: 12px; color: #FFCC00; background: rgba(255,204,0,0.1); padding: 3px 10px; border-radius: 10px;">${speaker.expertise}</span>
-                `;
-                speakersContainer.appendChild(speakerCard);
-            });
+            console.log('Loading event ID:', eventId);
             
-            // Schedule
-            const scheduleContainer = document.getElementById('event-schedule');
-            scheduleContainer.innerHTML = '';
-            event.schedule.forEach(item => {
-                const scheduleItem = document.createElement('div');
-                scheduleItem.className = 'schedule-item';
-                
-                let speakerInfo = '';
-                if (item.speaker) {
-                    speakerInfo = `<div style="margin-top: 5px; font-size: 14px; color: #00509E;"><i class="fas fa-user"></i> ${item.speaker}</div>`;
-                }
-                
-                scheduleItem.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
-                        <div>
-                            <h4 style="margin: 0 0 5px 0; color: #003366;">${item.activity}</h4>
-                            <div style="color: #666; font-size: 14px;"><i class="far fa-clock"></i> ${item.time}</div>
-                            ${speakerInfo}
-                        </div>
-                        <span style="background: #00509E; color: white; padding: 5px 15px; border-radius: 15px; font-size: 14px;">${item.venue}</span>
-                    </div>
-                `;
-                scheduleContainer.appendChild(scheduleItem);
-            });
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Register button
-            document.getElementById('register-btn').addEventListener('click', function() {
-                registerForEvent();
-            });
+            // Try to get from localStorage first
+            let events = [];
+            try {
+                events = JSON.parse(localStorage.getItem('events') || '[]');
+            } catch (e) {
+                console.log('Using sample events');
+            }
             
-            // Check if user is logged in
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if (!user.name) {
-                this.textContent = 'Login to Register';
-                this.style.background = '#00509E';
-                this.onclick = function() {
-                    window.location.href = 'login.html';
-                };
+            // If no events in localStorage, use samples
+            if (events.length === 0) {
+                events = SAMPLE_EVENTS;
+                // Save to localStorage for future use
+                localStorage.setItem('events', JSON.stringify(events));
+            }
+            
+            // Find the event (handle both string and number IDs)
+            const event = events.find(e => e.id == eventId);
+            
+            if (event) {
+                displayEventDetails(event);
+            } else {
+                showError('Event not found');
             }
         }
 
-        // Format date
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-IN', {
+        // Display event details
+        function displayEventDetails(event) {
+            // Hide loading, show content
+            document.getElementById('loading').style.display = 'none';
+            const container = document.getElementById('event-detail-card');
+            container.style.display = 'block';
+            
+            // Format date
+            const eventDate = new Date(event.date);
+            const formattedDate = eventDate.toLocaleDateString('en-IN', {
                 weekday: 'long',
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             });
-        }
-
-        // Countdown timer
-        function startCountdown() {
-            const deadline = new Date(eventData.deadline + 'T23:59:59').getTime();
             
-            function updateTimer() {
-                const now = new Date().getTime();
-                const timeLeft = deadline - now;
-                
-                if (timeLeft > 0) {
-                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    
-                    document.getElementById('cd-days').textContent = days.toString().padStart(2, '0');
-                    document.getElementById('cd-hours').textContent = hours.toString().padStart(2, '0');
-                    document.getElementById('cd-minutes').textContent = minutes.toString().padStart(2, '0');
-                } else {
-                    document.getElementById('register-btn').disabled = true;
-                    document.getElementById('register-btn').innerHTML = '<i class="fas fa-times-circle"></i> Registration Closed';
-                    document.getElementById('register-btn').style.background = '#6c757d';
-                }
-            }
+            // Calculate availability
+            const registered = event.registered || 0;
+            const capacity = event.capacity || 200;
+            const available = capacity - registered;
+            const percentFull = (registered / capacity) * 100;
             
-            updateTimer();
-            setInterval(updateTimer, 60000); // Update every minute
-        }
-
-        // Check if user is already registered
-        function checkRegistrationStatus() {
+            // Check if user is logged in
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if (!user.name) return;
+            const isLoggedIn = user.name || user.email;
             
+            // Check if already registered
             const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
-            const isRegistered = registrations.some(reg => reg.eventId === eventData.id);
+            const alreadyRegistered = registrations.some(r => r.eventId == event.id);
             
-            if (isRegistered) {
-                document.getElementById('register-btn').style.display = 'none';
-                document.getElementById('already-registered-btn').style.display = 'block';
+            // Generate HTML
+            container.innerHTML = `
+                <div class="event-header">
+                    <span class="event-category"><i class="fas fa-tag"></i> ${event.category || 'Event'}</span>
+                    <h1 class="event-title">${event.title}</h1>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt fa-lg"></i>
+                            <span>${formattedDate}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-clock fa-lg"></i>
+                            <span>${event.time || '10:00 AM'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt fa-lg"></i>
+                            <span>${event.venue}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users fa-lg"></i>
+                            <span>${event.department || 'All Departments'}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-content">
+                    <div>
+                        <div class="about-section">
+                            <h3><i class="fas fa-info-circle"></i> About the Event</h3>
+                            <p style="line-height: 1.8; color: #555;">${event.longDescription || event.description}</p>
+                            
+                            <div class="tags">
+                                ${event.tags ? event.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="about-section">
+                            <h3><i class="fas fa-chalkboard-teacher"></i> Key Speakers</h3>
+                            <div class="speakers-grid">
+                                ${event.speakers ? event.speakers.map(speaker => `
+                                    <div class="speaker-card">
+                                        <div class="speaker-img">${speaker.name.charAt(0)}</div>
+                                        <h4>${speaker.name}</h4>
+                                        <p style="color: #666; font-size: 12px;">${speaker.title}</p>
+                                        <p style="color: #999; font-size: 11px;">${speaker.institution}</p>
+                                    </div>
+                                `).join('') : `
+                                    <p>Speakers to be announced soon</p>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-sidebar">
+                        <div class="price-box">
+                            <h3>Registration Fee</h3>
+                            <div class="price">${event.fee || 'Free'}</div>
+                            <p style="color: var(--cuk-blue);">Includes lunch & materials</p>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4><i class="fas fa-chair"></i> Seat Availability</h4>
+                            <div class="capacity-bar">
+                                <div class="capacity-fill" style="width: ${percentFull}%;"></div>
+                            </div>
+                            <p style="display: flex; justify-content: space-between;">
+                                <span><strong>${registered}</strong> registered</span>
+                                <span><strong>${available}</strong> available</span>
+                                <span><strong>${capacity}</strong> total</span>
+                            </p>
+                        </div>
+                        
+                        ${alreadyRegistered ? `
+                            <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                                <i class="fas fa-check-circle"></i> You are already registered for this event!
+                                <div style="margin-top: 10px;">
+                                    <a href="my-registrations.html" style="color: #155724; font-weight: bold;">View My Registrations →</a>
+                                </div>
+                            </div>
+                        ` : `
+                            <button class="register-btn" onclick="registerForEvent(${event.id})" ${available <= 0 ? 'disabled' : ''}>
+                                <i class="fas fa-ticket-alt"></i> 
+                                ${available <= 0 ? 'Event Full' : 'Register Now'}
+                            </button>
+                        `}
+                        
+                        <!-- QR Code Section -->
+                        <div class="qr-section">
+                            <h4><i class="fas fa-qrcode"></i> Quick Registration</h4>
+                            <p style="color: #666; font-size: 12px; margin-bottom: 15px;">
+                                Scan this QR code to register on mobile
+                            </p>
+                            <div id="qr-container"></div>
+                            
+                            ${!isLoggedIn ? `
+                                <p style="color: #856404; background: #fff3cd; padding: 10px; border-radius: 5px; margin-top: 15px;">
+                                    <i class="fas fa-exclamation-triangle"></i> 
+                                    <a href="login.html" style="color: #856404; font-weight: bold;">Login</a> to register
+                                </p>
+                            ` : ''}
+                        </div>
+                        
+                        <div style="margin-top: 20px;">
+                            <h4><i class="fas fa-share-alt"></i> Share Event</h4>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <a href="#" onclick="shareEvent('whatsapp')" style="color: #25D366; font-size: 24px;"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" onclick="shareEvent('twitter')" style="color: #1DA1F2; font-size: 24px;"><i class="fab fa-twitter"></i></a>
+                                <a href="#" onclick="shareEvent('facebook')" style="color: #4267B2; font-size: 24px;"><i class="fab fa-facebook"></i></a>
+                                <a href="#" onclick="shareEvent('linkedin')" style="color: #0077B5; font-size: 24px;"><i class="fab fa-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Generate QR Code
+            generateQRCode(event);
+        }
+
+        // Generate QR Code for event
+        function generateQRCode(event) {
+            const container = document.getElementById('qr-container');
+            container.innerHTML = '';
+            
+            const qrData = JSON.stringify({
+                type: 'event_registration',
+                eventId: event.id,
+                eventTitle: event.title,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Try to use QRCode library if available
+            if (typeof QRCode !== 'undefined') {
+                try {
+                    new QRCode(container, {
+                        text: qrData,
+                        width: 128,
+                        height: 128
+                    });
+                } catch (e) {
+                    showFallbackQR(container, event.id);
+                }
+            } else {
+                showFallbackQR(container, event.id);
             }
+        }
+
+        // Fallback QR display
+        function showFallbackQR(container, eventId) {
+            container.innerHTML = `
+                <div class="qr-fallback" onclick="registerDirectly(${eventId})" style="cursor: pointer;">
+                    <i class="fas fa-qrcode" style="font-size: 40px; color: var(--cuk-blue);"></i>
+                    <p style="margin-top: 10px; font-size: 12px;">Click to Register</p>
+                    <p style="font-size: 10px; color: #666;">Event ID: ${eventId}</p>
+                </div>
+            `;
         }
 
         // Register for event
-        function registerForEvent() {
+        window.registerForEvent = function(eventId) {
+            // Check if user is logged in
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             
-            if (!user.name) {
-                alert('Please login to register for this event');
+            if (!user.name && !user.email) {
+                // Store the event ID to redirect back after login
+                localStorage.setItem('redirectAfterLogin', `event-details.html?id=${eventId}`);
+                alert('Please login to register for events');
                 window.location.href = 'login.html';
                 return;
             }
             
-            if (eventData.seats.available <= 0) {
-                alert('Sorry, this event is fully booked!');
+            // Get event details
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            const event = events.find(e => e.id == eventId) || 
+                         SAMPLE_EVENTS.find(e => e.id == eventId);
+            
+            if (!event) {
+                alert('Event not found');
                 return;
             }
             
-            if (confirm(`Register for "${eventData.title}"?\n\nDate: ${formatDate(eventData.date)}\nVenue: ${eventData.venue}\nFee: ${eventData.fee}`)) {
-                // Save registration
-                let registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
-                registrations.push({
-                    eventId: eventData.id,
-                    eventTitle: eventData.title,
-                    date: eventData.date,
-                    registrationDate: new Date().toISOString(),
-                    status: 'confirmed',
-                    fee: eventData.fee
-                });
-                localStorage.setItem('myRegistrations', JSON.stringify(registrations));
-                
-                // Update seats
-                eventData.seats.registered++;
-                eventData.seats.available--;
-                
-                // Update UI
-                alert(`Successfully registered for "${eventData.title}"!\n\nA confirmation email has been sent to ${user.email}`);
+            // Check if already registered
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            if (registrations.some(r => r.eventId == eventId)) {
+                alert('You are already registered for this event!');
                 window.location.href = 'my-registrations.html';
+                return;
             }
+            
+            // Check seat availability
+            if (event.registered >= event.capacity) {
+                alert('Sorry, this event is full!');
+                return;
+            }
+            
+            // Create registration
+            const registrationId = 'REG-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
+            const registration = {
+                id: registrationId,
+                eventId: event.id,
+                eventTitle: event.title,
+                date: event.date,
+                venue: event.venue,
+                userName: user.name || 'Guest User',
+                userEmail: user.email || 'guest@cuk.edu',
+                registrationDate: new Date().toISOString(),
+                status: 'confirmed',
+                fee: event.fee || 'Free',
+                qrCode: registrationId
+            };
+            
+            // Save registration
+            registrations.push(registration);
+            localStorage.setItem('myRegistrations', JSON.stringify(registrations));
+            
+            // Update event registration count
+            event.registered = (event.registered || 0) + 1;
+            localStorage.setItem('events', JSON.stringify(events));
+            
+            // Show success message
+            alert('Registration successful! Check your email for confirmation.');
+            
+            // Redirect to my registrations
+            window.location.href = 'my-registrations.html';
+        };
+
+        // Direct registration from QR fallback
+        window.registerDirectly = function(eventId) {
+            registerForEvent(eventId);
+        };
+
+        // Share event
+        window.shareEvent = function(platform) {
+            const event = JSON.parse(localStorage.getItem('currentEvent') || '{}');
+            const url = window.location.href;
+            const text = `Check out this event at CUK: ${event.title || 'Event'}`;
+            
+            let shareUrl = '';
+            switch(platform) {
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+                    break;
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+                    break;
+            }
+            
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        };
+
+        // Show error
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            const container = document.getElementById('event-detail-card');
+            container.style.display = 'block';
+            container.innerHTML = `
+                <div style="text-align: center; padding: 100px; background: white; border-radius: 20px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 60px; color: #dc3545;"></i>
+                    <h2 style="color: #dc3545; margin: 20px 0;">${message}</h2>
+                    <p>The event you're looking for doesn't exist or has been removed.</p>
+                    <a href="events.html" style="display: inline-block; margin-top: 20px; padding: 10px 30px; background: var(--cuk-blue); color: white; text-decoration: none; border-radius: 5px;">
+                        Browse Events
+                    </a>
+                </div>
+            `;
         }
 
-        // Share functions
-        function shareFacebook() {
-            const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent(`Check out this event: ${eventData.title}`);
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
-        }
-        
-        function shareTwitter() {
-            const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent(`Check out "${eventData.title}" at CUK Event Hub`);
-            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
-        }
-        
-        function shareWhatsApp() {
-            const text = encodeURIComponent(`Check out "${eventData.title}" at CUK Event Hub\nDate: ${formatDate(eventData.date)}\nVenue: ${eventData.venue}\n\n${window.location.href}`);
-            window.open(`https://wa.me/?text=${text}`, '_blank');
-        }
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEventData();
+            
+            // Update notification badge
+            try {
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                const unread = notifications.filter(n => !n.read).length;
+                const badge = document.querySelector('.notification-badge');
+                if (badge) {
+                    if (unread > 0) {
+                        badge.style.display = 'inline';
+                        badge.textContent = unread > 9 ? '9+' : unread;
+                    }
+                }
+            } catch (e) {}
+        });
     </script>
-<script>
-    // Initialize integration on every page
-    document.addEventListener('DOMContentLoaded', function() {
-        // Sync data from all pages
-        if (window.cukIntegration) {
-            cukIntegration.syncAllData();
-            cukIntegration.updateNotificationBadge();
-            cukIntegration.updateDashboard();
-            cukIntegration.updateUserUI();
-        }
-    });
-</script>
+    
+    <!-- Load QR Code library if available -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        // Fallback if QR library fails to load
+        window.addEventListener('error', function(e) {
+            if (e.target.src && e.target.src.includes('qrcode')) {
+                console.log('QR library failed to load, using fallback');
+            }
+        }, true);
+    </script>
 </body>
 </html>

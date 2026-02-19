@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - CUK Event Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Your existing styles */
+        :root {
+            --cuk-blue: #003366;
+            --cuk-gold: #FFCC00;
+            --cuk-accent: #00509E;
+        }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; }
+        .header { background: var(--cuk-blue); color: white; padding: 20px; text-align: center; }
+        .navbar { background: var(--cuk-accent); padding: 15px; text-align: center; }
+        .nav-btn { color: white; text-decoration: none; padding: 10px 20px; margin: 0 5px; }
+        .nav-btn.active { background: var(--cuk-blue); border-radius: 5px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 20px; }
+        .events-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
+        }
+        .event-card { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,51,102,0.2);
+        }
+        .event-category {
+            display: inline-block;
+            background: var(--cuk-gold);
+            color: var(--cuk-blue);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .event-title {
+            color: var(--cuk-blue);
+            margin: 10px 0;
+        }
+        .event-meta {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .event-meta i {
+            color: var(--cuk-gold);
+            width: 20px;
+        }
+        .view-details-btn {
+            background: var(--cuk-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        .view-details-btn:hover {
+            background: var(--cuk-accent);
+        }
+        .footer { background: var(--cuk-blue); color: white; text-align: center; padding: 20px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">CUK EVENT HUB</div>
+        <h1>Central University of Karnataka</h1>
+        <p>Event Management System</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="events.html" class="nav-btn active">Events</a>
+        <a href="calendar.html" class="nav-btn">Calendar</a>
+        <a href="about.html" class="nav-btn">About</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+    </nav>
+
+    <main class="container">
+        <h2 style="color: var(--cuk-blue);">Upcoming Events</h2>
+        
+        <div class="events-grid" id="events-container">
+            <!-- Events will be loaded here -->
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Central University of Karnataka</p>
+        <p>© 2024 CUK Event Hub</p>
+    </footer>
+
+    <script>
+        // Sample events data
+        const EVENTS = [
+            {
+                id: 1,
+                title: "National Conference on Artificial Intelligence",
+                category: "Conference",
+                date: "2024-03-15",
+                time: "10:00 AM",
+                venue: "Main Auditorium",
+                description: "Join us for the National Conference on AI featuring keynote speeches from industry leaders.",
+                fee: "₹500",
+                capacity: 200,
+                registered: 145
+            },
+            {
+                id: 2,
+                title: "Cultural Fest 2024",
+                category: "Cultural",
+                date: "2024-03-20",
+                time: "2:00 PM",
+                venue: "Open Air Theatre",
+                description: "Annual cultural festival featuring music, dance, drama, and art exhibitions.",
+                fee: "Free",
+                capacity: 500,
+                registered: 320
+            },
+            {
+                id: 3,
+                title: "Inter-Department Sports Meet",
+                category: "Sports",
+                date: "2024-03-25",
+                time: "9:00 AM",
+                venue: "Sports Complex",
+                description: "Annual sports competition between departments.",
+                fee: "₹100",
+                capacity: 400,
+                registered: 210
+            }
+        ];
+
+        // Load events
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('events-container');
+            
+            EVENTS.forEach(event => {
+                const eventDate = new Date(event.date);
+                const formattedDate = eventDate.toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.onclick = function() {
+                    viewEventDetails(event.id);
+                };
+                
+                card.innerHTML = `
+                    <span class="event-category">${event.category}</span>
+                    <h3 class="event-title">${event.title}</h3>
+                    <div class="event-meta">
+                        <p><i class="fas fa-calendar"></i> ${formattedDate} at ${event.time}</p>
+                        <p><i class="fas fa-map-marker"></i> ${event.venue}</p>
+                        <p><i class="fas fa-users"></i> ${event.registered}/${event.capacity} registered</p>
+                        <p><i class="fas fa-tag"></i> Fee: ${event.fee}</p>
+                    </div>
+                    <button class="view-details-btn" onclick="event.stopPropagation(); viewEventDetails(${event.id})">
+                        View Details
+                    </button>
+                `;
+                
+                container.appendChild(card);
+            });
+        });
+
+        // Navigate to event details
+        function viewEventDetails(eventId) {
+            window.location.href = `event-details.html?id=${eventId}`;
+        }
+    </script>
+</body>
+</html>

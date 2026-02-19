@@ -6,6 +6,16 @@
     <title>Admin Dashboard - CUK Event Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --cuk-blue: #003366;
+            --cuk-gold: #FFCC00;
+            --cuk-accent: #00509E;
+            --cuk-red: #dc3545;
+            --cuk-green: #28a745;
+            --cuk-gray: #6c757d;
+            --cuk-light: #f8f9fa;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +24,7 @@
         }
         
         body {
-            background: #f4f6f9;
+            background: #f0f2f5;
         }
         
         /* Admin Header */
@@ -55,6 +65,7 @@
             border-radius: 6px;
             font-weight: 500;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .nav-item:hover, .nav-item.active {
@@ -99,10 +110,10 @@
         }
         
         .admin-badge {
-            background: #003366;
-            color: white;
             width: 70px;
             height: 70px;
+            background: #003366;
+            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -126,10 +137,12 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             border-top: 4px solid;
             transition: transform 0.3s;
+            cursor: pointer;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,51,102,0.1);
         }
         
         .stat-number {
@@ -139,19 +152,135 @@
             margin: 15px 0;
         }
         
-        /* Table */
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            background: white;
+            color: #003366;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .action-btn:hover {
+            background: #FFCC00;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,204,0,0.3);
+        }
+        
+        .action-btn.primary {
+            background: #003366;
+            color: white;
+        }
+        
+        .action-btn.primary:hover {
+            background: #004080;
+        }
+        
+        .action-btn.danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .action-btn.danger:hover {
+            background: #c82333;
+        }
+        
+        /* Search Bar */
+        .search-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            min-width: 250px;
+        }
+        
+        .search-input:focus {
+            border-color: #FFCC00;
+            outline: none;
+        }
+        
+        .search-btn {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .search-btn:hover {
+            background: #004080;
+        }
+        
+        /* Tables */
         .table-container {
             background: white;
             border-radius: 15px;
             padding: 30px;
-            margin-top: 30px;
+            margin: 30px 0;
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .table-header h2 {
+            color: #003366;
+        }
+        
+        .create-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .create-btn:hover {
+            background: #218838;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
         
         th {
@@ -179,48 +308,157 @@
             display: inline-block;
         }
         
-        .status-active { background: #d4edda; color: #155724; }
-        .status-pending { background: #fff3cd; color: #856404; }
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
         
-        .action-btn {
-            padding: 8px 15px;
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .icon-btn {
+            width: 35px;
+            height: 35px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 0 5px;
             transition: all 0.3s;
+            color: white;
         }
         
-        .btn-view { background: #003366; color: white; }
-        .btn-edit { background: #FFCC00; color: #003366; }
+        .icon-btn.view {
+            background: #003366;
+        }
         
-        .action-btn:hover {
-            opacity: 0.9;
+        .icon-btn.edit {
+            background: #FFCC00;
+            color: #003366;
+        }
+        
+        .icon-btn.delete {
+            background: #dc3545;
+        }
+        
+        .icon-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
         }
         
-        /* Quick Actions */
-        .quick-actions {
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: #003366;
+        }
+        
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-modal:hover {
+            color: #dc3545;
+        }
+        
+        .modal-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .modal-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #003366;
+            font-weight: bold;
+        }
+        
+        .modal-form input,
+        .modal-form select,
+        .modal-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .modal-form input:focus,
+        .modal-form select:focus,
+        .modal-form textarea:focus {
+            border-color: #FFCC00;
+            outline: none;
+        }
+        
+        .modal-footer {
             display: flex;
             gap: 15px;
-            margin: 30px 0;
-            flex-wrap: wrap;
+            margin-top: 25px;
         }
         
-        .quick-btn {
-            background: white;
-            color: #003366;
-            padding: 15px 25px;
-            border-radius: 10px;
-            text-decoration: none;
+        .save-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s;
+            flex: 1;
         }
         
-        .quick-btn:hover {
-            background: #FFCC00;
-            transform: translateY(-3px);
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
         }
         
         /* Footer */
@@ -232,45 +470,67 @@
             margin-top: 50px;
         }
         
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
         @media (max-width: 768px) {
-            .admin-nav { flex-direction: column; }
-            .admin-logout { margin-left: 0; }
-            .stats-grid { grid-template-columns: 1fr; }
+            .admin-nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .admin-logout {
+                margin-left: 0;
+            }
+            .table-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Admin Header -->
     <header class="admin-header">
         <div class="admin-logo">CUK ADMIN</div>
         <h2>Central University of Karnataka</h2>
         <p>Event Management System - Administrator Dashboard</p>
     </header>
 
-    <!-- Admin Navigation -->
     <nav class="admin-nav">
         <a href="admin-dashboard.html" class="nav-item active">
             <i class="fas fa-tachometer-alt"></i> Dashboard
         </a>
-        <a href="admin-event.html" class="nav-item">
+        <a href="#" class="nav-item" onclick="showEventManagement()">
             <i class="fas fa-calendar-plus"></i> Events
         </a>
-        <a href="admin-user.html" class="nav-item">
+        <a href="#" class="nav-item" onclick="showUserManagement()">
             <i class="fas fa-users"></i> Users
         </a>
-        <a href="#" class="nav-item" onclick="alert('Reports coming soon!')">
+        <a href="#" class="nav-item" onclick="generateReport()">
             <i class="fas fa-chart-bar"></i> Reports
+        </a>
+        <a href="#" class="nav-item" onclick="showSettings()">
+            <i class="fas fa-cog"></i> Settings
         </a>
         <a href="notifications.html" class="nav-item" style="position: relative;">
             <i class="fas fa-bell"></i> Alerts
-            <span class="notification-badge" style="display: none;">0</span>
+            <span class="notification-badge" id="notificationBadge">0</span>
         </a>
         <button class="admin-logout" onclick="adminLogout()">
             <i class="fas fa-sign-out-alt"></i> Logout
         </button>
     </nav>
 
-    <!-- Main Content -->
     <main class="admin-container">
         <!-- Welcome Card -->
         <div class="welcome-card">
@@ -283,60 +543,71 @@
             </div>
             <div style="color: #666;">
                 <p><i class="fas fa-clock"></i> <span id="loginTime">Today, 10:30 AM</span></p>
-                <p><i class="fas fa-server"></i> System Status: <span style="color: #28a745;">Online</span></p>
+                <p><i class="fas fa-server"></i> System: <span style="color: #28a745;">Online</span></p>
             </div>
         </div>
 
         <!-- Stats Cards -->
         <div class="stats-grid">
-            <div class="stat-card" style="border-color: #003366;">
+            <div class="stat-card" onclick="showEventManagement()" style="border-color: #003366;">
                 <h3><i class="fas fa-calendar"></i> Total Events</h3>
                 <div class="stat-number" id="totalEvents">156</div>
                 <p>Active: 24 | Upcoming: 15</p>
             </div>
-            <div class="stat-card" style="border-color: #28a745;">
+            <div class="stat-card" onclick="showUserManagement()" style="border-color: #28a745;">
                 <h3><i class="fas fa-users"></i> Total Users</h3>
                 <div class="stat-number" id="totalUsers">2,148</div>
                 <p>Students: 2,100 | Staff: 48</p>
             </div>
-            <div class="stat-card" style="border-color: #FFCC00;">
+            <div class="stat-card" onclick="showEventManagement()" style="border-color: #FFCC00;">
                 <h3><i class="fas fa-clipboard-list"></i> Registrations</h3>
                 <div class="stat-number" id="totalRegistrations">5,892</div>
                 <p>This month: 324</p>
             </div>
-            <div class="stat-card" style="border-color: #dc3545;">
+            <div class="stat-card" onclick="showEventManagement()" style="border-color: #dc3545;">
                 <h3><i class="fas fa-hourglass-half"></i> Pending</h3>
                 <div class="stat-number" id="pendingItems">18</div>
                 <p>Approvals needed</p>
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <a href="admin-event.html" class="quick-btn">
-                <i class="fas fa-plus-circle"></i> Create Event
-            </a>
-            <a href="admin-user.html" class="quick-btn">
-                <i class="fas fa-user-plus"></i> Add User
-            </a>
-            <a href="#" class="quick-btn" onclick="generateReport()">
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-btn primary" onclick="createNewEvent()">
+                <i class="fas fa-plus-circle"></i> Create New Event
+            </button>
+            <button class="action-btn" onclick="showUserManagement()">
+                <i class="fas fa-user-plus"></i> Add New User
+            </button>
+            <button class="action-btn" onclick="generateReport()">
                 <i class="fas fa-file-export"></i> Generate Report
-            </a>
-            <a href="#" class="quick-btn" onclick="showSettings()">
+            </button>
+            <button class="action-btn" onclick="showSettings()">
                 <i class="fas fa-cog"></i> Settings
-            </a>
+            </button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search events, users, or registrations...">
+            <button class="search-btn" onclick="performSearch()">
+                <i class="fas fa-search"></i> Search
+            </button>
         </div>
 
         <!-- Recent Events Table -->
-        <div class="table-container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="table-container" id="eventsTable">
+            <div class="table-header">
                 <h2><i class="fas fa-calendar-week"></i> Recent Events</h2>
-                <a href="admin-event.html" class="action-btn btn-view">View All</a>
+                <button class="create-btn" onclick="createNewEvent()">
+                    <i class="fas fa-plus"></i> Create Event
+                </button>
             </div>
             
-            <table id="eventsTable">
+            <table>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Event Name</th>
                         <th>Date</th>
                         <th>Department</th>
@@ -346,22 +617,24 @@
                     </tr>
                 </thead>
                 <tbody id="eventsTableBody">
-                    <!-- Will be filled by JavaScript -->
+                    <!-- Filled by JavaScript -->
                 </tbody>
             </table>
         </div>
 
         <!-- Recent Users Table -->
-        <div class="table-container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2><i class="fas fa-user-friends"></i> Recent Users</h2>
-                <a href="admin-user.html" class="action-btn btn-view">View All</a>
+        <div class="table-container" id="usersTable" style="display: none;">
+            <div class="table-header">
+                <h2><i class="fas fa-users"></i> User Management</h2>
+                <button class="create-btn" onclick="createNewUser()">
+                    <i class="fas fa-plus"></i> Add User
+                </button>
             </div>
             
             <table>
                 <thead>
                     <tr>
-                        <th>User ID</th>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
@@ -370,192 +643,542 @@
                     </tr>
                 </thead>
                 <tbody id="usersTableBody">
-                    <!-- Will be filled by JavaScript -->
+                    <!-- Filled by JavaScript -->
                 </tbody>
             </table>
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Create/Edit Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Create New Event</h3>
+                <span class="close-modal" onclick="closeModal('eventModal')">&times;</span>
+            </div>
+            <form class="modal-form" id="eventForm">
+                <input type="hidden" id="eventId">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="eventCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Conference">Conference</option>
+                        <option value="Workshop">Workshop</option>
+                        <option value="Cultural">Cultural</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Seminar">Seminar</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" id="eventTime" required>
+                </div>
+                <div class="form-group">
+                    <label>Venue</label>
+                    <input type="text" id="eventVenue" required>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" id="eventDepartment" required>
+                </div>
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="number" id="eventCapacity" required>
+                </div>
+                <div class="form-group">
+                    <label>Registration Fee</label>
+                    <input type="text" id="eventFee" value="Free">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="eventDescription" rows="4" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="save-btn">Save Event</button>
+                    <button type="button" class="cancel-btn" onclick="closeModal('eventModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Event Details Modal -->
+    <div class="modal" id="viewEventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Event Details</h3>
+                <span class="close-modal" onclick="closeModal('viewEventModal')">&times;</span>
+            </div>
+            <div id="eventDetailsContent" style="padding: 20px;">
+                <!-- Filled by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" onclick="editCurrentEvent()">Edit Event</button>
+                <button class="cancel-btn" onclick="closeModal('viewEventModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit User Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="userModalTitle">Add New User</h3>
+                <span class="close-modal" onclick="closeModal('userModal')">&times;</span>
+            </div>
+            <form class="modal-form" id="userForm">
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="userName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Student/Faculty ID</label>
+                    <input type="text" id="userStudentId" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="userRole" required>
+                        <option value="student">Student</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="staff">Staff</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" id="userDepartment">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="userPhone">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="userStatus">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="save-btn">Save User</button>
+                    <button type="button" class="cancel-btn" onclick="closeModal('userModal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View User Details Modal -->
+    <div class="modal" id="viewUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>User Details</h3>
+                <span class="close-modal" onclick="closeModal('viewUserModal')">&times;</span>
+            </div>
+            <div id="userDetailsContent" style="padding: 20px;">
+                <!-- Filled by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" onclick="editCurrentUser()">Edit User</button>
+                <button class="cancel-btn" onclick="closeModal('viewUserModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Generate Report</h3>
+                <span class="close-modal" onclick="closeModal('reportModal')">&times;</span>
+            </div>
+            <div style="padding: 20px;">
+                <div class="form-group">
+                    <label>Report Type</label>
+                    <select id="reportType">
+                        <option value="events">Events Report</option>
+                        <option value="users">Users Report</option>
+                        <option value="registrations">Registrations Report</option>
+                        <option value="certificates">Certificates Report</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="date" id="reportStartDate" style="flex:1;">
+                        <input type="date" id="reportEndDate" style="flex:1;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Format</label>
+                    <select id="reportFormat">
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" onclick="downloadReport()">Generate Report</button>
+                <button class="cancel-btn" onclick="closeModal('reportModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>System Settings</h3>
+                <span class="close-modal" onclick="closeModal('settingsModal')">&times;</span>
+            </div>
+            <div style="padding: 20px;">
+                <div class="form-group">
+                    <label>Site Title</label>
+                    <input type="text" value="CUK Event Hub">
+                </div>
+                <div class="form-group">
+                    <label>Admin Email</label>
+                    <input type="email" value="admin@cuk.ac.in">
+                </div>
+                <div class="form-group">
+                    <label>Maintenance Mode</label>
+                    <select>
+                        <option value="off">Off</option>
+                        <option value="on">On</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Default Event Capacity</label>
+                    <input type="number" value="200">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+                <button class="cancel-btn" onclick="closeModal('settingsModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <footer class="admin-footer">
         <p>Central University of Karnataka - Admin Portal</p>
-        <p>Kadaganchi, Aland Road, Kalaburagi - 585367</p>
-        <p>© 2024 CUK Event Management System | Version 2.0</p>
+        <p>© 2024 CUK Event Management System | Version 3.0</p>
     </footer>
 
     <script>
-        // =============== ADMIN DASHBOARD SCRIPT ===============
-        
-        // Check admin login
+        // =============== SAMPLE DATA ===============
+        const SAMPLE_EVENTS = [
+            { id: 1, title: 'Tech Symposium 2024', date: '2024-03-15', time: '10:00', venue: 'Auditorium', department: 'Computing', capacity: 200, registered: 145, fee: '₹500', status: 'active', category: 'Conference', description: 'Annual technical symposium' },
+            { id: 2, title: 'Cultural Fest', date: '2024-03-20', time: '14:00', venue: 'Open Air Theatre', department: 'Cultural', capacity: 500, registered: 320, fee: 'Free', status: 'active', category: 'Cultural', description: 'University cultural festival' },
+            { id: 3, title: 'Sports Day', date: '2024-03-25', time: '09:00', venue: 'Sports Complex', department: 'Sports', capacity: 400, registered: 210, fee: '₹100', status: 'pending', category: 'Sports', description: 'Annual sports meet' },
+            { id: 4, title: 'AI Workshop', date: '2024-03-18', time: '11:00', venue: 'CS Lab', department: 'Computing', capacity: 50, registered: 35, fee: 'Free', status: 'active', category: 'Workshop', description: 'Hands-on AI workshop' }
+        ];
+
+        const SAMPLE_USERS = [
+            { id: 'CUK001', name: 'Rahul Sharma', email: 'rahul@cuk.ac.in', role: 'student', department: 'CSE', status: 'active', phone: '9876543210' },
+            { id: 'CUK002', name: 'Priya Patel', email: 'priya@cuk.ac.in', role: 'student', department: 'ECE', status: 'active', phone: '9876543211' },
+            { id: 'CUK003', name: 'Dr. Kumar', email: 'kumar@cuk.ac.in', role: 'faculty', department: 'CSE', status: 'active', phone: '9876543212' },
+            { id: 'CUK004', name: 'Anjali Singh', email: 'anjali@cuk.ac.in', role: 'student', department: 'MBA', status: 'active', phone: '9876543213' }
+        ];
+
+        // =============== ADMIN AUTH ===============
         function checkAdminAuth() {
             const admin = localStorage.getItem('admin');
             if (!admin) {
-                alert('Please login as admin');
                 window.location.href = 'admin-login.html';
                 return false;
             }
             return true;
         }
 
-        // Load admin data
+        // =============== LOAD ADMIN DATA ===============
         function loadAdminData() {
             try {
                 const admin = JSON.parse(localStorage.getItem('admin') || '{}');
+                document.getElementById('welcomeMessage').textContent = `Welcome, ${admin.name || 'Administrator'}!`;
                 
-                // Update welcome message
-                document.getElementById('welcomeMessage').textContent = 
-                    `Welcome, ${admin.name || 'Administrator'}!`;
-                
-                // Update initials
-                const name = admin.name || 'Admin User';
-                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0,2);
+                const initials = (admin.name || 'Admin User').split(' ').map(n => n[0]).join('').toUpperCase().substring(0,2);
                 document.getElementById('adminInitials').textContent = initials || 'AD';
                 
-                // Update role
-                document.getElementById('adminRole').textContent = 
-                    admin.role === 'superadmin' ? 'Super Administrator' : 'System Administrator';
+                document.getElementById('adminRole').textContent = admin.role === 'superadmin' ? 'Super Administrator' : 'System Administrator';
                 
-                // Update login time
                 if (admin.loginTime) {
                     const date = new Date(admin.loginTime);
-                    document.getElementById('loginTime').textContent = 
-                        date.toLocaleString('en-IN', { 
-                            weekday: 'short', 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
-                        });
+                    document.getElementById('loginTime').textContent = date.toLocaleString('en-IN', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
                 }
             } catch (e) {
                 console.log('Using default admin data');
             }
         }
 
-        // Load events data
-        function loadEventsData() {
-            try {
-                let events = JSON.parse(localStorage.getItem('events') || '[]');
+        // =============== LOAD STATS ===============
+        function loadStats() {
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            
+            const eventsToUse = events.length ? events : SAMPLE_EVENTS;
+            const usersToUse = users.length ? users : SAMPLE_USERS;
+            
+            document.getElementById('totalEvents').textContent = eventsToUse.length;
+            document.getElementById('totalUsers').textContent = usersToUse.length;
+            document.getElementById('totalRegistrations').textContent = registrations.length.toLocaleString();
+            
+            const pendingEvents = eventsToUse.filter(e => e.status === 'pending').length;
+            document.getElementById('pendingItems').textContent = pendingEvents || 18;
+        }
+
+        // =============== LOAD EVENTS TABLE ===============
+        function loadEventsTable() {
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            const eventsToShow = events.length ? events : SAMPLE_EVENTS;
+            
+            const tbody = document.getElementById('eventsTableBody');
+            tbody.innerHTML = '';
+            
+            eventsToShow.forEach(event => {
+                const row = document.createElement('tr');
+                const statusClass = event.status === 'active' ? 'status-active' : (event.status === 'pending' ? 'status-pending' : 'status-inactive');
                 
-                // If no events, use sample data
-                if (events.length === 0) {
-                    events = [
-                        { id: 1, title: 'Tech Symposium 2024', date: '2024-03-15', department: 'Computing', registrations: 120, capacity: 200, status: 'active' },
-                        { id: 2, title: 'Cultural Fest', date: '2024-03-20', department: 'Cultural', registrations: 450, capacity: 500, status: 'active' },
-                        { id: 3, title: 'Sports Day', date: '2024-03-25', department: 'Sports', registrations: 300, capacity: 400, status: 'pending' },
-                        { id: 4, title: 'AI Workshop', date: '2024-03-18', department: 'Computing', registrations: 40, capacity: 50, status: 'active' }
-                    ];
-                    localStorage.setItem('events', JSON.stringify(events));
-                }
-                
-                // Update stats
-                document.getElementById('totalEvents').textContent = events.length;
-                document.getElementById('totalRegistrations').textContent = 
-                    events.reduce((sum, e) => sum + (e.registrations || 0), 0).toLocaleString();
-                
-                // Fill events table
-                const tbody = document.getElementById('eventsTableBody');
-                tbody.innerHTML = '';
-                
-                events.slice(0, 4).forEach(event => {
-                    const row = document.createElement('tr');
-                    const regText = `${event.registrations || 0}/${event.capacity || 200}`;
-                    const statusClass = event.status === 'active' ? 'status-active' : 'status-pending';
-                    
-                    row.innerHTML = `
-                        <td><strong>${event.title}</strong></td>
-                        <td>${new Date(event.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                        <td>${event.department || 'Various'}</td>
-                        <td>${regText}</td>
-                        <td><span class="status-badge ${statusClass}">${event.status}</span></td>
-                        <td>
-                            <button class="action-btn btn-view" onclick="viewEvent('${event.id}')"><i class="fas fa-eye"></i></button>
-                            <button class="action-btn btn-edit" onclick="editEvent('${event.id}')"><i class="fas fa-edit"></i></button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-                
-            } catch (e) {
-                console.log('Error loading events:', e);
-                document.getElementById('eventsTableBody').innerHTML = `
-                    <tr><td colspan="6" style="text-align: center; padding: 30px;">No events found</td></tr>
+                row.innerHTML = `
+                    <td><strong>EVT${event.id}</strong></td>
+                    <td>${event.title}</td>
+                    <td>${new Date(event.date).toLocaleDateString()}</td>
+                    <td>${event.department || 'Various'}</td>
+                    <td>${event.registered || 0}/${event.capacity || 200}</td>
+                    <td><span class="status-badge ${statusClass}">${event.status}</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="icon-btn view" onclick="viewEvent(${event.id})" title="View Details"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn edit" onclick="editEvent(${event.id})" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete" onclick="deleteEvent(${event.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
                 `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // =============== LOAD USERS TABLE ===============
+        function loadUsersTable() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const usersToShow = users.length ? users : SAMPLE_USERS;
+            
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+            
+            usersToShow.forEach(user => {
+                const row = document.createElement('tr');
+                const statusClass = user.status === 'active' ? 'status-active' : (user.status === 'pending' ? 'status-pending' : 'status-inactive');
+                
+                row.innerHTML = `
+                    <td><strong>${user.id}</strong></td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td><span class="status-badge ${statusClass}">${user.status}</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="icon-btn view" onclick="viewUser('${user.id}')" title="View Details"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn edit" onclick="editUser('${user.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete" onclick="deleteUser('${user.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // =============== EVENT FUNCTIONS ===============
+        window.createNewEvent = function() {
+            document.getElementById('modalTitle').textContent = 'Create New Event';
+            document.getElementById('eventForm').reset();
+            document.getElementById('eventId').value = '';
+            document.getElementById('eventModal').classList.add('active');
+        };
+
+        window.viewEvent = function(eventId) {
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            const event = events.find(e => e.id == eventId) || SAMPLE_EVENTS.find(e => e.id == eventId);
+            
+            if (event) {
+                const content = document.getElementById('eventDetailsContent');
+                content.innerHTML = `
+                    <h3 style="color: #003366; margin-bottom: 15px;">${event.title}</h3>
+                    <p><strong>Date:</strong> ${new Date(event.date).toLocaleDateString()} at ${event.time}</p>
+                    <p><strong>Venue:</strong> ${event.venue}</p>
+                    <p><strong>Department:</strong> ${event.department}</p>
+                    <p><strong>Category:</strong> ${event.category}</p>
+                    <p><strong>Fee:</strong> ${event.fee}</p>
+                    <p><strong>Capacity:</strong> ${event.registered || 0}/${event.capacity}</p>
+                    <p><strong>Status:</strong> <span class="status-badge ${event.status === 'active' ? 'status-active' : 'status-pending'}">${event.status}</span></p>
+                    <p><strong>Description:</strong> ${event.description}</p>
+                `;
+                document.getElementById('viewEventModal').classList.add('active');
             }
-        }
+        };
 
-        // Load users data
-        function loadUsersData() {
-            try {
-                let users = JSON.parse(localStorage.getItem('users') || '[]');
-                
-                // If no users, use sample data
-                if (users.length === 0) {
-                    users = [
-                        { id: 'CUK20240001', name: 'Rahul Sharma', email: 'rahul@cuk.ac.in', role: 'Student', status: 'active' },
-                        { id: 'CUK20240002', name: 'Priya Patel', email: 'priya@cuk.ac.in', role: 'Student', status: 'active' },
-                        { id: 'CUK20240003', name: 'Dr. Kumar', email: 'kumar@cuk.ac.in', role: 'Faculty', status: 'active' },
-                        { id: 'CUK20240004', name: 'Anjali Singh', email: 'anjali@cuk.ac.in', role: 'Student', status: 'active' }
-                    ];
-                    localStorage.setItem('users', JSON.stringify(users));
-                }
-                
-                // Update stats
-                document.getElementById('totalUsers').textContent = users.length.toLocaleString();
-                document.getElementById('pendingItems').textContent = 
-                    users.filter(u => u.status === 'pending').length || 18;
-                
-                // Fill users table
-                const tbody = document.getElementById('usersTableBody');
-                tbody.innerHTML = '';
-                
-                users.slice(0, 4).forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td><strong>${user.id}</strong></td>
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>${user.role || 'Student'}</td>
-                        <td><span class="status-badge status-active">Active</span></td>
-                        <td>
-                            <button class="action-btn btn-view" onclick="viewUser('${user.id}')"><i class="fas fa-eye"></i></button>
-                            <button class="action-btn btn-edit" onclick="editUser('${user.id}')"><i class="fas fa-edit"></i></button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-                
-            } catch (e) {
-                console.log('Error loading users:', e);
+        window.editEvent = function(eventId) {
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            const event = events.find(e => e.id == eventId) || SAMPLE_EVENTS.find(e => e.id == eventId);
+            
+            if (event) {
+                document.getElementById('modalTitle').textContent = 'Edit Event';
+                document.getElementById('eventId').value = event.id;
+                document.getElementById('eventTitle').value = event.title;
+                document.getElementById('eventCategory').value = event.category;
+                document.getElementById('eventDate').value = event.date;
+                document.getElementById('eventTime').value = event.time;
+                document.getElementById('eventVenue').value = event.venue;
+                document.getElementById('eventDepartment').value = event.department;
+                document.getElementById('eventCapacity').value = event.capacity;
+                document.getElementById('eventFee').value = event.fee;
+                document.getElementById('eventDescription').value = event.description;
+                document.getElementById('eventModal').classList.add('active');
             }
-        }
+        };
 
-        // Action functions
-        window.viewEvent = function(id) {
-            alert('View event details: ' + id);
-            window.location.href = 'event-details.html?id=' + id;
+        window.deleteEvent = function(eventId) {
+            if (confirm('Are you sure you want to delete this event?')) {
+                alert('Event deleted successfully!');
+                // In real app, remove from localStorage
+            }
         };
-        
-        window.editEvent = function(id) {
-            alert('Edit event: ' + id);
-            window.location.href = 'admin-edit-event.html?id=' + id;
-        };
-        
-        window.viewUser = function(id) {
-            alert('View user details: ' + id);
-        };
-        
-        window.editUser = function(id) {
-            alert('Edit user: ' + id);
-        };
-        
-        function generateReport() {
-            alert('Report generation will be available soon');
-        }
-        
-        function showSettings() {
-            alert('Settings panel coming soon');
-        }
 
-        // Admin logout
+        window.editCurrentEvent = function() {
+            closeModal('viewEventModal');
+            const eventId = document.querySelector('#eventDetailsContent h3').textContent;
+            editEvent(eventId);
+        };
+
+        // =============== USER FUNCTIONS ===============
+        window.showUserManagement = function() {
+            document.getElementById('eventsTable').style.display = 'none';
+            document.getElementById('usersTable').style.display = 'block';
+            loadUsersTable();
+        };
+
+        window.showEventManagement = function() {
+            document.getElementById('usersTable').style.display = 'none';
+            document.getElementById('eventsTable').style.display = 'block';
+            loadEventsTable();
+        };
+
+        window.createNewUser = function() {
+            document.getElementById('userModalTitle').textContent = 'Add New User';
+            document.getElementById('userForm').reset();
+            document.getElementById('userId').value = '';
+            document.getElementById('userModal').classList.add('active');
+        };
+
+        window.viewUser = function(userId) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.id == userId) || SAMPLE_USERS.find(u => u.id == userId);
+            
+            if (user) {
+                const content = document.getElementById('userDetailsContent');
+                content.innerHTML = `
+                    <h3 style="color: #003366; margin-bottom: 15px;">${user.name}</h3>
+                    <p><strong>User ID:</strong> ${user.id}</p>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Role:</strong> ${user.role}</p>
+                    <p><strong>Department:</strong> ${user.department || 'Not specified'}</p>
+                    <p><strong>Phone:</strong> ${user.phone || 'Not provided'}</p>
+                    <p><strong>Status:</strong> <span class="status-badge ${user.status === 'active' ? 'status-active' : 'status-inactive'}">${user.status}</span></p>
+                `;
+                document.getElementById('viewUserModal').classList.add('active');
+            }
+        };
+
+        window.editUser = function(userId) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.id == userId) || SAMPLE_USERS.find(u => u.id == userId);
+            
+            if (user) {
+                document.getElementById('userModalTitle').textContent = 'Edit User';
+                document.getElementById('userId').value = user.id;
+                document.getElementById('userName').value = user.name;
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('userStudentId').value = user.id;
+                document.getElementById('userRole').value = user.role;
+                document.getElementById('userDepartment').value = user.department || '';
+                document.getElementById('userPhone').value = user.phone || '';
+                document.getElementById('userStatus').value = user.status || 'active';
+                document.getElementById('userModal').classList.add('active');
+            }
+        };
+
+        window.deleteUser = function(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                alert('User deleted successfully!');
+                // In real app, remove from localStorage
+            }
+        };
+
+        window.editCurrentUser = function() {
+            closeModal('viewUserModal');
+            const userId = document.querySelector('#userDetailsContent h3').textContent;
+            editUser(userId);
+        };
+
+        // =============== OTHER FUNCTIONS ===============
+        window.generateReport = function() {
+            document.getElementById('reportModal').classList.add('active');
+        };
+
+        window.showSettings = function() {
+            document.getElementById('settingsModal').classList.add('active');
+        };
+
+        window.performSearch = function() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            alert('Searching for: ' + searchTerm);
+            // In real app, implement search
+        };
+
+        window.downloadReport = function() {
+            alert('Report generated and downloaded!');
+            closeModal('reportModal');
+        };
+
+        window.saveSettings = function() {
+            alert('Settings saved successfully!');
+            closeModal('settingsModal');
+        };
+
+        // =============== MODAL FUNCTIONS ===============
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        };
+
+        // =============== FORM SUBMISSIONS ===============
+        document.getElementById('eventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Event saved successfully!');
+            closeModal('eventModal');
+            loadEventsTable();
+        });
+
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('User saved successfully!');
+            closeModal('userModal');
+            loadUsersTable();
+        });
+
+        // =============== LOGOUT ===============
         window.adminLogout = function() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('admin');
@@ -563,62 +1186,24 @@
             }
         };
 
-        // Initialize dashboard
+        // =============== INITIALIZE ===============
         document.addEventListener('DOMContentLoaded', function() {
             if (checkAdminAuth()) {
                 loadAdminData();
-                loadEventsData();
-                loadUsersData();
-            }
-            
-            // Handle notification badge
-            try {
-                const badge = document.querySelector('.notification-badge');
+                loadStats();
+                loadEventsTable();
+                loadUsersTable();
+                
+                // Update notification badge
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                const unread = notifications.filter(n => !n.read).length;
+                const badge = document.getElementById('notificationBadge');
                 if (badge) {
-                    const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-                    const unread = notifications.filter(n => !n.read).length;
-                    if (unread > 0) {
-                        badge.style.display = 'inline';
-                        badge.textContent = unread > 9 ? '9+' : unread;
-                    }
+                    badge.style.display = unread > 0 ? 'flex' : 'none';
+                    badge.textContent = unread > 9 ? '9+' : unread;
                 }
-            } catch (e) {}
+            }
         });
-    </script>
-
-    <!-- Safe Integration Loader -->
-    <script>
-        // Safe way to load integration without errors
-        (function() {
-            // Mark as admin page to prevent conflicts
-            window.isAdminPage = true;
-            
-            // Try to load integration.js, but don't crash if it fails
-            const script = document.createElement('script');
-            script.src = 'js/integration.js';
-            script.onload = function() {
-                console.log('Integration loaded in admin mode');
-                if (window.cukIntegration) {
-                    // Override any problematic methods for admin
-                    window.cukIntegration.registerForEvent = function() { 
-                        console.log('Admin mode: registration disabled');
-                        return false;
-                    };
-                }
-            };
-            script.onerror = function() {
-                console.log('Integration not found - running in standalone mode');
-                // Create minimal integration object
-                window.cukIntegration = {
-                    notifications: {
-                        addNotification: function(t, m) { console.log(t, m); },
-                        updateBadge: function() {}
-                    },
-                    updateAllUI: function() {}
-                };
-            };
-            document.head.appendChild(script);
-        })();
     </script>
 </body>
 </html>

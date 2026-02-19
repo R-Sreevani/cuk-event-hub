@@ -3,8 +3,631 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - CUK Event Hub</title>
+    <title>About Us - CUK Event Hub</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cuk-blue: #003366;
+            --cuk-gold: #FFCC00;
+            --cuk-accent: #00509E;
+            --cuk-light: #f8f9fa;
+            --cuk-gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--cuk-blue);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            background: var(--cuk-gold);
+            color: var(--cuk-blue);
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(255,204,0,0.3);
+        }
+        
+        .tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: var(--cuk-accent);
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--cuk-blue);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(135deg, var(--cuk-blue) 0%, var(--cuk-accent) 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .about-hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s;
+        }
+        
+        .about-hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+            animation: fadeInUp 1s;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-item {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .stat-icon {
+            font-size: 48px;
+            color: var(--cuk-gold);
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: bold;
+            color: var(--cuk-blue);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: var(--cuk-gray);
+            font-size: 16px;
+        }
+        
+        /* Mission & Vision */
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .mission-vision {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .mission-card, .vision-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .mission-card:hover, .vision-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,51,102,0.2);
+        }
+        
+        .card-icon {
+            font-size: 60px;
+            color: var(--cuk-gold);
+            margin-bottom: 20px;
+        }
+        
+        .mission-card h2, .vision-card h2 {
+            color: var(--cuk-blue);
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .mission-card p, .vision-card p {
+            color: var(--cuk-gray);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        /* Features Grid */
+        .features-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: var(--cuk-blue);
+            font-size: 36px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--cuk-gold);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,51,102,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            color: var(--cuk-blue);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            color: var(--cuk-blue);
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card p {
+            color: var(--cuk-gray);
+            line-height: 1.6;
+        }
+        
+        /* Departments Section */
+        .departments-section {
+            margin-bottom: 60px;
+        }
+        
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .dept-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border-bottom: 4px solid var(--cuk-gold);
+        }
+        
+        .dept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,51,102,0.15);
+        }
+        
+        .dept-icon {
+            font-size: 40px;
+            color: var(--cuk-blue);
+            margin-bottom: 15px;
+        }
+        
+        .dept-card h3 {
+            color: var(--cuk-blue);
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .dept-card p {
+            color: var(--cuk-gray);
+            font-size: 14px;
+        }
+        
+        /* Team Section */
+        .team-section {
+            margin-bottom: 60px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,51,102,0.2);
+        }
+        
+        .team-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, var(--cuk-blue), var(--cuk-accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 80px;
+        }
+        
+        .team-info {
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .team-info h3 {
+            color: var(--cuk-blue);
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .team-info .position {
+            color: var(--cuk-gold);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .team-info .bio {
+            color: var(--cuk-gray);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .social-links {
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            color: var(--cuk-blue);
+            font-size: 20px;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--cuk-gold);
+        }
+        
+        /* Timeline */
+        .timeline-section {
+            margin-bottom: 60px;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(to bottom, var(--cuk-gold), var(--cuk-blue));
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 4px solid var(--cuk-gold);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::after {
+            right: -10px;
+        }
+        
+        .right::after {
+            left: -10px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 21px;
+            }
+            
+            .left, .right {
+                left: 0;
+            }
+            
+            .right::after {
+                left: 21px;
+            }
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-content h3 {
+            color: var(--cuk-blue);
+            margin-bottom: 10px;
+        }
+        
+        .timeline-content p {
+            color: var(--cuk-gray);
+        }
+        
+        /* Testimonials */
+        .testimonials-section {
+            margin-bottom: 60px;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 80px;
+            color: var(--cuk-gold);
+            opacity: 0.3;
+            font-family: serif;
+        }
+        
+        .testimonial-text {
+            color: var(--cuk-gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--cuk-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .author-info h4 {
+            color: var(--cuk-blue);
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: var(--cuk-gray);
+            font-size: 12px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--cuk-blue), var(--cuk-accent));
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            background: var(--cuk-gold);
+            color: var(--cuk-blue);
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,204,0,0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--cuk-blue);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+        
+        .footer p {
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+        
+        .notification-badge {
+            display: none;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -20,42 +643,282 @@
         <a href="about.html" class="nav-btn active">About</a>
         <a href="contact.html" class="nav-btn">Contact</a>
         <a href="notifications.html" class="nav-btn" style="position: relative;">
-    <i class="fas fa-bell"></i> Notifications
-    <span class="notification-badge" style="display: none; position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">0</span>
-</a>
+            <i class="fas fa-bell"></i> Notifications
+            <span class="notification-badge" id="notificationBadge">0</span>
+        </a>
     </nav>
 
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <h1>About CUK Event Hub</h1>
+        <p>Transforming event management at Central University of Karnataka through innovative technology and seamless coordination</p>
+    </section>
+
     <main class="container">
-        <div class="card">
-            <h2>About CUK Event Hub</h2>
-            <p>This platform is developed to streamline event management at Central University of Karnataka.</p>
-            
-            <h3 style="margin-top: 25px;">Features:</h3>
-            <ul style="margin: 15px 0 15px 20px;">
-                <li>Event listing and discovery</li>
-                <li>Online registration</li>
-                <li>Calendar view</li>
-                <li>Department-wise events</li>
-                <li>Admin panel for event creation</li>
-            </ul>
-            
-            <h3>Departments:</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0;">
-                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">School of Computing</span>
-                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">School of Sciences</span>
-                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">School of Social Sciences</span>
-                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">Cultural Committee</span>
-                <span style="background: var(--cuk-light); padding: 8px 15px; border-radius: 20px;">Sports Department</span>
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Events Organized</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Students Served</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Faculty Members</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon"><i class="fas fa-certificate"></i></div>
+                <div class="stat-number">5K+</div>
+                <div class="stat-label">Certificates Issued</div>
             </div>
         </div>
+
+        <!-- Mission & Vision -->
+        <div class="mission-vision">
+            <div class="mission-card">
+                <div class="card-icon"><i class="fas fa-bullseye"></i></div>
+                <h2>Our Mission</h2>
+                <p>To provide a comprehensive, user-friendly platform that streamlines event organization, registration, and management for the Central University of Karnataka community. We aim to foster collaboration, enhance participation, and create memorable experiences for students, faculty, and staff.</p>
+            </div>
+            <div class="vision-card">
+                <div class="card-icon"><i class="fas fa-eye"></i></div>
+                <h2>Our Vision</h2>
+                <p>To become the premier event management solution in academic institutions, setting the standard for digital transformation in campus event coordination. We envision a connected campus where every event reaches its full potential through technology.</p>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-calendar-plus"></i></div>
+                    <h3>Easy Event Creation</h3>
+                    <p>Create and publish events in minutes with our intuitive interface. Add details, set capacities, and manage registrations seamlessly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <h3>Smart Registration</h3>
+                    <p>Students can register for events with just a few clicks. Automatic confirmation emails and QR codes for check-in.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                    <h3>QR Check-in System</h3>
+                    <p>Efficient event check-in using QR codes. Scan and verify attendance in real-time with our mobile-friendly system.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Calendar Integration</h3>
+                    <p>Sync events with Google Calendar, Outlook, or Apple Calendar. Never miss an important event again.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+                    <h3>Digital Certificates</h3>
+                    <p>Automatic certificate generation for attendees. Download and share verified certificates instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Comprehensive insights for organizers. Track registrations, attendance, and engagement metrics.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments Section -->
+        <div class="departments-section">
+            <h2 class="section-title">Departments & Committees</h2>
+            <div class="departments-grid">
+                <div class="dept-card">
+                    <div class="dept-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3>School of Computing</h3>
+                    <p>Tech symposiums, hackathons, coding competitions</p>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon"><i class="fas fa-flask"></i></div>
+                    <h3>School of Sciences</h3>
+                    <p>Science exhibitions, research conferences</p>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h3>School of Social Sciences</h3>
+                    <p>Seminars, workshops, debates</p>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon"><i class="fas fa-music"></i></div>
+                    <h3>Cultural Committee</h3>
+                    <p>Cultural fests, music concerts, dance competitions</p>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon"><i class="fas fa-futbol"></i></div>
+                    <h3>Sports Department</h3>
+                    <p>Sports meets, tournaments, athletic events</p>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon"><i class="fas fa-handshake"></i></div>
+                    <h3>Student Council</h3>
+                    <p>Student-led events, workshops, orientation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="timeline-section">
+            <h2 class="section-title">Our Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2020</h3>
+                        <p>CUK Event Hub concept developed to streamline campus event management</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2021</h3>
+                        <p>Beta version launched with basic event listing and registration features</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2022</h3>
+                        <p>QR check-in system and certificate generation features added</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2023</h3>
+                        <p>Calendar sync and notification system integrated</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2024</h3>
+                        <p>Major upgrade with analytics dashboard and mobile app preview</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials Section -->
+        <div class="testimonials-section">
+            <h2 class="section-title">What People Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"CUK Event Hub has transformed how we organize department events. The registration system alone has saved us countless hours of manual work."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">DK</div>
+                        <div class="author-info">
+                            <h4>Dr. Kumar</h4>
+                            <p>Dean, School of Computing</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As a student, I love how easy it is to find and register for events. The calendar sync feature ensures I never miss any important deadline."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RS</div>
+                        <div class="author-info">
+                            <h4>Rahul Sharma</h4>
+                            <p>Student (CSE 3rd Year)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The QR check-in system made our cultural fest registration seamless. We could handle 500+ attendees without any chaos."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PP</div>
+                        <div class="author-info">
+                            <h4>Priya Patel</h4>
+                            <p>Cultural Committee Head</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="team-section">
+            <h2 class="section-title">Meet Our Team</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-image"><i class="fas fa-user-tie"></i></div>
+                    <div class="team-info">
+                        <h3>Prof. Sreevani R</h3>
+                        <div class="position">Project Lead & Developer</div>
+                        <p class="bio">Final year student with passion for full-stack development. Created CUK Event Hub as major project.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="team-info">
+                        <h3>Dr. Rajesh Kumar</h3>
+                        <div class="position">Project Guide</div>
+                        <p class="bio">Professor in School of Computing with expertise in software engineering and project management.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image"><i class="fas fa-users-cog"></i></div>
+                    <div class="team-info">
+                        <h3>Development Team</h3>
+                        <div class="position">Contributors</div>
+                        <p class="bio">Special thanks to all students and faculty who contributed feedback and testing.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Experience CUK Event Hub?</h2>
+            <p>Join thousands of students and faculty who use our platform to discover, register, and manage events seamlessly.</p>
+            <a href="events.html" class="cta-button">
+                <i class="fas fa-calendar-alt"></i> Browse Events
+            </a>
+            <a href="contact.html" style="background: transparent; color: white; border: 2px solid white; margin-left: 15px;" class="cta-button">
+                <i class="fas fa-envelope"></i> Contact Us
+            </a>
+        </div>
     </main>
-    
+
     <footer class="footer">
         <p>Central University of Karnataka</p>
         <p>Kadaganchi, Aland Road, Kalaburagi, Karnataka - 585367</p>
-        <p>© <span id="current-year">2024</span> CUK Event Hub | Version 1.0</p>
+        <p>© <span id="current-year">2024</span> CUK Event Hub | Version 2.0 | Developed with <i class="fas fa-heart" style="color: var(--cuk-gold);"></i> by R Sreevani</p>
     </footer>
 
     <script src="js/main.js"></script>
+    <script>
+        // Update current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Update notification badge
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
+            
+            if (unreadCount > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            }
+        });
+    </script>
 </body>
 </html>

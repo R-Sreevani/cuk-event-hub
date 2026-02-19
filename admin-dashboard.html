@@ -6,95 +6,91 @@
     <title>Admin Dashboard - CUK Event Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* SIMPLE CSS - No external dependencies */
-        :root {
-            --cuk-blue: #003366;
-            --cuk-gold: #FFCC00;
-            --cuk-accent: #00509E;
-            --cuk-light: #F5F5F5;
-            --cuk-red: #dc3545;
-            --cuk-green: #28a745;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
         
         body {
-            background: #f8f9fa;
-            color: #333;
+            background: #f4f6f9;
         }
         
-        /* Header */
-        .header {
-            background: var(--cuk-blue);
+        /* Admin Header */
+        .admin-header {
+            background: linear-gradient(135deg, #003366 0%, #001f3f 100%);
             color: white;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
-        .logo {
-            font-size: 28px;
+        .admin-logo {
+            font-size: 32px;
             font-weight: bold;
-            background: var(--cuk-gold);
-            color: var(--cuk-blue);
+            background: #FFCC00;
+            color: #003366;
             display: inline-block;
-            padding: 10px 25px;
-            border-radius: 10px;
+            padding: 10px 30px;
+            border-radius: 50px;
             margin-bottom: 10px;
         }
         
         /* Navigation */
-        .navbar {
-            background: var(--cuk-accent);
-            padding: 15px;
+        .admin-nav {
+            background: #004080;
+            padding: 15px 20px;
             display: flex;
-            gap: 15px;
             flex-wrap: wrap;
-            justify-content: center;
+            gap: 10px;
+            align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .nav-btn {
+        .nav-item {
             color: white;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 6px;
-            font-weight: bold;
+            font-weight: 500;
             transition: all 0.3s;
         }
         
-        .nav-btn:hover, .nav-btn.active {
-            background: var(--cuk-blue);
+        .nav-item:hover, .nav-item.active {
+            background: #FFCC00;
+            color: #003366;
         }
         
-        .btn-logout {
-            background: var(--cuk-red);
+        .admin-logout {
+            margin-left: auto;
+            background: #dc3545;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 25px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
         }
         
-        /* Dashboard */
-        .dashboard-container {
+        .admin-logout:hover {
+            background: #c82333;
+        }
+        
+        /* Main Container */
+        .admin-container {
             max-width: 1400px;
             margin: 30px auto;
             padding: 0 20px;
         }
         
-        .dashboard-header {
+        /* Welcome Card */
+        .welcome-card {
             background: white;
-            padding: 25px;
-            border-radius: 12px;
+            border-radius: 15px;
+            padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -102,26 +98,20 @@
             gap: 20px;
         }
         
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .user-avatar {
+        .admin-badge {
+            background: #003366;
+            color: white;
             width: 70px;
             height: 70px;
-            background: var(--cuk-red);
-            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 30px;
             font-weight: bold;
         }
         
-        /* Stats Cards */
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -133,8 +123,8 @@
             background: white;
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border-top: 5px solid;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid;
             transition: transform 0.3s;
         }
         
@@ -142,32 +132,20 @@
             transform: translateY(-5px);
         }
         
-        .stat-card:nth-child(1) { border-color: var(--cuk-blue); }
-        .stat-card:nth-child(2) { border-color: var(--cuk-green); }
-        .stat-card:nth-child(3) { border-color: var(--cuk-gold); }
-        .stat-card:nth-child(4) { border-color: var(--cuk-red); }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .card-number {
+        .stat-number {
             font-size: 42px;
             font-weight: bold;
-            color: var(--cuk-blue);
+            color: #003366;
             margin: 15px 0;
         }
         
         /* Table */
         .table-container {
             background: white;
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 30px;
             margin-top: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
         
         table {
@@ -177,12 +155,11 @@
         }
         
         th {
-            background: var(--cuk-light);
-            color: var(--cuk-blue);
+            background: #f8f9fa;
+            color: #003366;
             padding: 15px;
             text-align: left;
-            font-weight: bold;
-            border-bottom: 3px solid var(--cuk-blue);
+            border-bottom: 3px solid #FFCC00;
         }
         
         td {
@@ -191,48 +168,35 @@
         }
         
         tr:hover {
-            background: rgba(0,80,158,0.05);
+            background: #f5f5f5;
         }
         
-        /* Status Badges */
         .status-badge {
-            padding: 6px 15px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             display: inline-block;
         }
         
-        .active { background: rgba(40,167,69,0.1); color: var(--cuk-green); }
-        .pending { background: rgba(255,204,0,0.1); color: var(--cuk-gold); }
+        .status-active { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
         
-        /* Buttons */
         .action-btn {
             padding: 8px 15px;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            font-weight: bold;
             margin: 0 5px;
             transition: all 0.3s;
         }
         
-        .btn-view { background: var(--cuk-blue); color: white; }
-        .btn-edit { background: var(--cuk-gold); color: var(--cuk-blue); }
-        .btn-delete { background: var(--cuk-red); color: white; }
+        .btn-view { background: #003366; color: white; }
+        .btn-edit { background: #FFCC00; color: #003366; }
         
         .action-btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
-        }
-        
-        /* Footer */
-        .footer {
-            background: var(--cuk-blue);
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
         }
         
         /* Quick Actions */
@@ -244,130 +208,105 @@
         }
         
         .quick-btn {
-            background: var(--cuk-light);
-            color: var(--cuk-blue);
+            background: white;
+            color: #003366;
             padding: 15px 25px;
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s;
         }
         
         .quick-btn:hover {
-            background: var(--cuk-blue);
-            color: white;
+            background: #FFCC00;
             transform: translateY(-3px);
         }
         
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; align-items: center; }
-            .dashboard-header { flex-direction: column; gap: 20px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            table { font-size: 14px; }
-            th, td { padding: 10px; }
-        }
-
-        .notification-badge {
-            display: none;
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #dc3545;
+        /* Footer */
+        .admin-footer {
+            background: #003366;
             color: white;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-nav { flex-direction: column; }
+            .admin-logout { margin-left: 0; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <header class="header">
-        <div class="logo">CUK ADMIN PANEL</div>
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-logo">CUK ADMIN</div>
         <h2>Central University of Karnataka</h2>
         <p>Event Management System - Administrator Dashboard</p>
     </header>
 
-    <!-- NAVIGATION - FIXED LINKS -->
-    <nav class="navbar">
-        <a href="admin-dashboard.html" class="nav-btn active">
+    <!-- Admin Navigation -->
+    <nav class="admin-nav">
+        <a href="admin-dashboard.html" class="nav-item active">
             <i class="fas fa-tachometer-alt"></i> Dashboard
         </a>
-        <a href="admin-event.html" class="nav-btn">
-            <i class="fas fa-calendar-plus"></i> Manage Events
+        <a href="admin-event.html" class="nav-item">
+            <i class="fas fa-calendar-plus"></i> Events
         </a>
-        <a href="admin-user.html" class="nav-btn">
-            <i class="fas fa-users"></i> Manage Users
+        <a href="admin-user.html" class="nav-item">
+            <i class="fas fa-users"></i> Users
         </a>
-        <a href="#" class="nav-btn" onclick="alert('Reports coming soon!')">
+        <a href="#" class="nav-item" onclick="alert('Reports coming soon!')">
             <i class="fas fa-chart-bar"></i> Reports
         </a>
-        <a href="notifications.html" class="nav-btn" style="position: relative;">
-            <i class="fas fa-bell"></i> Notifications
-            <span class="notification-badge">0</span>
+        <a href="notifications.html" class="nav-item" style="position: relative;">
+            <i class="fas fa-bell"></i> Alerts
+            <span class="notification-badge" style="display: none;">0</span>
         </a>
-        <button class="btn-logout" onclick="logout()">
+        <button class="admin-logout" onclick="adminLogout()">
             <i class="fas fa-sign-out-alt"></i> Logout
         </button>
     </nav>
 
-    <!-- MAIN DASHBOARD -->
-    <main class="dashboard-container">
-        <!-- Admin Info -->
-        <div class="dashboard-header">
-            <div class="user-info">
-                <div class="user-avatar">AD</div>
+    <!-- Main Content -->
+    <main class="admin-container">
+        <!-- Welcome Card -->
+        <div class="welcome-card">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="admin-badge" id="adminInitials">AD</div>
                 <div>
-                    <h1>Welcome, Administrator!</h1>
-                    <p><i class="fas fa-user-shield"></i> System Administrator | CUK Event Management</p>
+                    <h2 id="welcomeMessage">Welcome, Administrator!</h2>
+                    <p><i class="fas fa-user-shield"></i> <span id="adminRole">System Administrator</span></p>
                 </div>
             </div>
-            <div>
-                <p><i class="fas fa-clock"></i> Last login: <span id="login-time">Today, 10:30 AM</span></p>
-                <p><i class="fas fa-server"></i> System: <span style="color: var(--cuk-green); font-weight: bold;">Online</span></p>
+            <div style="color: #666;">
+                <p><i class="fas fa-clock"></i> <span id="loginTime">Today, 10:30 AM</span></p>
+                <p><i class="fas fa-server"></i> System Status: <span style="color: #28a745;">Online</span></p>
             </div>
         </div>
 
-        <!-- Quick Stats -->
+        <!-- Stats Cards -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="card-header">
-                    <h3><i class="fas fa-calendar-alt"></i> Total Events</h3>
-                    <i class="fas fa-calendar" style="font-size: 24px; color: var(--cuk-blue);"></i>
-                </div>
-                <div class="card-number">156</div>
+            <div class="stat-card" style="border-color: #003366;">
+                <h3><i class="fas fa-calendar"></i> Total Events</h3>
+                <div class="stat-number" id="totalEvents">156</div>
                 <p>Active: 24 | Upcoming: 15</p>
             </div>
-
-            <div class="stat-card">
-                <div class="card-header">
-                    <h3><i class="fas fa-users"></i> Total Users</h3>
-                    <i class="fas fa-user-friends" style="font-size: 24px; color: var(--cuk-green);"></i>
-                </div>
-                <div class="card-number">2,148</div>
+            <div class="stat-card" style="border-color: #28a745;">
+                <h3><i class="fas fa-users"></i> Total Users</h3>
+                <div class="stat-number" id="totalUsers">2,148</div>
                 <p>Students: 2,100 | Staff: 48</p>
             </div>
-
-            <div class="stat-card">
-                <div class="card-header">
-                    <h3><i class="fas fa-clipboard-check"></i> Registrations</h3>
-                    <i class="fas fa-check-circle" style="font-size: 24px; color: var(--cuk-gold);"></i>
-                </div>
-                <div class="card-number">5,892</div>
+            <div class="stat-card" style="border-color: #FFCC00;">
+                <h3><i class="fas fa-clipboard-list"></i> Registrations</h3>
+                <div class="stat-number" id="totalRegistrations">5,892</div>
                 <p>This month: 324</p>
             </div>
-
-            <div class="stat-card">
-                <div class="card-header">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Pending</h3>
-                    <i class="fas fa-clock" style="font-size: 24px; color: var(--cuk-red);"></i>
-                </div>
-                <div class="card-number">18</div>
+            <div class="stat-card" style="border-color: #dc3545;">
+                <h3><i class="fas fa-hourglass-half"></i> Pending</h3>
+                <div class="stat-number" id="pendingItems">18</div>
                 <p>Approvals needed</p>
             </div>
         </div>
@@ -375,27 +314,27 @@
         <!-- Quick Actions -->
         <div class="quick-actions">
             <a href="admin-event.html" class="quick-btn">
-                <i class="fas fa-plus-circle"></i> Create New Event
+                <i class="fas fa-plus-circle"></i> Create Event
             </a>
             <a href="admin-user.html" class="quick-btn">
-                <i class="fas fa-user-plus"></i> Add New User
+                <i class="fas fa-user-plus"></i> Add User
             </a>
-            <a href="#" class="quick-btn" onclick="alert('Report generation coming soon!')">
+            <a href="#" class="quick-btn" onclick="generateReport()">
                 <i class="fas fa-file-export"></i> Generate Report
             </a>
-            <a href="#" class="quick-btn" onclick="alert('Settings coming soon!')">
-                <i class="fas fa-cog"></i> System Settings
+            <a href="#" class="quick-btn" onclick="showSettings()">
+                <i class="fas fa-cog"></i> Settings
             </a>
         </div>
 
         <!-- Recent Events Table -->
         <div class="table-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2><i class="fas fa-calendar-week"></i> Recent Events</h2>
-                <a href="admin-event.html" class="action-btn btn-view">View All Events</a>
+                <a href="admin-event.html" class="action-btn btn-view">View All</a>
             </div>
             
-            <table>
+            <table id="eventsTable">
                 <thead>
                     <tr>
                         <th>Event Name</th>
@@ -406,51 +345,52 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="eventsTableBody">
+                    <!-- Will be filled by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent Users Table -->
+        <div class="table-container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2><i class="fas fa-user-friends"></i> Recent Users</h2>
+                <a href="admin-user.html" class="action-btn btn-view">View All</a>
+            </div>
+            
+            <table>
+                <thead>
                     <tr>
-                        <td>National Conference on AI</td>
-                        <td>Mar 15, 2024</td>
-                        <td>School of Computing</td>
-                        <td>120/200</td>
-                        <td><span class="status-badge active">Active</span></td>
-                        <td>
-                            <button class="action-btn btn-view" onclick="alert('View event details')"><i class="fas fa-eye"></i></button>
-                            <button class="action-btn btn-edit" onclick="alert('Edit event')"><i class="fas fa-edit"></i></button>
-                        </td>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
-                    <tr>
-                        <td>Cultural Fest 2024</td>
-                        <td>Mar 20, 2024</td>
-                        <td>Cultural Committee</td>
-                        <td>450/500</td>
-                        <td><span class="status-badge active">Active</span></td>
-                        <td>
-                            <button class="action-btn btn-view" onclick="alert('View event details')"><i class="fas fa-eye"></i></button>
-                            <button class="action-btn btn-edit" onclick="alert('Edit event')"><i class="fas fa-edit"></i></button>
-                        </td>
-                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <!-- Will be filled by JavaScript -->
                 </tbody>
             </table>
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div style="max-width: 1400px; margin: 0 auto;">
-            <p style="font-size: 18px; margin-bottom: 15px;">Central University of Karnataka - Admin Portal</p>
-            <p>Kadaganchi, Aland Road, Kalaburagi, Karnataka - 585367</p>
-            <p style="margin: 15px 0;">Contact: admin@cuk.ac.in | Support: +91-8473-278000</p>
-            <hr style="border-color: rgba(255,255,255,0.2); margin: 20px auto; width: 80%;">
-            <p>© 2024 CUK Event Management System | Admin Dashboard v2.0 | Developed by R Sreevani</p>
-        </div>
+    <!-- Footer -->
+    <footer class="admin-footer">
+        <p>Central University of Karnataka - Admin Portal</p>
+        <p>Kadaganchi, Aland Road, Kalaburagi - 585367</p>
+        <p>© 2024 CUK Event Management System | Version 2.0</p>
     </footer>
 
     <script>
-        // Check if admin is logged in
-        function checkAdminLogin() {
-            const adminData = localStorage.getItem('admin');
-            if (!adminData) {
-                alert('Please login as admin first!');
+        // =============== ADMIN DASHBOARD SCRIPT ===============
+        
+        // Check admin login
+        function checkAdminAuth() {
+            const admin = localStorage.getItem('admin');
+            if (!admin) {
+                alert('Please login as admin');
                 window.location.href = 'admin-login.html';
                 return false;
             }
@@ -459,85 +399,226 @@
 
         // Load admin data
         function loadAdminData() {
-            const adminData = JSON.parse(localStorage.getItem('admin') || '{}');
-            
-            // Update admin name
-            const adminName = adminData.name || 'Administrator';
-            document.querySelector('.user-info h1').textContent = `Welcome, ${adminName}!`;
-            
-            // Update avatar initials
-            const initials = adminName.split(' ').map(n => n[0]).join('').toUpperCase() || 'AD';
-            document.querySelector('.user-avatar').textContent = initials;
-            
-            // Update login time
-            if (adminData.loginTime) {
-                const loginDate = new Date(adminData.loginTime);
-                document.getElementById('login-time').textContent = 
-                    loginDate.toLocaleString('en-IN', { 
-                        weekday: 'short',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
+            try {
+                const admin = JSON.parse(localStorage.getItem('admin') || '{}');
+                
+                // Update welcome message
+                document.getElementById('welcomeMessage').textContent = 
+                    `Welcome, ${admin.name || 'Administrator'}!`;
+                
+                // Update initials
+                const name = admin.name || 'Admin User';
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0,2);
+                document.getElementById('adminInitials').textContent = initials || 'AD';
+                
+                // Update role
+                document.getElementById('adminRole').textContent = 
+                    admin.role === 'superadmin' ? 'Super Administrator' : 'System Administrator';
+                
+                // Update login time
+                if (admin.loginTime) {
+                    const date = new Date(admin.loginTime);
+                    document.getElementById('loginTime').textContent = 
+                        date.toLocaleString('en-IN', { 
+                            weekday: 'short', 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                        });
+                }
+            } catch (e) {
+                console.log('Using default admin data');
             }
         }
 
-        // Logout function
-        function logout() {
-            if(confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('admin');
-                window.location.href = 'index.html';
+        // Load events data
+        function loadEventsData() {
+            try {
+                let events = JSON.parse(localStorage.getItem('events') || '[]');
+                
+                // If no events, use sample data
+                if (events.length === 0) {
+                    events = [
+                        { id: 1, title: 'Tech Symposium 2024', date: '2024-03-15', department: 'Computing', registrations: 120, capacity: 200, status: 'active' },
+                        { id: 2, title: 'Cultural Fest', date: '2024-03-20', department: 'Cultural', registrations: 450, capacity: 500, status: 'active' },
+                        { id: 3, title: 'Sports Day', date: '2024-03-25', department: 'Sports', registrations: 300, capacity: 400, status: 'pending' },
+                        { id: 4, title: 'AI Workshop', date: '2024-03-18', department: 'Computing', registrations: 40, capacity: 50, status: 'active' }
+                    ];
+                    localStorage.setItem('events', JSON.stringify(events));
+                }
+                
+                // Update stats
+                document.getElementById('totalEvents').textContent = events.length;
+                document.getElementById('totalRegistrations').textContent = 
+                    events.reduce((sum, e) => sum + (e.registrations || 0), 0).toLocaleString();
+                
+                // Fill events table
+                const tbody = document.getElementById('eventsTableBody');
+                tbody.innerHTML = '';
+                
+                events.slice(0, 4).forEach(event => {
+                    const row = document.createElement('tr');
+                    const regText = `${event.registrations || 0}/${event.capacity || 200}`;
+                    const statusClass = event.status === 'active' ? 'status-active' : 'status-pending';
+                    
+                    row.innerHTML = `
+                        <td><strong>${event.title}</strong></td>
+                        <td>${new Date(event.date).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                        <td>${event.department || 'Various'}</td>
+                        <td>${regText}</td>
+                        <td><span class="status-badge ${statusClass}">${event.status}</span></td>
+                        <td>
+                            <button class="action-btn btn-view" onclick="viewEvent('${event.id}')"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn btn-edit" onclick="editEvent('${event.id}')"><i class="fas fa-edit"></i></button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                
+            } catch (e) {
+                console.log('Error loading events:', e);
+                document.getElementById('eventsTableBody').innerHTML = `
+                    <tr><td colspan="6" style="text-align: center; padding: 30px;">No events found</td></tr>
+                `;
             }
         }
+
+        // Load users data
+        function loadUsersData() {
+            try {
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // If no users, use sample data
+                if (users.length === 0) {
+                    users = [
+                        { id: 'CUK20240001', name: 'Rahul Sharma', email: 'rahul@cuk.ac.in', role: 'Student', status: 'active' },
+                        { id: 'CUK20240002', name: 'Priya Patel', email: 'priya@cuk.ac.in', role: 'Student', status: 'active' },
+                        { id: 'CUK20240003', name: 'Dr. Kumar', email: 'kumar@cuk.ac.in', role: 'Faculty', status: 'active' },
+                        { id: 'CUK20240004', name: 'Anjali Singh', email: 'anjali@cuk.ac.in', role: 'Student', status: 'active' }
+                    ];
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                // Update stats
+                document.getElementById('totalUsers').textContent = users.length.toLocaleString();
+                document.getElementById('pendingItems').textContent = 
+                    users.filter(u => u.status === 'pending').length || 18;
+                
+                // Fill users table
+                const tbody = document.getElementById('usersTableBody');
+                tbody.innerHTML = '';
+                
+                users.slice(0, 4).forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${user.id}</strong></td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role || 'Student'}</td>
+                        <td><span class="status-badge status-active">Active</span></td>
+                        <td>
+                            <button class="action-btn btn-view" onclick="viewUser('${user.id}')"><i class="fas fa-eye"></i></button>
+                            <button class="action-btn btn-edit" onclick="editUser('${user.id}')"><i class="fas fa-edit"></i></button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                
+            } catch (e) {
+                console.log('Error loading users:', e);
+            }
+        }
+
+        // Action functions
+        window.viewEvent = function(id) {
+            alert('View event details: ' + id);
+            window.location.href = 'event-details.html?id=' + id;
+        };
+        
+        window.editEvent = function(id) {
+            alert('Edit event: ' + id);
+            window.location.href = 'admin-edit-event.html?id=' + id;
+        };
+        
+        window.viewUser = function(id) {
+            alert('View user details: ' + id);
+        };
+        
+        window.editUser = function(id) {
+            alert('Edit user: ' + id);
+        };
+        
+        function generateReport() {
+            alert('Report generation will be available soon');
+        }
+        
+        function showSettings() {
+            alert('Settings panel coming soon');
+        }
+
+        // Admin logout
+        window.adminLogout = function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('admin');
+                window.location.href = 'admin-login.html';
+            }
+        };
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            if(checkAdminLogin()) {
+            if (checkAdminAuth()) {
                 loadAdminData();
+                loadEventsData();
+                loadUsersData();
             }
+            
+            // Handle notification badge
+            try {
+                const badge = document.querySelector('.notification-badge');
+                if (badge) {
+                    const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                    const unread = notifications.filter(n => !n.read).length;
+                    if (unread > 0) {
+                        badge.style.display = 'inline';
+                        badge.textContent = unread > 9 ? '9+' : unread;
+                    }
+                }
+            } catch (e) {}
         });
     </script>
 
-    <!-- Integration System with Fallback -->
+    <!-- Safe Integration Loader -->
     <script>
-        function loadScript(url, callback) {
+        // Safe way to load integration without errors
+        (function() {
+            // Mark as admin page to prevent conflicts
+            window.isAdminPage = true;
+            
+            // Try to load integration.js, but don't crash if it fails
             const script = document.createElement('script');
-            script.src = url;
-            script.onload = callback;
-            script.onerror = function() {
-                console.log('Integration.js not found, using built-in functions');
-                window.cukIntegration = window.cukIntegration || {
-                    syncAllData: function() { 
-                        console.log('Syncing data...');
-                        // Initialize sample data if needed
-                        if (!localStorage.getItem('events')) {
-                            localStorage.setItem('events', JSON.stringify([
-                                { id: '1', title: 'Tech Symposium', date: '2024-03-15', venue: 'Auditorium' },
-                                { id: '2', title: 'Cultural Fest', date: '2024-03-20', venue: 'Open Air Theatre' }
-                            ]));
-                        }
-                    },
-                    updateNotificationBadge: function() {
-                        const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-                        const unreadCount = notifications.filter(n => !n.read).length;
-                        document.querySelectorAll('.notification-badge').forEach(badge => {
-                            badge.style.display = unreadCount > 0 ? 'flex' : 'none';
-                            badge.textContent = unreadCount;
-                        });
-                    },
-                    updateDashboard: function() {},
-                    updateUserUI: function() {}
-                };
-                
+            script.src = 'js/integration.js';
+            script.onload = function() {
+                console.log('Integration loaded in admin mode');
                 if (window.cukIntegration) {
-                    window.cukIntegration.syncAllData();
-                    window.cukIntegration.updateNotificationBadge();
+                    // Override any problematic methods for admin
+                    window.cukIntegration.registerForEvent = function() { 
+                        console.log('Admin mode: registration disabled');
+                        return false;
+                    };
                 }
-                if (callback) callback();
+            };
+            script.onerror = function() {
+                console.log('Integration not found - running in standalone mode');
+                // Create minimal integration object
+                window.cukIntegration = {
+                    notifications: {
+                        addNotification: function(t, m) { console.log(t, m); },
+                        updateBadge: function() {}
+                    },
+                    updateAllUI: function() {}
+                };
             };
             document.head.appendChild(script);
-        }
-        
-        loadScript('js/integration.js');
+        })();
     </script>
 </body>
 </html>

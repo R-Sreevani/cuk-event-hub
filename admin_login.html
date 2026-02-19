@@ -12,6 +12,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
         .admin-login-wrapper {
             flex: 1;
@@ -53,6 +55,10 @@
             margin-top: 20px;
             color: #00509E;
             text-decoration: none;
+        }
+        input:focus {
+            outline: none;
+            border-color: #003366 !important;
         }
     </style>
 </head>
@@ -151,7 +157,7 @@
                 // Store admin session
                 localStorage.setItem('admin', JSON.stringify({
                     username: username,
-                    name: 'Administrator',
+                    name: username === 'admin' ? 'Administrator' : 'System Admin',
                     role: 'admin',
                     loginTime: new Date().toISOString(),
                     department: 'System Administration'
@@ -164,25 +170,40 @@
             }
         });
         
-        // Auto-fill for testing (remove in production)
+        // Auto-fill for testing
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('admin-username').value = 'admin';
             document.getElementById('admin-password').value = 'admin123';
         });
     </script>
-    <!-- Integration System -->
-<script src="js/integration.js"></script>
-<script>
-    // Initialize integration on every page
-    document.addEventListener('DOMContentLoaded', function() {
-        // Sync data from all pages
-        if (window.cukIntegration) {
-            cukIntegration.syncAllData();
-            cukIntegration.updateNotificationBadge();
-            cukIntegration.updateDashboard();
-            cukIntegration.updateUserUI();
+    
+    <!-- Integration System - Check if file exists -->
+    <script>
+        // Load integration.js if it exists, otherwise use fallback
+        function loadScript(url, callback) {
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = callback;
+            script.onerror = function() {
+                console.log('Integration.js not found, using built-in functions');
+                // Define fallback functions
+                window.cukIntegration = window.cukIntegration || {
+                    syncAllData: function() { console.log('Using fallback sync'); },
+                    updateNotificationBadge: function() {},
+                    updateDashboard: function() {},
+                    updateUserUI: function() {}
+                };
+                if (callback) callback();
+            };
+            document.head.appendChild(script);
         }
-    });
-</script>
+        
+        loadScript('js/integration.js', function() {
+            if (window.cukIntegration) {
+                cukIntegration.syncAllData();
+                cukIntegration.updateNotificationBadge();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -4,206 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - CUK Event Hub</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
         body {
-            background: linear-gradient(135deg, #003366 0%, #00509E 100%);
+            background: linear-gradient(135deg, #003366 0%, #001f3f 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            margin: 0;
-            font-family: Arial, sans-serif;
         }
-        .admin-login-wrapper {
+        .login-wrapper {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-        .admin-login-container {
+        .login-box {
             background: white;
             border-radius: 20px;
             padding: 50px;
             width: 100%;
-            max-width: 500px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
         .admin-icon {
             font-size: 60px;
             color: #dc3545;
+            text-align: center;
             margin-bottom: 20px;
         }
-        .admin-warning {
+        h2 { color: #003366; text-align: center; margin-bottom: 10px; }
+        .warning {
             background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
+            border-left: 4px solid #ffc107;
             padding: 15px;
-            border-radius: 10px;
             margin: 25px 0;
-            text-align: left;
+            border-radius: 5px;
             font-size: 14px;
         }
-        .admin-title {
-            color: #003366;
-            margin-bottom: 10px;
+        .input-group {
+            margin-bottom: 20px;
         }
-        .back-home {
-            display: inline-block;
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #003366;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #003366;
+            outline: none;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .login-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        .demo-creds {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
             margin-top: 20px;
             color: #00509E;
             text-decoration: none;
         }
-        input:focus {
-            outline: none;
-            border-color: #003366 !important;
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <!-- Simple Header -->
-    <div style="background: white; padding: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-        <h1 style="color: #003366; margin: 0;">CUK Event Hub - Admin Portal</h1>
+    <div style="background: white; padding: 15px; text-align: center;">
+        <h1 style="color: #003366;">CUK Event Hub - Admin Portal</h1>
     </div>
 
-    <div class="admin-login-wrapper">
-        <div class="admin-login-container">
+    <div class="login-wrapper">
+        <div class="login-box">
             <div class="admin-icon">
                 <i class="fas fa-shield-alt"></i>
             </div>
             
-            <h2 class="admin-title">Administrator Login</h2>
-            <p style="color: #666; margin-bottom: 30px;">Restricted access for authorized personnel only</p>
+            <h2>Administrator Login</h2>
+            <p style="text-align: center; color: #666;">Restricted access only</p>
 
-            <div class="admin-warning">
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>Security Notice:</strong> This portal is for CUK staff only. Unauthorized access is prohibited.
+            <div class="warning">
+                <i class="fas fa-exclamation-triangle" style="color: #856404;"></i>
+                <strong>Authorized Personnel Only</strong><br>
+                This system is for CUK administrators.
             </div>
 
-            <form id="admin-login-form">
-                <div style="margin-bottom: 20px; text-align: left;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #003366;">
-                        <i class="fas fa-user-shield"></i> Admin Username
-                    </label>
-                    <input type="text" id="admin-username" 
-                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;"
-                           placeholder="Enter admin username" required>
+            <form id="loginForm" onsubmit="handleAdminLogin(event)">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Username</label>
+                    <input type="text" id="username" value="admin" placeholder="Enter username" required>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" value="admin123" placeholder="Enter password" required>
                 </div>
 
-                <div style="margin-bottom: 25px; text-align: left;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #003366;">
-                        <i class="fas fa-key"></i> Password
-                    </label>
-                    <input type="password" id="admin-password" 
-                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;"
-                           placeholder="Enter password" required>
-                </div>
-
-                <div style="margin-bottom: 25px; text-align: left;">
-                    <label style="display: flex; align-items: center; gap: 8px;">
-                        <input type="checkbox" id="remember-admin">
-                        Remember this device
-                    </label>
-                </div>
-
-                <button type="submit" 
-                        style="width: 100%; padding: 15px; background: #dc3545; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s;">
-                    <i class="fas fa-sign-in-alt"></i> Login as Administrator
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login to Dashboard
                 </button>
-
-                <div style="margin-top: 30px; color: #666;">
-                    <p>For testing use: <strong>admin</strong> / <strong>admin123</strong></p>
-                    <a href="index.html" class="back-home">
-                        <i class="fas fa-arrow-left"></i> Back to Homepage
-                    </a>
-                </div>
             </form>
+
+            <div class="demo-creds">
+                <p><strong>Demo Credentials:</strong></p>
+                <p>admin / admin123</p>
+                <p>cukadmin / cuk@2024</p>
+            </div>
+
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Homepage
+            </a>
         </div>
     </div>
 
-    <!-- Simple Footer -->
-    <div style="background: #003366; color: white; text-align: center; padding: 20px; margin-top: auto;">
+    <div style="background: #003366; color: white; text-align: center; padding: 20px;">
         <p>Central University of Karnataka | Admin Portal</p>
-        <p style="font-size: 14px; color: #aaa;">© 2024 CUK Event Management System</p>
     </div>
 
     <script>
-        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+        function handleAdminLogin(e) {
             e.preventDefault();
             
-            const username = document.getElementById('admin-username').value.trim();
-            const password = document.getElementById('admin-password').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
             
-            // Simple validation
-            if(!username || !password) {
-                alert('Please enter both username and password');
-                return;
-            }
-            
-            // Accept these demo credentials
-            const validCredentials = [
-                { username: 'admin', password: 'admin123' },
-                { username: 'cukadmin', password: 'cuk@2024' },
-                { username: 'test', password: 'test123' }
+            // Valid credentials
+            const validUsers = [
+                { user: 'admin', pass: 'admin123', name: 'Administrator', role: 'admin' },
+                { user: 'cukadmin', pass: 'cuk@2024', name: 'CUK Admin', role: 'superadmin' },
+                { user: 'test', pass: 'test123', name: 'Test Admin', role: 'admin' }
             ];
             
-            // Check if credentials match
-            const isValid = validCredentials.some(cred => 
-                cred.username === username && cred.password === password);
+            const matched = validUsers.find(u => u.user === username && u.pass === password);
             
-            if(isValid) {
+            if (matched) {
                 // Store admin session
                 localStorage.setItem('admin', JSON.stringify({
                     username: username,
-                    name: username === 'admin' ? 'Administrator' : 'System Admin',
-                    role: 'admin',
-                    loginTime: new Date().toISOString(),
-                    department: 'System Administration'
+                    name: matched.name,
+                    role: matched.role,
+                    loginTime: new Date().toISOString()
                 }));
+                
+                // Also set a flag for integration
+                localStorage.setItem('isAdmin', 'true');
                 
                 // Redirect to dashboard
                 window.location.href = 'admin-dashboard.html';
             } else {
                 alert('Invalid credentials! Try: admin / admin123');
             }
-        });
-        
-        // Auto-fill for testing
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('admin-username').value = 'admin';
-            document.getElementById('admin-password').value = 'admin123';
-        });
-    </script>
-    
-    <!-- Integration System - Check if file exists -->
-    <script>
-        // Load integration.js if it exists, otherwise use fallback
-        function loadScript(url, callback) {
-            const script = document.createElement('script');
-            script.src = url;
-            script.onload = callback;
-            script.onerror = function() {
-                console.log('Integration.js not found, using built-in functions');
-                // Define fallback functions
-                window.cukIntegration = window.cukIntegration || {
-                    syncAllData: function() { console.log('Using fallback sync'); },
-                    updateNotificationBadge: function() {},
-                    updateDashboard: function() {},
-                    updateUserUI: function() {}
-                };
-                if (callback) callback();
-            };
-            document.head.appendChild(script);
         }
-        
-        loadScript('js/integration.js', function() {
-            if (window.cukIntegration) {
-                cukIntegration.syncAllData();
-                cukIntegration.updateNotificationBadge();
-            }
-        });
     </script>
 </body>
 </html>

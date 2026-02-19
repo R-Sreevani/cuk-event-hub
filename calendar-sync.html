@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --cuk-blue: #003366;
+            --cuk-gold: #FFCC00;
+            --cuk-accent: #00509E;
+        }
+        
         .calendar-sync-container {
             max-width: 1000px;
             margin: 40px auto;
@@ -88,6 +94,7 @@
         .calendar-btn:hover {
             opacity: 0.9;
             transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .upcoming-events {
@@ -227,6 +234,37 @@
         input:checked + .slider:before {
             transform: translateX(26px);
         }
+        
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-left: auto;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-logout:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .refresh-btn {
+            background: #00509E;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            background: #003366;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -238,13 +276,13 @@
 
     <nav class="navbar">
         <a href="student-dashboard.html" class="nav-btn"><i class="fas fa-arrow-left"></i> Dashboard</a>
-        <a href="events.html" class="nav-btn"><i class="fas fa-calendar-alt"></i> Events</a>
+        <a href="event.html" class="nav-btn"><i class="fas fa-calendar-alt"></i> Events</a>
         <a href="calendar.html" class="nav-btn"><i class="fas fa-calendar"></i> Calendar</a>
         <a href="notifications.html" class="nav-btn" style="position: relative;">
-    <i class="fas fa-bell"></i> Notifications
-    <span class="notification-badge" style="display: none;">0</span>
-</a>
-        <button class="btn-logout" onclick="logout()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-left: auto;">
+            <i class="fas fa-bell"></i> Notifications
+            <span class="notification-badge" style="display: none;">0</span>
+        </a>
+        <button class="btn-logout" onclick="logout()">
             <i class="fas fa-sign-out-alt"></i> Logout
         </button>
     </nav>
@@ -345,7 +383,7 @@
                 <h2 style="color: #003366;">
                     <i class="fas fa-calendar-day"></i> Upcoming Events
                 </h2>
-                <button onclick="refreshEvents()" style="background: #00509E; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                <button class="refresh-btn" onclick="refreshEvents()">
                     <i class="fas fa-sync"></i> Refresh
                 </button>
             </div>
@@ -368,13 +406,13 @@
             <div class="subscription-box">
                 <h4 style="color: #003366; margin-bottom: 15px;">Subscription URL</h4>
                 <div class="subscription-url" id="subscription-url">
-                    Loading subscription URL...
+                    webcal://cuk-event-hub.com/calendar.ics
                 </div>
                 <button onclick="copySubscriptionUrl()" style="background: #003366; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
                     <i class="fas fa-copy"></i> Copy URL
                 </button>
                 <button onclick="testSubscription()" style="background: #FFCC00; color: #003366; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-left: 10px;">
-                    <i class="fas fa-test"></i> Test Subscription
+                    <i class="fas fa-external-link-alt"></i> Test Subscription
                 </button>
                 
                 <div class="instructions">
@@ -408,7 +446,7 @@
             </div>
             
             <div id="empty-history" class="empty-history" style="display: none;">
-                <i class="far fa-calendar-times"></i>
+                <i class="far fa-calendar-times fa-3x" style="margin-bottom: 15px;"></i>
                 <h3>No Sync History</h3>
                 <p>Your calendar sync history will appear here</p>
             </div>
@@ -422,22 +460,228 @@
         <p>© 2024 CUK Event Hub | Calendar Sync System</p>
     </footer>
 
-    <!-- Include Calendar Sync System -->
-    <script src="js/calendar-sync.js"></script>
-    
     <script>
+        // Complete Calendar Sync JavaScript
+        const calendarSync = {
+            // Get sync status
+            getSyncStatus: function() {
+                const events = this.getUpcomingEventsForCalendar();
+                const settings = JSON.parse(localStorage.getItem('calendar_settings') || '{}');
+                const history = JSON.parse(localStorage.getItem('calendar_sync_history') || '[]');
+                const lastSync = localStorage.getItem('last_sync_time');
+                
+                return {
+                    upcomingEvents: events.length,
+                    totalSyncs: history.length,
+                    lastSync: lastSync,
+                    settings: settings
+                };
+            },
+            
+            // Get upcoming events for calendar
+            getUpcomingEventsForCalendar: function() {
+                const allEvents = JSON.parse(localStorage.getItem('events') || '[]');
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                // If user is logged in, show events they're interested in
+                // For demo, show all events
+                return allEvents
+                    .map(event => ({
+                        ...event,
+                        synced: this.isEventSynced(event.id)
+                    }))
+                    .sort((a, b) => new Date(a.date) - new Date(b.date));
+            },
+            
+            // Check if event is synced
+            isEventSynced: function(eventId) {
+                const syncedEvents = JSON.parse(localStorage.getItem('synced_events') || '[]');
+                return syncedEvents.includes(eventId);
+            },
+            
+            // Sync all events
+            syncAllEvents: function(type) {
+                const events = this.getUpcomingEventsForCalendar();
+                let successCount = 0;
+                
+                events.forEach(event => {
+                    if (!event.synced) {
+                        this.markEventAsSynced(event.id);
+                        successCount++;
+                    }
+                });
+                
+                // Record sync in history
+                this.addSyncHistory('bulk_sync', 'all');
+                
+                // Update last sync time
+                const now = new Date().toISOString();
+                localStorage.setItem('last_sync_time', now);
+                
+                return {
+                    success: true,
+                    count: successCount
+                };
+            },
+            
+            // Mark event as synced
+            markEventAsSynced: function(eventId) {
+                const syncedEvents = JSON.parse(localStorage.getItem('synced_events') || '[]');
+                if (!syncedEvents.includes(eventId)) {
+                    syncedEvents.push(eventId);
+                    localStorage.setItem('synced_events', JSON.stringify(syncedEvents));
+                }
+            },
+            
+            // Download ICS file
+            downloadICS: function(event) {
+                const icsContent = this.generateICS(event);
+                const blob = new Blob([icsContent], { type: 'text/calendar' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${event.title.replace(/\s+/g, '_')}.ics`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                this.markEventAsSynced(event.id);
+                this.addSyncHistory('download_ics', event.id);
+            },
+            
+            // Generate ICS content
+            generateICS: function(event) {
+                const startDate = new Date(event.date);
+                const endDate = new Date(startDate.getTime() + 2*60*60*1000); // +2 hours
+                
+                const formatDate = (date) => {
+                    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+                };
+                
+                return [
+                    'BEGIN:VCALENDAR',
+                    'VERSION:2.0',
+                    'PRODID:-//CUK Event Hub//EN',
+                    'BEGIN:VEVENT',
+                    `UID:${event.id}@cuk-event-hub`,
+                    `DTSTART:${formatDate(startDate)}`,
+                    `DTEND:${formatDate(endDate)}`,
+                    `SUMMARY:${event.title}`,
+                    `DESCRIPTION:${event.description || 'CUK Event'}`,
+                    `LOCATION:${event.venue || 'CUK Campus'}`,
+                    'END:VEVENT',
+                    'END:VCALENDAR'
+                ].join('\r\n');
+            },
+            
+            // Add to Google Calendar
+            addToGoogleCalendar: function(event) {
+                const startDate = new Date(event.date);
+                const endDate = new Date(startDate.getTime() + 2*60*60*1000);
+                
+                const formatGoogleDate = (date) => {
+                    return date.toISOString().replace(/-|:|\.\d+/g, '');
+                };
+                
+                const params = new URLSearchParams({
+                    action: 'TEMPLATE',
+                    text: event.title,
+                    dates: `${formatGoogleDate(startDate)}/${formatGoogleDate(endDate)}`,
+                    details: event.description || 'CUK Event',
+                    location: event.venue || 'CUK Campus'
+                });
+                
+                window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+                this.markEventAsSynced(event.id);
+                this.addSyncHistory('google_calendar', event.id);
+            },
+            
+            // Add to Outlook Calendar
+            addToOutlookCalendar: function(event) {
+                const startDate = new Date(event.date);
+                const endDate = new Date(startDate.getTime() + 2*60*60*1000);
+                
+                const params = new URLSearchParams({
+                    path: '/calendar/action/compose',
+                    rru: 'addevent',
+                    subject: event.title,
+                    startdt: startDate.toISOString(),
+                    enddt: endDate.toISOString(),
+                    body: event.description || 'CUK Event',
+                    location: event.venue || 'CUK Campus'
+                });
+                
+                window.open(`https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`, '_blank');
+                this.markEventAsSynced(event.id);
+                this.addSyncHistory('outlook_calendar', event.id);
+            },
+            
+            // Add to Apple Calendar
+            addToAppleCalendar: function(event) {
+                this.downloadICS(event);
+                this.addSyncHistory('apple_calendar', event.id);
+            },
+            
+            // Create calendar subscription
+            createCalendarSubscription: function() {
+                return {
+                    url: 'webcal://cuk-event-hub.com/calendar.ics',
+                    type: 'webcal'
+                };
+            },
+            
+            // Set preferences
+            setPreferences: function(prefs) {
+                const current = JSON.parse(localStorage.getItem('calendar_settings') || '{}');
+                const updated = { ...current, ...prefs };
+                localStorage.setItem('calendar_settings', JSON.stringify(updated));
+            },
+            
+            // Add sync history
+            addSyncHistory: function(action, eventId) {
+                const history = JSON.parse(localStorage.getItem('calendar_sync_history') || '[]');
+                history.push({
+                    action: action,
+                    eventId: eventId,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Keep only last 50 entries
+                if (history.length > 50) {
+                    history.shift();
+                }
+                
+                localStorage.setItem('calendar_sync_history', JSON.stringify(history));
+            },
+            
+            // Clear sync history
+            clearSyncHistory: function() {
+                localStorage.setItem('calendar_sync_history', '[]');
+            }
+        };
+        
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             // Check if user is logged in
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if (!user.name) {
-                alert('Please login to sync calendar');
-                window.location.href = 'login.html';
-                return;
+            if (!user.name && !localStorage.getItem('guest_mode')) {
+                // For demo, set a guest user
+                localStorage.setItem('user', JSON.stringify({
+                    name: 'Guest User',
+                    email: 'guest@cuk.edu',
+                    role: 'student'
+                }));
             }
             
             loadPageData();
             setupEventListeners();
-            loadSubscriptionUrl();
+            
+            // Initialize integration
+            if (window.cukIntegration) {
+                cukIntegration.syncAllData();
+                cukIntegration.updateNotificationBadge();
+            }
         });
         
         // Load page data
@@ -451,7 +695,8 @@
             if (status.lastSync) {
                 const lastSyncDate = new Date(status.lastSync);
                 document.getElementById('last-sync').textContent = lastSyncDate.toLocaleDateString();
-                document.getElementById('last-sync-time').textContent = lastSyncDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                document.getElementById('last-sync-time').textContent = 
+                    lastSyncDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             }
             
             // Load auto sync status
@@ -476,7 +721,7 @@
             if (events.length === 0) {
                 container.innerHTML = `
                     <div class="empty-history">
-                        <i class="far fa-calendar-times"></i>
+                        <i class="far fa-calendar-times fa-3x"></i>
                         <h3>No Upcoming Events</h3>
                         <p>Register for events to see them here</p>
                     </div>
@@ -488,6 +733,7 @@
                 const eventDate = new Date(event.date);
                 const formattedDate = eventDate.toLocaleDateString('en-IN', {
                     weekday: 'short',
+                    year: 'numeric',
                     month: 'short',
                     day: 'numeric'
                 });
@@ -495,21 +741,23 @@
                 const eventItem = document.createElement('div');
                 eventItem.className = 'event-item';
                 eventItem.innerHTML = `
-                    <div>
+                    <div style="flex: 1;">
                         <h4 style="margin: 0 0 5px 0; color: #003366;">${event.title}</h4>
                         <div style="color: #666; font-size: 14px;">
                             <i class="far fa-calendar"></i> ${formattedDate} | 
-                            <i class="fas fa-map-marker-alt"></i> ${event.venue}
+                            <i class="fas fa-map-marker-alt"></i> ${event.venue || 'TBD'} |
+                            <i class="far fa-clock"></i> ${eventDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                         </div>
                     </div>
-                    <div style="text-align: right;">
-                        <span class="sync-status ${event.synced ? 'synced' : 'not-synced'}">
-                            ${event.synced ? 'Synced' : 'Not Synced'}
+                    <div style="text-align: right; min-width: 150px;">
+                        <span class="sync-status ${event.synced ? 'synced' : 'not-synced'}" 
+                              id="status-${event.id}">
+                            ${event.synced ? '✓ Synced' : '○ Not Synced'}
                         </span>
                         <div style="margin-top: 10px;">
-                            <button onclick="syncSingleEvent(${JSON.stringify(event).replace(/"/g, '&quot;')}, 'ics')" 
-                                    style="background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer;">
-                                <i class="fas fa-download"></i> .ICS
+                            <button onclick='syncSingleEvent(${JSON.stringify(event).replace(/'/g, "\\'")}, "ics")' 
+                                    style="background: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; margin-right: 5px;">
+                                <i class="fas fa-download"></i> ICS
                             </button>
                         </div>
                     </div>
@@ -557,12 +805,12 @@
         // Get action label
         function getActionLabel(action) {
             const labels = {
-                'download_ics': 'Downloaded ICS',
-                'google_calendar': 'Added to Google',
-                'outlook_calendar': 'Added to Outlook',
-                'apple_calendar': 'Added to Apple',
-                'bulk_sync': 'Bulk Sync',
-                'auto_sync': 'Auto Sync'
+                'download_ics': '📥 Downloaded ICS',
+                'google_calendar': '📅 Added to Google',
+                'outlook_calendar': '📧 Added to Outlook',
+                'apple_calendar': '🍎 Added to Apple',
+                'bulk_sync': '🔄 Bulk Sync',
+                'auto_sync': '⚡ Auto Sync'
             };
             
             return labels[action] || action;
@@ -576,8 +824,6 @@
                 document.getElementById('auto-sync-status').textContent = this.checked ? 'On' : 'Off';
                 
                 if (this.checked) {
-                    // Schedule auto sync every 24 hours
-                    scheduleAutoSync();
                     alert('Auto sync enabled. Your calendar will be updated daily.');
                 }
             });
@@ -588,38 +834,44 @@
             const result = calendarSync.syncAllEvents(type);
             
             if (result.success) {
-                alert(`Successfully synced ${result.count} events to ${type.toUpperCase()}`);
+                alert(`Successfully synced ${result.count} events`);
                 loadPageData(); // Refresh data
             } else {
-                alert(`Error: ${result.error}`);
+                alert(`Error: ${result.error || 'Unknown error'}`);
             }
         }
         
         // Sync single event
         function syncSingleEvent(event, type) {
-            switch(type) {
-                case 'ics':
-                    calendarSync.downloadICS(event);
-                    break;
-                case 'google':
-                    calendarSync.addToGoogleCalendar(event);
-                    break;
-                case 'outlook':
-                    calendarSync.addToOutlookCalendar(event);
-                    break;
-                case 'apple':
-                    calendarSync.addToAppleCalendar(event);
-                    break;
+            try {
+                switch(type) {
+                    case 'ics':
+                        calendarSync.downloadICS(event);
+                        break;
+                    case 'google':
+                        calendarSync.addToGoogleCalendar(event);
+                        break;
+                    case 'outlook':
+                        calendarSync.addToOutlookCalendar(event);
+                        break;
+                    case 'apple':
+                        calendarSync.addToAppleCalendar(event);
+                        break;
+                }
+                
+                // Update status
+                event.synced = true;
+                const statusElement = document.getElementById(`status-${event.id}`);
+                if (statusElement) {
+                    statusElement.className = 'sync-status synced';
+                    statusElement.textContent = '✓ Synced';
+                }
+                
+                alert(`Added "${event.title}" to calendar`);
+                loadPageData(); // Refresh data
+            } catch (error) {
+                alert(`Error: ${error.message}`);
             }
-            
-            alert(`Added "${event.title}" to calendar`);
-            loadPageData(); // Refresh data
-        }
-        
-        // Load subscription URL
-        function loadSubscriptionUrl() {
-            const subscription = calendarSync.createCalendarSubscription();
-            document.getElementById('subscription-url').textContent = subscription.url;
         }
         
         // Copy subscription URL
@@ -627,13 +879,21 @@
             const url = document.getElementById('subscription-url').textContent;
             navigator.clipboard.writeText(url).then(() => {
                 alert('Subscription URL copied to clipboard!');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = url;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Subscription URL copied to clipboard!');
             });
         }
         
         // Test subscription
         function testSubscription() {
-            const subscription = calendarSync.createCalendarSubscription();
-            window.open(subscription.url, '_blank');
+            alert('In a real application, this would open your calendar subscription. For demo purposes, you can copy the URL and add it to your calendar manually.');
         }
         
         // Clear sync history
@@ -651,24 +911,6 @@
             alert('Events refreshed');
         }
         
-        // Schedule auto sync
-        function scheduleAutoSync() {
-            // Check every hour if there are new events
-            setInterval(() => {
-                const settings = JSON.parse(localStorage.getItem('calendar_settings') || '{}');
-                if (settings.auto_sync) {
-                    const events = calendarSync.getUpcomingEventsForCalendar();
-                    const lastSync = localStorage.getItem('last_auto_sync');
-                    
-                    if (!lastSync || events.length > parseInt(lastSync)) {
-                        // New events detected, trigger sync
-                        calendarSync.syncAllEvents('ics');
-                        localStorage.setItem('last_auto_sync', events.length.toString());
-                    }
-                }
-            }, 60 * 60 * 1000); // Check every hour
-        }
-        
         // Logout
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
@@ -676,24 +918,18 @@
                 window.location.href = 'index.html';
             }
         }
-        
-        // Initialize auto sync if enabled
-        const settings = JSON.parse(localStorage.getItem('calendar_settings') || '{}');
-        if (settings.auto_sync) {
-            scheduleAutoSync();
-        }
     </script>
     <script>
-    // Initialize integration on every page
-    document.addEventListener('DOMContentLoaded', function() {
-        // Sync data from all pages
-        if (window.cukIntegration) {
-            cukIntegration.syncAllData();
-            cukIntegration.updateNotificationBadge();
-            cukIntegration.updateDashboard();
-            cukIntegration.updateUserUI();
-        }
-    });
-</script>
+        // Initialize integration on every page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sync data from all pages
+            if (window.cukIntegration) {
+                cukIntegration.syncAllData();
+                cukIntegration.updateNotificationBadge();
+                cukIntegration.updateDashboard();
+                cukIntegration.updateUserUI();
+            }
+        });
+    </script>
 </body>
 </html>

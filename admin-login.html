@@ -1,3 +1,4 @@
+<!-- Use this code - save as either admin-login.html or admin_login.html based on your needs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <title>Admin Login - CUK Event Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS from previous message - same as above */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial; }
         body {
             background: linear-gradient(135deg, #003366 0%, #001f3f 100%);
@@ -177,9 +179,6 @@
                     role: matched.role,
                     loginTime: new Date().toISOString()
                 }));
-                
-                // Also set a flag for integration
-                localStorage.setItem('isAdmin', 'true');
                 
                 // Redirect to dashboard
                 window.location.href = 'admin-dashboard.html';

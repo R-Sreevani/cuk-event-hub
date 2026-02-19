@@ -24,7 +24,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f0f2f5;
             min-height: 100vh;
         }
         
@@ -103,24 +103,12 @@
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
-            animation: slideIn 0.5s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
         
         .user-avatar {
@@ -158,15 +146,15 @@
             background: white;
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             border-top: 4px solid;
-            transition: all 0.3s;
+            transition: transform 0.3s;
             cursor: pointer;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,51,102,0.2);
+            box-shadow: 0 10px 25px rgba(0,51,102,0.1);
         }
         
         .stat-card:nth-child(1) { border-color: var(--cuk-blue); }
@@ -194,7 +182,7 @@
             border-radius: 10px;
             padding: 25px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s;
             cursor: pointer;
             text-decoration: none;
@@ -204,7 +192,7 @@
         
         .action-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,51,102,0.2);
+            box-shadow: 0 15px 30px rgba(0,51,102,0.15);
             background: var(--cuk-light);
         }
         
@@ -258,14 +246,14 @@
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: all 0.3s;
             cursor: pointer;
         }
         
         .event-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,51,102,0.2);
+            box-shadow: 0 15px 30px rgba(0,51,102,0.15);
         }
         
         .event-header {
@@ -359,7 +347,7 @@
             background: white;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -369,7 +357,7 @@
         
         .certificate-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,51,102,0.2);
+            box-shadow: 0 10px 25px rgba(0,51,102,0.1);
         }
         
         .certificate-icon {
@@ -410,7 +398,7 @@
             border-radius: 15px;
             padding: 30px;
             margin: 30px 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
         
         .profile-header {
@@ -461,6 +449,170 @@
             transform: translateY(-2px);
         }
         
+        /* Edit Profile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: var(--cuk-blue);
+        }
+        
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-modal:hover {
+            color: var(--cuk-red);
+        }
+        
+        .modal-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .modal-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cuk-blue);
+            font-weight: bold;
+        }
+        
+        .modal-form input,
+        .modal-form select,
+        .modal-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .modal-form input:focus,
+        .modal-form select:focus {
+            border-color: var(--cuk-gold);
+            outline: none;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .save-btn {
+            background: var(--cuk-green);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        .cancel-btn {
+            background: var(--cuk-gray);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 2000;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--cuk-green);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--cuk-red);
+        }
+        
+        .toast.warning {
+            border-left: 4px solid var(--cuk-gold);
+        }
+        
+        .toast-icon {
+            font-size: 24px;
+        }
+        
+        .toast.success .toast-icon {
+            color: var(--cuk-green);
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .toast-message {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .toast-close {
+            cursor: pointer;
+            color: #999;
+        }
+        
         /* Empty State */
         .empty-state {
             text-align: center;
@@ -468,7 +620,7 @@
             background: white;
             border-radius: 15px;
             color: var(--cuk-gray);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
         
         .empty-state i {
@@ -538,11 +690,11 @@
     <nav class="navbar">
         <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
         <a href="events.html" class="nav-btn"><i class="fas fa-calendar-alt"></i> Browse Events</a>
-        <a href="#" class="nav-btn" onclick="window.location.href='my-registrations.html'"><i class="fas fa-ticket-alt"></i> My Registrations</a>
-        <a href="#" class="nav-btn" onclick="window.location.href='calendar.html'"><i class="fas fa-calendar"></i> Calendar</a>
-        <a href="#" class="nav-btn" onclick="window.location.href='notifications.html'" style="position: relative;">
+        <a href="my-registrations.html" class="nav-btn"><i class="fas fa-ticket-alt"></i> My Registrations</a>
+        <a href="calendar.html" class="nav-btn"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="notifications.html" class="nav-btn" style="position: relative;">
             <i class="fas fa-bell"></i> Notifications
-            <span class="notification-badge" id="notificationBadge">3</span>
+            <span class="notification-badge" id="notificationBadge">0</span>
         </a>
         <button class="btn-logout" onclick="logout()">
             <i class="fas fa-sign-out-alt"></i> Logout
@@ -552,18 +704,18 @@
     <!-- MAIN DASHBOARD -->
     <main class="dashboard-container">
         <!-- Welcome Card -->
-        <div class="welcome-card">
+        <div class="welcome-card" id="welcomeCard">
             <div style="display: flex; align-items: center; gap: 20px;">
-                <div class="user-avatar" id="userAvatar">RS</div>
+                <div class="user-avatar" id="userAvatar">U</div>
                 <div class="user-info">
-                    <h1 id="welcomeMessage">Welcome, Rahul Sharma!</h1>
-                    <p id="userEmail"><i class="fas fa-envelope"></i> rahul.sharma@cuk.ac.in</p>
-                    <p id="userStudentId"><i class="fas fa-id-card"></i> ID: CUK2024001</p>
+                    <h1 id="welcomeMessage">Welcome, Student!</h1>
+                    <p id="userEmail"><i class="fas fa-envelope"></i> loading...</p>
+                    <p id="userStudentId"><i class="fas fa-id-card"></i> ID: loading...</p>
                 </div>
             </div>
             <div>
-                <p><i class="fas fa-clock"></i> Last login: <span id="lastLogin">15 Mar 2024, 10:30 AM</span></p>
-                <p><i class="fas fa-star" style="color: var(--cuk-gold);"></i> Points: <span id="userPoints">250</span></p>
+                <p><i class="fas fa-clock"></i> Last login: <span id="lastLogin">Today</span></p>
+                <p><i class="fas fa-star" style="color: var(--cuk-gold);"></i> Points: <span id="userPoints">0</span></p>
             </div>
         </div>
 
@@ -571,22 +723,22 @@
         <div class="stats-grid">
             <div class="stat-card" onclick="window.location.href='my-registrations.html'">
                 <h3><i class="fas fa-ticket-alt"></i> My Events</h3>
-                <div class="stat-number" id="registeredCount">3</div>
+                <div class="stat-number" id="registeredCount">0</div>
                 <p>Registered events</p>
             </div>
             <div class="stat-card" onclick="window.location.href='events.html'">
                 <h3><i class="fas fa-calendar-plus"></i> Available</h3>
-                <div class="stat-number" id="availableCount">5</div>
+                <div class="stat-number" id="availableCount">0</div>
                 <p>Events to explore</p>
             </div>
             <div class="stat-card" onclick="window.location.href='certificates.html'">
                 <h3><i class="fas fa-certificate"></i> Certificates</h3>
-                <div class="stat-number" id="certificateCount">2</div>
+                <div class="stat-number" id="certificateCount">0</div>
                 <p>Earned certificates</p>
             </div>
             <div class="stat-card" onclick="window.location.href='notifications.html'">
                 <h3><i class="fas fa-bell"></i> Notifications</h3>
-                <div class="stat-number" id="notificationCount">3</div>
+                <div class="stat-number" id="notificationCount">0</div>
                 <p>Unread alerts</p>
             </div>
         </div>
@@ -630,57 +782,7 @@
         </h2>
         
         <div id="upcomingEventsContainer" class="events-grid">
-            <!-- Sample Upcoming Events -->
-            <div class="event-card" onclick="window.location.href='event-details.html?id=1'">
-                <div class="event-header">
-                    <span class="event-category">Conference</span>
-                    <h3 class="event-title">National Conference on AI</h3>
-                </div>
-                <div class="event-body">
-                    <div class="event-meta">
-                        <p><i class="fas fa-calendar"></i> 15 Mar 2024</p>
-                        <p><i class="fas fa-map-marker"></i> Main Auditorium</p>
-                    </div>
-                    <div class="event-footer">
-                        <span class="event-status status-upcoming">Upcoming</span>
-                        <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=1'">View Details</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="event-card" onclick="window.location.href='event-details.html?id=2'">
-                <div class="event-header">
-                    <span class="event-category">Cultural</span>
-                    <h3 class="event-title">Cultural Fest 2024</h3>
-                </div>
-                <div class="event-body">
-                    <div class="event-meta">
-                        <p><i class="fas fa-calendar"></i> 20 Mar 2024</p>
-                        <p><i class="fas fa-map-marker"></i> Open Air Theatre</p>
-                    </div>
-                    <div class="event-footer">
-                        <span class="event-status status-upcoming">Upcoming</span>
-                        <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=2'">View Details</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="event-card" onclick="window.location.href='event-details.html?id=3'">
-                <div class="event-header">
-                    <span class="event-category">Workshop</span>
-                    <h3 class="event-title">Python Programming Workshop</h3>
-                </div>
-                <div class="event-body">
-                    <div class="event-meta">
-                        <p><i class="fas fa-calendar"></i> 18 Mar 2024</p>
-                        <p><i class="fas fa-map-marker"></i> CS Lab</p>
-                    </div>
-                    <div class="event-footer">
-                        <span class="event-status status-upcoming">Upcoming</span>
-                        <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=3'">View Details</button>
-                    </div>
-                </div>
-            </div>
+            <!-- Will be filled by JavaScript -->
         </div>
 
         <!-- Recommended Events -->
@@ -690,42 +792,7 @@
         </h2>
         
         <div id="recommendedEventsContainer" class="events-grid">
-            <!-- Sample Recommended Events -->
-            <div class="event-card" onclick="window.location.href='event-details.html?id=4'">
-                <div class="event-header">
-                    <span class="event-category">Sports</span>
-                    <h3 class="event-title">Inter-Department Sports Meet</h3>
-                </div>
-                <div class="event-body">
-                    <div class="event-meta">
-                        <p><i class="fas fa-calendar"></i> 25 Mar 2024 at 9:00 AM</p>
-                        <p><i class="fas fa-map-marker"></i> Sports Complex</p>
-                        <p><i class="fas fa-users"></i> 190 spots left</p>
-                    </div>
-                    <div class="event-footer">
-                        <span style="font-weight: bold; color: var(--cuk-blue);">₹100</span>
-                        <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=4'">Register</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="event-card" onclick="window.location.href='event-details.html?id=5'">
-                <div class="event-header">
-                    <span class="event-category">Seminar</span>
-                    <h3 class="event-title">Research Methodology Seminar</h3>
-                </div>
-                <div class="event-body">
-                    <div class="event-meta">
-                        <p><i class="fas fa-calendar"></i> 22 Mar 2024 at 11:00 AM</p>
-                        <p><i class="fas fa-map-marker"></i> Seminar Hall</p>
-                        <p><i class="fas fa-users"></i> 45 spots left</p>
-                    </div>
-                    <div class="event-footer">
-                        <span style="font-weight: bold; color: var(--cuk-blue);">Free</span>
-                        <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=5'">Register</button>
-                    </div>
-                </div>
-            </div>
+            <!-- Will be filled by JavaScript -->
         </div>
 
         <!-- Recent Certificates -->
@@ -735,79 +802,75 @@
         </h2>
         
         <div id="certificatesContainer" class="certificates-grid">
-            <!-- Sample Certificates -->
-            <div class="certificate-card" onclick="downloadSampleCertificate('AI Workshop')">
-                <div class="certificate-icon">
-                    <i class="fas fa-certificate"></i>
-                </div>
-                <div class="certificate-info">
-                    <h4>AI Workshop 2024</h4>
-                    <p>Issued: 10 Feb 2024</p>
-                </div>
-                <button class="download-btn" onclick="event.stopPropagation(); downloadSampleCertificate('AI Workshop')">
-                    <i class="fas fa-download"></i>
-                </button>
-            </div>
-            
-            <div class="certificate-card" onclick="downloadSampleCertificate('Tech Symposium')">
-                <div class="certificate-icon">
-                    <i class="fas fa-certificate"></i>
-                </div>
-                <div class="certificate-info">
-                    <h4>Tech Symposium 2024</h4>
-                    <p>Issued: 5 Jan 2024</p>
-                </div>
-                <button class="download-btn" onclick="event.stopPropagation(); downloadSampleCertificate('Tech Symposium')">
-                    <i class="fas fa-download"></i>
-                </button>
-            </div>
+            <!-- Will be filled by JavaScript -->
         </div>
 
         <!-- Profile Section (Hidden by default) -->
         <div id="profileSection" class="profile-section" style="display: none;">
             <div class="profile-header">
                 <h2><i class="fas fa-user-circle"></i> Your Profile</h2>
-                <button class="edit-profile-btn" onclick="editProfile()">
+                <button class="edit-profile-btn" onclick="openEditProfileModal()">
                     <i class="fas fa-edit"></i> Edit Profile
                 </button>
             </div>
             
-            <div class="profile-details">
-                <div class="profile-item">
-                    <div class="profile-label">Full Name</div>
-                    <div class="profile-value">Rahul Sharma</div>
-                </div>
-                <div class="profile-item">
-                    <div class="profile-label">Email Address</div>
-                    <div class="profile-value">rahul.sharma@cuk.ac.in</div>
-                </div>
-                <div class="profile-item">
-                    <div class="profile-label">Student ID</div>
-                    <div class="profile-value">CUK2024001</div>
-                </div>
-                <div class="profile-item">
-                    <div class="profile-label">Department</div>
-                    <div class="profile-value">Computer Science</div>
-                </div>
-                <div class="profile-item">
-                    <div class="profile-label">Year</div>
-                    <div class="profile-value">3rd Year</div>
-                </div>
-                <div class="profile-item">
-                    <div class="profile-label">Phone</div>
-                    <div class="profile-value">+91 98765 43210</div>
-                </div>
-                <div class="profile-item">
-                    <div class="profile-label">Member Since</div>
-                    <div class="profile-value">Jan 2024</div>
-                </div>
-                <div class="profile-item">
-                    <div class="profile-label">Total Events</div>
-                    <div class="profile-value">5 events</div>
-                </div>
+            <div class="profile-details" id="profileDetails">
+                <!-- Will be filled by JavaScript -->
             </div>
         </div>
     </main>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <span class="close-modal" onclick="closeEditProfileModal()">&times;</span>
+            </div>
+            <form class="modal-form" id="editProfileForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editPhone" placeholder="10 digit mobile number">
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" id="editDepartment">
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <select id="editYear">
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="PhD">PhD</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="button" class="cancel-btn" onclick="closeEditProfileModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon" id="toastIcon"><i class="fas fa-check-circle"></i></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toast-message" id="toastMessage">Operation completed successfully</div>
+        </div>
+        <div class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="footer">
@@ -817,11 +880,402 @@
     </footer>
 
     <script>
-        // =============== SAMPLE DATA FUNCTIONS ===============
-        
-        // Show profile section
+        // =============== TOAST NOTIFICATION ===============
+        function showToast(title, message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const titleEl = document.getElementById('toastTitle');
+            const messageEl = document.getElementById('toastMessage');
+            
+            toast.className = 'toast ' + type;
+            icon.innerHTML = type === 'success' ? '<i class="fas fa-check-circle"></i>' : 
+                            type === 'error' ? '<i class="fas fa-exclamation-circle"></i>' : 
+                            '<i class="fas fa-exclamation-triangle"></i>';
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                hideToast();
+            }, 3000);
+        }
+
+        function hideToast() {
+            document.getElementById('toast').classList.remove('show');
+        }
+
+        // =============== DATA FUNCTIONS ===============
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('user') || '{}');
+        }
+
+        function getEvents() {
+            return JSON.parse(localStorage.getItem('events') || '[]');
+        }
+
+        function getRegistrations() {
+            return JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+        }
+
+        function getCertificates() {
+            return JSON.parse(localStorage.getItem('certificates') || '[]');
+        }
+
+        // =============== LOAD USER DATA ===============
+        function loadUserData() {
+            const user = getCurrentUser();
+            
+            if (!user.name) {
+                // If no user, create a demo user for testing
+                const demoUser = {
+                    name: "Rahul Sharma",
+                    email: "rahul.sharma@cuk.ac.in",
+                    studentId: "CUK2024001",
+                    department: "Computer Science",
+                    year: "3rd Year",
+                    phone: "9876543210",
+                    points: 250,
+                    lastLogin: new Date().toISOString()
+                };
+                localStorage.setItem('user', JSON.stringify(demoUser));
+                return demoUser;
+            }
+            return user;
+        }
+
+        // =============== UPDATE UI WITH USER DATA ===============
+        function updateUserUI() {
+            const user = getCurrentUser();
+            
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${user.name || 'Student'}!`;
+            document.getElementById('userEmail').innerHTML = `<i class="fas fa-envelope"></i> ${user.email || 'Not provided'}`;
+            document.getElementById('userStudentId').innerHTML = `<i class="fas fa-id-card"></i> ID: ${user.studentId || 'Not set'}`;
+            
+            // Update avatar
+            const avatar = document.getElementById('userAvatar');
+            const initials = (user.name || 'Student').split(' ').map(n => n[0]).join('').toUpperCase();
+            avatar.textContent = initials.substring(0, 2);
+            
+            // Update last login
+            const lastLogin = user.lastLogin ? new Date(user.lastLogin) : new Date();
+            document.getElementById('lastLogin').textContent = lastLogin.toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'short',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Update points
+            document.getElementById('userPoints').textContent = user.points || 0;
+        }
+
+        // =============== LOAD STATS ===============
+        function loadStats() {
+            const user = getCurrentUser();
+            const registrations = getRegistrations();
+            const certificates = getCertificates();
+            
+            // Get user's registrations
+            const userRegistrations = registrations.filter(r => r.userEmail === user.email);
+            const registeredCount = userRegistrations.length;
+            
+            // Get available events (not registered)
+            const events = getEvents();
+            const availableCount = events.length - registeredCount;
+            
+            // Get user's certificates
+            const userCertificates = certificates.filter(c => c.studentEmail === user.email);
+            
+            // Get notifications
+            const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            
+            // Update stats
+            document.getElementById('registeredCount').textContent = registeredCount;
+            document.getElementById('availableCount').textContent = availableCount > 0 ? availableCount : 0;
+            document.getElementById('certificateCount').textContent = userCertificates.length;
+            document.getElementById('notificationCount').textContent = unreadCount;
+            
+            // Update notification badge
+            const badge = document.getElementById('notificationBadge');
+            if (unreadCount > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // =============== LOAD UPCOMING EVENTS ===============
+        function loadUpcomingEvents() {
+            const user = getCurrentUser();
+            const registrations = getRegistrations();
+            const events = getEvents();
+            
+            const userRegistrations = registrations.filter(r => r.userEmail === user.email);
+            const container = document.getElementById('upcomingEventsContainer');
+            container.innerHTML = '';
+            
+            if (userRegistrations.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Upcoming Events</h3>
+                        <p>You haven't registered for any events yet.</p>
+                        <button class="event-btn" onclick="window.location.href='events.html'" style="margin-top: 20px; background: var(--cuk-blue); color: white; border: none; padding: 12px 30px; border-radius: 5px; cursor: pointer;">
+                            Browse Events
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Show upcoming events
+            const upcoming = userRegistrations
+                .filter(reg => new Date(reg.date) > new Date())
+                .slice(0, 3);
+            
+            if (upcoming.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>No Upcoming Events</h3>
+                        <p>You have completed all your registered events.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            upcoming.forEach(reg => {
+                const eventDate = new Date(reg.date);
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.onclick = () => window.location.href = `event-details.html?id=${reg.eventId}`;
+                
+                card.innerHTML = `
+                    <div class="event-header">
+                        <span class="event-category">${reg.category || 'Event'}</span>
+                        <h3 class="event-title">${reg.eventTitle}</h3>
+                    </div>
+                    <div class="event-body">
+                        <div class="event-meta">
+                            <p><i class="fas fa-calendar"></i> ${eventDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                            <p><i class="fas fa-map-marker"></i> ${reg.venue}</p>
+                        </div>
+                        <div class="event-footer">
+                            <span class="event-status status-upcoming">Upcoming</span>
+                            <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=${reg.eventId}'">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // =============== LOAD RECOMMENDED EVENTS ===============
+        function loadRecommendedEvents() {
+            const user = getCurrentUser();
+            const events = getEvents();
+            const registrations = getRegistrations();
+            
+            const registeredEventIds = registrations
+                .filter(r => r.userEmail === user.email)
+                .map(r => r.eventId);
+            
+            const recommended = events
+                .filter(event => !registeredEventIds.includes(event.id))
+                .slice(0, 3);
+            
+            const container = document.getElementById('recommendedEventsContainer');
+            container.innerHTML = '';
+            
+            if (recommended.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>All Caught Up!</h3>
+                        <p>You've registered for all available events.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            recommended.forEach(event => {
+                const eventDate = new Date(event.date);
+                const available = event.capacity - (event.registered || 0);
+                
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.onclick = () => window.location.href = `event-details.html?id=${event.id}`;
+                
+                card.innerHTML = `
+                    <div class="event-header">
+                        <span class="event-category">${event.category || 'Event'}</span>
+                        <h3 class="event-title">${event.title}</h3>
+                    </div>
+                    <div class="event-body">
+                        <div class="event-meta">
+                            <p><i class="fas fa-calendar"></i> ${eventDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} at ${event.time}</p>
+                            <p><i class="fas fa-map-marker"></i> ${event.venue}</p>
+                            <p><i class="fas fa-users"></i> ${available} spots left</p>
+                        </div>
+                        <div class="event-footer">
+                            <span style="font-weight: bold; color: var(--cuk-blue);">${event.fee || 'Free'}</span>
+                            <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=${event.id}'">
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // =============== LOAD CERTIFICATES ===============
+        function loadCertificates() {
+            const user = getCurrentUser();
+            const certificates = getCertificates();
+            const userCertificates = certificates.filter(c => c.studentEmail === user.email);
+            
+            const container = document.getElementById('certificatesContainer');
+            container.innerHTML = '';
+            
+            if (userCertificates.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1; padding: 40px;">
+                        <i class="fas fa-certificate"></i>
+                        <h3>No Certificates Yet</h3>
+                        <p>Complete events to earn certificates.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const recent = userCertificates.slice(-3).reverse();
+            
+            recent.forEach(cert => {
+                const certDate = new Date(cert.issueDate);
+                
+                const card = document.createElement('div');
+                card.className = 'certificate-card';
+                
+                card.innerHTML = `
+                    <div class="certificate-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="certificate-info">
+                        <h4>${cert.eventTitle}</h4>
+                        <p>Issued: ${certDate.toLocaleDateString('en-IN')}</p>
+                    </div>
+                    <button class="download-btn" onclick="event.stopPropagation(); downloadCertificate('${cert.id}')">
+                        <i class="fas fa-download"></i>
+                    </button>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // =============== DOWNLOAD CERTIFICATE ===============
+        window.downloadCertificate = function(certificateId) {
+            const certificates = getCertificates();
+            const cert = certificates.find(c => c.id === certificateId);
+            
+            if (cert) {
+                const certificateHTML = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Certificate of Participation</title>
+                        <style>
+                            body { font-family: 'Times New Roman', serif; background: #f0f0f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+                            .certificate { width: 800px; padding: 50px; background: white; border: 20px solid #003366; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; }
+                            .certificate h1 { color: #003366; font-size: 48px; margin-bottom: 20px; border-bottom: 3px solid #FFCC00; padding-bottom: 20px; }
+                            .student-name { font-size: 42px; color: #003366; border-bottom: 2px dashed #FFCC00; display: inline-block; padding: 0 30px 10px; margin: 20px 0; }
+                            .event-name { font-size: 32px; color: #00509E; margin: 20px 0; }
+                            .date { margin-top: 40px; font-size: 18px; color: #666; }
+                            .seal { width: 100px; height: 100px; background: #FFCC00; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 30px auto; color: #003366; font-weight: bold; transform: rotate(-15deg); }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="certificate">
+                            <h1>CERTIFICATE OF PARTICIPATION</h1>
+                            <p>This is to certify that</p>
+                            <div class="student-name">${cert.studentName || 'Student'}</div>
+                            <p>has successfully participated in</p>
+                            <div class="event-name">${cert.eventTitle}</div>
+                            <p>held on ${new Date(cert.issueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                            <div class="date">
+                                <p>Issued by: Central University of Karnataka</p>
+                                <p>Certificate ID: ${cert.id}</p>
+                            </div>
+                            <div class="seal">CUK</div>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                const blob = new Blob([certificateHTML], { type: 'text/html' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Certificate-${cert.eventTitle.replace(/\s+/g, '_')}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                showToast('Success', 'Certificate downloaded successfully!', 'success');
+            } else {
+                showToast('Error', 'Certificate not found', 'error');
+            }
+        };
+
+        // =============== PROFILE FUNCTIONS ===============
         window.showProfile = function() {
             const profile = document.getElementById('profileSection');
+            const user = getCurrentUser();
+            
+            // Update profile details
+            const profileHtml = `
+                <div class="profile-item">
+                    <div class="profile-label">Full Name</div>
+                    <div class="profile-value">${user.name || 'Not set'}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Email Address</div>
+                    <div class="profile-value">${user.email || 'Not set'}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Student ID</div>
+                    <div class="profile-value">${user.studentId || 'Not set'}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Department</div>
+                    <div class="profile-value">${user.department || 'Not set'}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Year</div>
+                    <div class="profile-value">${user.year || 'Not set'}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Phone</div>
+                    <div class="profile-value">${user.phone || 'Not set'}</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Member Since</div>
+                    <div class="profile-value">Jan 2024</div>
+                </div>
+            `;
+            
+            document.getElementById('profileDetails').innerHTML = profileHtml;
+            
+            // Show/hide profile
             if (profile.style.display === 'none') {
                 profile.style.display = 'block';
                 profile.scrollIntoView({ behavior: 'smooth' });
@@ -830,115 +1284,112 @@
             }
         };
 
-        // Edit profile
-        window.editProfile = function() {
-            const newName = prompt("Enter your full name:", "Rahul Sharma");
-            if (newName) {
-                document.querySelector('.profile-value').textContent = newName;
-                document.getElementById('welcomeMessage').textContent = `Welcome, ${newName}!`;
-                alert('Profile updated successfully!');
-            }
+        window.openEditProfileModal = function() {
+            const user = getCurrentUser();
+            
+            document.getElementById('editName').value = user.name || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editDepartment').value = user.department || '';
+            document.getElementById('editYear').value = user.year || '3rd Year';
+            
+            document.getElementById('editProfileModal').classList.add('active');
         };
 
-        // Download sample certificate
-        window.downloadSampleCertificate = function(eventName) {
-            const certificateHTML = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Certificate of Participation</title>
-                    <style>
-                        body {
-                            font-family: 'Times New Roman', serif;
-                            background: #f0f0f0;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            min-height: 100vh;
-                            margin: 0;
-                            padding: 20px;
-                        }
-                        .certificate {
-                            width: 800px;
-                            padding: 50px;
-                            background: white;
-                            border: 20px solid #003366;
-                            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-                            text-align: center;
-                        }
-                        .certificate h1 {
-                            color: #003366;
-                            font-size: 48px;
-                            margin-bottom: 20px;
-                            border-bottom: 3px solid #FFCC00;
-                            padding-bottom: 20px;
-                        }
-                        .student-name {
-                            font-size: 42px;
-                            color: #003366;
-                            border-bottom: 2px dashed #FFCC00;
-                            display: inline-block;
-                            padding: 0 30px 10px;
-                            margin: 20px 0;
-                        }
-                        .event-name {
-                            font-size: 32px;
-                            color: #00509E;
-                            margin: 20px 0;
-                        }
-                        .date { margin-top: 40px; font-size: 18px; color: #666; }
-                        .seal {
-                            width: 100px;
-                            height: 100px;
-                            background: #FFCC00;
-                            border-radius: 50%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            margin: 30px auto;
-                            color: #003366;
-                            font-weight: bold;
-                            transform: rotate(-15deg);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="certificate">
-                        <h1>CERTIFICATE OF PARTICIPATION</h1>
-                        <p>This is to certify that</p>
-                        <div class="student-name">Rahul Sharma</div>
-                        <p>has successfully participated in</p>
-                        <div class="event-name">${eventName}</div>
-                        <p>held on ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-                        <div class="date">
-                            <p>Issued by: Central University of Karnataka</p>
-                        </div>
-                        <div class="seal">CUK</div>
-                    </div>
-                </body>
-                </html>
-            `;
-            
-            const blob = new Blob([certificateHTML], { type: 'text/html' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Certificate-${eventName.replace(/\s+/g, '_')}.html`;
-            a.click();
-            window.URL.revokeObjectURL(url);
-            
-            alert('Certificate downloaded! Check your downloads folder.');
+        window.closeEditProfileModal = function() {
+            document.getElementById('editProfileModal').classList.remove('active');
         };
 
-        // Logout function
+        // Handle profile edit
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const user = getCurrentUser();
+            const updatedUser = {
+                ...user,
+                name: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                phone: document.getElementById('editPhone').value,
+                department: document.getElementById('editDepartment').value,
+                year: document.getElementById('editYear').value,
+                lastUpdated: new Date().toISOString()
+            };
+            
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+            // Update UI
+            updateUserUI();
+            showProfile(); // Refresh profile display
+            closeEditProfileModal();
+            showToast('Success', 'Profile updated successfully!', 'success');
+        });
+
+        // =============== LOGOUT ===============
         window.logout = function() {
             if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
                 window.location.href = 'index.html';
             }
         };
 
-        // Update notification badge
-        document.getElementById('notificationBadge').textContent = '3';
+        // =============== INITIALIZE SAMPLE DATA IF EMPTY ===============
+        function initializeSampleData() {
+            // Create sample events if none exist
+            if (getEvents().length === 0) {
+                const sampleEvents = [
+                    { id: 1, title: "National Conference on AI", category: "Conference", date: "2024-03-15", time: "10:00 AM", venue: "Main Auditorium", description: "Annual technical symposium", fee: "₹500", capacity: 200, registered: 145 },
+                    { id: 2, title: "Cultural Fest 2024", category: "Cultural", date: "2024-03-20", time: "2:00 PM", venue: "Open Air Theatre", description: "University cultural festival", fee: "Free", capacity: 500, registered: 320 },
+                    { id: 3, title: "Sports Meet", category: "Sports", date: "2024-03-25", time: "9:00 AM", venue: "Sports Complex", description: "Annual sports competition", fee: "₹100", capacity: 400, registered: 210 },
+                    { id: 4, title: "Python Workshop", category: "Workshop", date: "2024-03-18", time: "11:00 AM", venue: "CS Lab", description: "Hands-on Python programming", fee: "Free", capacity: 50, registered: 35 },
+                    { id: 5, title: "Research Seminar", category: "Seminar", date: "2024-03-22", time: "11:00 AM", venue: "Seminar Hall", description: "Research methodology", fee: "Free", capacity: 100, registered: 55 }
+                ];
+                localStorage.setItem('events', JSON.stringify(sampleEvents));
+            }
+            
+            // Create sample registrations for demo user
+            const user = getCurrentUser();
+            if (user.name && getRegistrations().length === 0) {
+                const sampleRegistrations = [
+                    { id: "REG-1", eventId: 1, eventTitle: "National Conference on AI", date: "2024-03-15", venue: "Main Auditorium", userEmail: user.email, category: "Conference" },
+                    { id: "REG-2", eventId: 2, eventTitle: "Cultural Fest 2024", date: "2024-03-20", venue: "Open Air Theatre", userEmail: user.email, category: "Cultural" },
+                    { id: "REG-3", eventId: 3, eventTitle: "Python Workshop", date: "2024-03-18", venue: "CS Lab", userEmail: user.email, category: "Workshop" }
+                ];
+                localStorage.setItem('myRegistrations', JSON.stringify(sampleRegistrations));
+            }
+            
+            // Create sample certificates
+            if (getCertificates().length === 0) {
+                const sampleCertificates = [
+                    { id: "CERT-1", eventTitle: "AI Workshop 2024", studentName: user.name || "Rahul Sharma", studentEmail: user.email, issueDate: "2024-02-10" },
+                    { id: "CERT-2", eventTitle: "Tech Symposium 2024", studentName: user.name || "Rahul Sharma", studentEmail: user.email, issueDate: "2024-01-05" }
+                ];
+                localStorage.setItem('certificates', JSON.stringify(sampleCertificates));
+            }
+        }
+
+        // =============== INITIALIZE ===============
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load or create user
+            const user = loadUserData();
+            
+            // Initialize sample data
+            initializeSampleData();
+            
+            // Update UI
+            updateUserUI();
+            loadStats();
+            loadUpcomingEvents();
+            loadRecommendedEvents();
+            loadCertificates();
+            
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const modal = document.getElementById('editProfileModal');
+                if (event.target === modal) {
+                    closeEditProfileModal();
+                }
+            };
+        });
     </script>
 </body>
 </html>

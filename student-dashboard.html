@@ -400,6 +400,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         
         .profile-details {
@@ -439,6 +441,170 @@
         .edit-profile-btn:hover {
             background: var(--cuk-accent);
             transform: translateY(-2px);
+        }
+        
+        /* Edit Profile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: var(--cuk-blue);
+        }
+        
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-modal:hover {
+            color: var(--cuk-red);
+        }
+        
+        .modal-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .modal-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cuk-blue);
+            font-weight: bold;
+        }
+        
+        .modal-form input,
+        .modal-form select,
+        .modal-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .modal-form input:focus,
+        .modal-form select:focus {
+            border-color: var(--cuk-gold);
+            outline: none;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .save-btn {
+            background: var(--cuk-green);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        .cancel-btn {
+            background: var(--cuk-gray);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 2000;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--cuk-green);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--cuk-red);
+        }
+        
+        .toast.warning {
+            border-left: 4px solid var(--cuk-gold);
+        }
+        
+        .toast-icon {
+            font-size: 24px;
+        }
+        
+        .toast.success .toast-icon {
+            color: var(--cuk-green);
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .toast-message {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .toast-close {
+            cursor: pointer;
+            color: #999;
         }
         
         /* Empty State */
@@ -647,7 +813,7 @@
         <div id="profileSection" class="profile-section" style="display: none;">
             <div class="profile-header">
                 <h2><i class="fas fa-user-circle"></i> Your Profile</h2>
-                <button class="edit-profile-btn" onclick="editProfile()">
+                <button class="edit-profile-btn" onclick="openEditProfileModal()">
                     <i class="fas fa-edit"></i> Edit Profile
                 </button>
             </div>
@@ -658,6 +824,58 @@
         </div>
     </main>
 
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <span class="close-modal" onclick="closeEditProfileModal()">&times;</span>
+            </div>
+            <form class="modal-form" id="editProfileForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="editPhone" placeholder="10 digit mobile number">
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" id="editDepartment">
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <select id="editYear">
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="PhD">PhD</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="button" class="cancel-btn" onclick="closeEditProfileModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon" id="toastIcon"><i class="fas fa-check-circle"></i></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Success</div>
+            <div class="toast-message" id="toastMessage">Operation completed successfully</div>
+        </div>
+        <div class="toast-close" onclick="hideToast()"><i class="fas fa-times"></i></div>
+    </div>
+
     <!-- FOOTER -->
     <footer class="footer">
         <p>Central University of Karnataka</p>
@@ -666,68 +884,51 @@
     </footer>
 
     <script>
-        // =============== STUDENT DASHBOARD SCRIPT ===============
-        
-        // Sample events data
-        const EVENTS = [
-            {
-                id: 1,
-                title: "National Conference on Artificial Intelligence",
-                category: "Conference",
-                date: "2024-03-15",
-                time: "10:00 AM",
-                venue: "Main Auditorium",
-                description: "Annual technical symposium on AI",
-                fee: "₹500",
-                capacity: 200,
-                registered: 145,
-                image: "ai-conf.jpg"
-            },
-            {
-                id: 2,
-                title: "Cultural Fest 2024",
-                category: "Cultural",
-                date: "2024-03-20",
-                time: "2:00 PM",
-                venue: "Open Air Theatre",
-                description: "University cultural festival",
-                fee: "Free",
-                capacity: 500,
-                registered: 320,
-                image: "cultural.jpg"
-            },
-            {
-                id: 3,
-                title: "Inter-Department Sports Meet",
-                category: "Sports",
-                date: "2024-03-25",
-                time: "9:00 AM",
-                venue: "Sports Complex",
-                description: "Annual sports competition",
-                fee: "₹100",
-                capacity: 400,
-                registered: 210,
-                image: "sports.jpg"
-            },
-            {
-                id: 4,
-                title: "Python Workshop",
-                category: "Workshop",
-                date: "2024-03-18",
-                time: "11:00 AM",
-                venue: "CS Lab",
-                description: "Hands-on Python programming",
-                fee: "Free",
-                capacity: 50,
-                registered: 35,
-                image: "workshop.jpg"
-            }
-        ];
+        // =============== TOAST NOTIFICATION ===============
+        function showToast(title, message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const titleEl = document.getElementById('toastTitle');
+            const messageEl = document.getElementById('toastMessage');
+            
+            toast.className = 'toast ' + type;
+            icon.innerHTML = type === 'success' ? '<i class="fas fa-check-circle"></i>' : 
+                            type === 'error' ? '<i class="fas fa-exclamation-circle"></i>' : 
+                            '<i class="fas fa-exclamation-triangle"></i>';
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                hideToast();
+            }, 3000);
+        }
 
-        // Load user data
+        function hideToast() {
+            document.getElementById('toast').classList.remove('show');
+        }
+
+        // =============== DATA STORAGE FUNCTIONS ===============
+        function getEvents() {
+            return JSON.parse(localStorage.getItem('events') || '[]');
+        }
+
+        function getRegistrations() {
+            return JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+        }
+
+        function getCertificates() {
+            return JSON.parse(localStorage.getItem('certificates') || '[]');
+        }
+
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('user') || '{}');
+        }
+
+        // =============== LOAD USER DATA ===============
         function loadUserData() {
-            // Try to get from localStorage
-            let user = JSON.parse(localStorage.getItem('user') || '{}');
+            let user = getCurrentUser();
             
             // If no user, create demo user
             if (!user.name) {
@@ -802,14 +1003,23 @@
             document.getElementById('profileDetails').innerHTML = profileHtml;
         }
 
-        // Load stats
+        // =============== LOAD STATS ===============
         function loadStats() {
-            // Get registrations
-            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
-            const registeredCount = registrations.length;
+            const registrations = getRegistrations();
+            const certificates = getCertificates();
             
-            // Get certificates
-            const certificates = JSON.parse(localStorage.getItem('certificates') || '[]');
+            // Get current user's registrations only
+            const user = getCurrentUser();
+            const userRegistrations = registrations.filter(r => r.userEmail === user.email);
+            
+            const registeredCount = userRegistrations.length;
+            
+            // Get available events (not registered)
+            const events = getEvents();
+            const availableCount = events.length - userRegistrations.length;
+            
+            // Get user's certificates
+            const userCertificates = certificates.filter(c => c.studentEmail === user.email);
             
             // Get notifications
             const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
@@ -817,8 +1027,8 @@
             
             // Update stats
             document.getElementById('registeredCount').textContent = registeredCount;
-            document.getElementById('availableCount').textContent = EVENTS.length;
-            document.getElementById('certificateCount').textContent = certificates.length;
+            document.getElementById('availableCount').textContent = availableCount > 0 ? availableCount : 0;
+            document.getElementById('certificateCount').textContent = userCertificates.length;
             document.getElementById('notificationCount').textContent = unreadCount;
             
             // Update notification badge
@@ -831,14 +1041,16 @@
             }
         }
 
-        // Load upcoming events (user's registrations)
+        // =============== LOAD UPCOMING EVENTS ===============
         function loadUpcomingEvents() {
-            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
-            const container = document.getElementById('upcomingEventsContainer');
+            const registrations = getRegistrations();
+            const user = getCurrentUser();
+            const userRegistrations = registrations.filter(r => r.userEmail === user.email);
             
+            const container = document.getElementById('upcomingEventsContainer');
             container.innerHTML = '';
             
-            if (registrations.length === 0) {
+            if (userRegistrations.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state" style="grid-column: 1/-1;">
                         <i class="fas fa-calendar-times"></i>
@@ -853,7 +1065,20 @@
             }
             
             // Show only upcoming events (next 3)
-            const upcoming = registrations.slice(0, 3);
+            const upcoming = userRegistrations
+                .filter(reg => new Date(reg.date) > new Date())
+                .slice(0, 3);
+            
+            if (upcoming.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>No Upcoming Events</h3>
+                        <p>You have completed all your registered events.</p>
+                    </div>
+                `;
+                return;
+            }
             
             upcoming.forEach(reg => {
                 const eventDate = new Date(reg.date);
@@ -892,17 +1117,39 @@
             });
         }
 
-        // Load recommended events
+        // =============== LOAD RECOMMENDED EVENTS ===============
         function loadRecommendedEvents() {
+            const events = getEvents();
+            const registrations = getRegistrations();
+            const user = getCurrentUser();
+            
+            // Get IDs of events user already registered for
+            const registeredEventIds = registrations
+                .filter(r => r.userEmail === user.email)
+                .map(r => r.eventId);
+            
+            // Show events user hasn't registered for
+            const recommended = events
+                .filter(event => !registeredEventIds.includes(event.id))
+                .slice(0, 3);
+            
             const container = document.getElementById('recommendedEventsContainer');
             container.innerHTML = '';
             
-            // Show first 3 events as recommendations
-            const recommended = EVENTS.slice(0, 3);
+            if (recommended.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>All Caught Up!</h3>
+                        <p>You've registered for all available events.</p>
+                    </div>
+                `;
+                return;
+            }
             
             recommended.forEach(event => {
                 const eventDate = new Date(event.date);
-                const available = event.capacity - event.registered;
+                const available = event.capacity - (event.registered || 0);
                 
                 const card = document.createElement('div');
                 card.className = 'event-card';
@@ -910,7 +1157,7 @@
                 
                 card.innerHTML = `
                     <div class="event-header">
-                        <span class="event-category">${event.category}</span>
+                        <span class="event-category">${event.category || 'Event'}</span>
                         <h3 class="event-title">${event.title}</h3>
                     </div>
                     <div class="event-body">
@@ -920,7 +1167,7 @@
                             <p><i class="fas fa-users"></i> ${available} spots left</p>
                         </div>
                         <div class="event-footer">
-                            <span style="font-weight: bold; color: var(--cuk-blue);">${event.fee}</span>
+                            <span style="font-weight: bold; color: var(--cuk-blue);">${event.fee || 'Free'}</span>
                             <button class="event-btn" onclick="event.stopPropagation(); window.location.href='event-details.html?id=${event.id}'">
                                 Register
                             </button>
@@ -932,12 +1179,16 @@
             });
         }
 
-        // Load certificates
+        // =============== LOAD CERTIFICATES ===============
         function loadCertificates() {
-            const certificates = JSON.parse(localStorage.getItem('certificates') || '[]');
-            const container = document.getElementById('certificatesContainer');
+            const certificates = getCertificates();
+            const user = getCurrentUser();
+            const userCertificates = certificates.filter(c => c.studentEmail === user.email);
             
-            if (certificates.length === 0) {
+            const container = document.getElementById('certificatesContainer');
+            container.innerHTML = '';
+            
+            if (userCertificates.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state" style="grid-column: 1/-1; padding: 40px;">
                         <i class="fas fa-certificate"></i>
@@ -949,7 +1200,7 @@
             }
             
             // Show last 3 certificates
-            const recent = certificates.slice(-3).reverse();
+            const recent = userCertificates.slice(-3).reverse();
             
             recent.forEach(cert => {
                 const certDate = new Date(cert.issueDate);
@@ -974,7 +1225,133 @@
             });
         }
 
-        // Show profile section
+        // =============== DOWNLOAD CERTIFICATE ===============
+        window.downloadCertificate = function(certificateId) {
+            const certificates = getCertificates();
+            const cert = certificates.find(c => c.id === certificateId);
+            
+            if (cert) {
+                // Generate certificate HTML
+                const certificateHTML = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Certificate of Participation</title>
+                        <style>
+                            body {
+                                font-family: 'Times New Roman', serif;
+                                background: #f0f0f0;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                min-height: 100vh;
+                                margin: 0;
+                                padding: 20px;
+                            }
+                            .certificate {
+                                width: 800px;
+                                padding: 50px;
+                                background: white;
+                                border: 20px solid #003366;
+                                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+                                text-align: center;
+                            }
+                            .certificate h1 {
+                                color: #003366;
+                                font-size: 48px;
+                                margin-bottom: 20px;
+                                border-bottom: 3px solid #FFCC00;
+                                padding-bottom: 20px;
+                            }
+                            .certificate h2 {
+                                color: #003366;
+                                font-size: 36px;
+                                margin: 30px 0;
+                            }
+                            .certificate .student-name {
+                                font-size: 42px;
+                                color: #003366;
+                                border-bottom: 2px dashed #FFCC00;
+                                display: inline-block;
+                                padding: 0 30px 10px;
+                                margin: 20px 0;
+                            }
+                            .certificate .event-name {
+                                font-size: 32px;
+                                color: #00509E;
+                                margin: 20px 0;
+                            }
+                            .certificate .date {
+                                margin-top: 40px;
+                                font-size: 18px;
+                                color: #666;
+                            }
+                            .certificate .signature {
+                                margin-top: 50px;
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 0 50px;
+                            }
+                            .certificate .signature-line {
+                                border-top: 2px solid #003366;
+                                width: 200px;
+                                padding-top: 10px;
+                            }
+                            .certificate .seal {
+                                width: 100px;
+                                height: 100px;
+                                background: #FFCC00;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 30px auto;
+                                color: #003366;
+                                font-weight: bold;
+                                transform: rotate(-15deg);
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="certificate">
+                            <h1>CERTIFICATE OF PARTICIPATION</h1>
+                            <p>This is to certify that</p>
+                            <div class="student-name">${cert.studentName || 'Student'}</div>
+                            <p>has successfully participated in</p>
+                            <div class="event-name">${cert.eventTitle}</div>
+                            <p>held on ${new Date(cert.issueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                            <div class="date">
+                                <p>Issued by: Central University of Karnataka</p>
+                                <p>Certificate ID: ${cert.id}</p>
+                            </div>
+                            <div class="seal">CUK</div>
+                            <div class="signature">
+                                <div class="signature-line">Coordinator</div>
+                                <div class="signature-line">Dean</div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                // Create download
+                const blob = new Blob([certificateHTML], { type: 'text/html' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Certificate-${cert.eventTitle.replace(/\s+/g, '_')}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                showToast('Success', 'Certificate downloaded successfully!', 'success');
+            } else {
+                showToast('Error', 'Certificate not found', 'error');
+            }
+        };
+
+        // =============== PROFILE FUNCTIONS ===============
         window.showProfile = function() {
             const profile = document.getElementById('profileSection');
             if (profile.style.display === 'none') {
@@ -985,48 +1362,46 @@
             }
         };
 
-        // Edit profile
-        window.editProfile = function() {
-            alert('Edit profile functionality will open a form to update your details.');
-            // In a real app, this would open an edit form
-        };
-
-        // Download certificate
-        window.downloadCertificate = function(certificateId) {
-            const certificates = JSON.parse(localStorage.getItem('certificates') || '[]');
-            const cert = certificates.find(c => c.id === certificateId);
+        window.openEditProfileModal = function() {
+            const user = getCurrentUser();
             
-            if (cert) {
-                // Create a simple PDF-like download (simulated)
-                const content = `
-                    CERTIFICATE OF PARTICIPATION
-                    
-                    This is to certify that
-                    ${cert.studentName || 'Student'}
-                    
-                    has successfully participated in
-                    ${cert.eventTitle}
-                    
-                    Issued by CUK Event Hub
-                    Date: ${new Date(cert.issueDate).toLocaleDateString()}
-                    Certificate ID: ${cert.id}
-                `;
-                
-                const blob = new Blob([content], { type: 'text/plain' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `certificate-${cert.eventTitle.replace(/\s+/g, '_')}.txt`;
-                a.click();
-                window.URL.revokeObjectURL(url);
-                
-                alert('Certificate downloaded!');
-            } else {
-                alert('Certificate not found');
-            }
+            document.getElementById('editName').value = user.name || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editDepartment').value = user.department || '';
+            document.getElementById('editYear').value = user.year || '3rd Year';
+            
+            document.getElementById('editProfileModal').classList.add('active');
         };
 
-        // Logout function
+        window.closeEditProfileModal = function() {
+            document.getElementById('editProfileModal').classList.remove('active');
+        };
+
+        // Handle profile edit form submission
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const user = getCurrentUser();
+            const updatedUser = {
+                ...user,
+                name: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                phone: document.getElementById('editPhone').value,
+                department: document.getElementById('editDepartment').value,
+                year: document.getElementById('editYear').value,
+                lastUpdated: new Date().toISOString()
+            };
+            
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+            // Update UI
+            loadUserData();
+            closeEditProfileModal();
+            showToast('Success', 'Profile updated successfully!', 'success');
+        });
+
+        // =============== LOGOUT ===============
         window.logout = function() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('user');
@@ -1034,24 +1409,63 @@
             }
         };
 
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
+        // =============== UPDATE NOTIFICATION BADGE ===============
+        function updateNotificationBadge() {
+            const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
             
-            // For demo, if no user, create one
-            if (!user.name) {
-                const demoUser = {
-                    name: "Rahul Sharma",
-                    email: "rahul.sharma@cuk.ac.in",
-                    studentId: "CUK2024001",
-                    department: "Computer Science",
-                    year: "3rd Year",
-                    phone: "9876543210",
-                    points: 150,
-                    lastLogin: new Date().toISOString()
-                };
-                localStorage.setItem('user', JSON.stringify(demoUser));
+            if (unreadCount > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // =============== INITIALIZE ===============
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure events exist in localStorage
+            if (getEvents().length === 0) {
+                const sampleEvents = [
+                    {
+                        id: 1,
+                        title: "National Conference on Artificial Intelligence",
+                        category: "Conference",
+                        date: "2024-03-15",
+                        time: "10:00 AM",
+                        venue: "Main Auditorium",
+                        description: "Annual technical symposium on AI",
+                        fee: "₹500",
+                        capacity: 200,
+                        registered: 145
+                    },
+                    {
+                        id: 2,
+                        title: "Cultural Fest 2024",
+                        category: "Cultural",
+                        date: "2024-03-20",
+                        time: "2:00 PM",
+                        venue: "Open Air Theatre",
+                        description: "University cultural festival",
+                        fee: "Free",
+                        capacity: 500,
+                        registered: 320
+                    },
+                    {
+                        id: 3,
+                        title: "Inter-Department Sports Meet",
+                        category: "Sports",
+                        date: "2024-03-25",
+                        time: "9:00 AM",
+                        venue: "Sports Complex",
+                        description: "Annual sports competition",
+                        fee: "₹100",
+                        capacity: 400,
+                        registered: 210
+                    }
+                ];
+                localStorage.setItem('events', JSON.stringify(sampleEvents));
             }
             
             // Load all data
@@ -1060,6 +1474,15 @@
             loadUpcomingEvents();
             loadRecommendedEvents();
             loadCertificates();
+            updateNotificationBadge();
+            
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const modal = document.getElementById('editProfileModal');
+                if (event.target === modal) {
+                    closeEditProfileModal();
+                }
+            };
         });
     </script>
 </body>

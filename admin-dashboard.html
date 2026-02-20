@@ -577,6 +577,10 @@
         <a href="#" class="nav-item" onclick="showUserManagement()">
             <i class="fas fa-users"></i> Users
         </a>
+        <!-- NEW: Registrations Nav Item -->
+        <a href="#" class="nav-item" onclick="showRegistrations()">
+            <i class="fas fa-clipboard-list"></i> Registrations
+        </a>
         <a href="#" class="nav-item" onclick="generateReport()">
             <i class="fas fa-chart-bar"></i> Reports
         </a>
@@ -620,7 +624,7 @@
                 <div class="stat-number" id="totalUsers">0</div>
                 <p>Students: <span id="totalStudents">0</span> | Staff: <span id="totalStaff">0</span></p>
             </div>
-            <div class="stat-card" onclick="showEventManagement()" style="border-color: #FFCC00;">
+            <div class="stat-card" onclick="showRegistrations()" style="border-color: #FFCC00;">
                 <h3><i class="fas fa-clipboard-list"></i> Registrations</h3>
                 <div class="stat-number" id="totalRegistrations">0</div>
                 <p>This month: <span id="monthlyRegistrations">0</span></p>
@@ -707,6 +711,41 @@
                     <!-- Filled by JavaScript -->
                 </tbody>
             </table>
+        </div>
+
+        <!-- NEW: Registrations Table -->
+        <div class="table-container" id="registrationsTable" style="display: none;">
+            <div class="table-header">
+                <h2><i class="fas fa-clipboard-list"></i> Event Registrations</h2>
+                <div style="display: flex; gap: 10px;">
+                    <select id="registrationFilter" onchange="filterRegistrations()" style="padding: 10px; border: 2px solid #e0e0e0; border-radius: 5px;">
+                        <option value="all">All Events</option>
+                    </select>
+                    <button class="create-btn" onclick="exportRegistrations()">
+                        <i class="fas fa-download"></i> Export CSV
+                    </button>
+                </div>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event ID</th>
+                            <th>Event Name</th>
+                            <th>Student Name</th>
+                            <th>Student Email</th>
+                            <th>Student ID</th>
+                            <th>Registration Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registrationsTableBody">
+                        <tr><td colspan="8" style="text-align: center; padding: 50px;">Loading registrations...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 
@@ -867,6 +906,51 @@
         </div>
     </div>
 
+    <!-- NEW: View Registration Details Modal -->
+    <div class="modal" id="viewRegistrationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registration Details</h3>
+                <span class="close-modal" onclick="closeModal('viewRegistrationModal')">&times;</span>
+            </div>
+            <div id="registrationDetailsContent" style="padding: 20px;">
+                <!-- Filled by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" onclick="sendReminderFromModal()">Send Reminder</button>
+                <button class="cancel-btn" onclick="closeModal('viewRegistrationModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Send Reminder Modal -->
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Reminder</h3>
+                <span class="close-modal" onclick="closeModal('reminderModal')">&times;</span>
+            </div>
+            <div style="padding: 20px;">
+                <div class="form-group">
+                    <label>Reminder Message</label>
+                    <textarea id="reminderMessage" rows="4" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">This is a reminder about your upcoming event registration. Please don't forget to attend!</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Send via</label>
+                    <select id="reminderMethod" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        <option value="notification">In-app Notification</option>
+                        <option value="email">Email</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="save-btn" onclick="sendReminder()">Send Reminder</button>
+                <button class="cancel-btn" onclick="closeModal('reminderModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Report Modal -->
     <div class="modal" id="reportModal">
         <div class="modal-content">
@@ -1013,6 +1097,56 @@
                 ];
                 saveUsers(sampleUsers);
             }
+            
+            // Add sample registrations
+            let registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            if (registrations.length === 0) {
+                const sampleRegistrations = [
+                    {
+                        id: 'REG-' + Date.now() + '-1',
+                        eventId: 1,
+                        eventTitle: 'Tech Symposium 2024',
+                        date: '2024-03-15',
+                        time: '10:00',
+                        venue: 'Auditorium',
+                        userName: 'Rahul Sharma',
+                        userEmail: 'rahul@cuk.ac.in',
+                        studentId: 'CUK001',
+                        phone: '9876543210',
+                        registrationDate: new Date().toISOString(),
+                        status: 'confirmed'
+                    },
+                    {
+                        id: 'REG-' + Date.now() + '-2',
+                        eventId: 1,
+                        eventTitle: 'Tech Symposium 2024',
+                        date: '2024-03-15',
+                        time: '10:00',
+                        venue: 'Auditorium',
+                        userName: 'Priya Patel',
+                        userEmail: 'priya@cuk.ac.in',
+                        studentId: 'CUK002',
+                        phone: '9876543211',
+                        registrationDate: new Date().toISOString(),
+                        status: 'confirmed'
+                    },
+                    {
+                        id: 'REG-' + Date.now() + '-3',
+                        eventId: 2,
+                        eventTitle: 'Cultural Fest',
+                        date: '2024-03-20',
+                        time: '14:00',
+                        venue: 'Open Air Theatre',
+                        userName: 'Dr. Kumar',
+                        userEmail: 'kumar@cuk.ac.in',
+                        studentId: 'CUK003',
+                        phone: '9876543212',
+                        registrationDate: new Date().toISOString(),
+                        status: 'confirmed'
+                    }
+                ];
+                localStorage.setItem('myRegistrations', JSON.stringify(sampleRegistrations));
+            }
         }
 
         // =============== TOAST NOTIFICATION ===============
@@ -1074,7 +1208,7 @@
         function loadStats() {
             const events = getEvents();
             const users = getUsers();
-            const registrations = getRegistrations();
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
             
             document.getElementById('totalEvents').textContent = events.length;
             document.getElementById('activeEvents').textContent = events.filter(e => e.status === 'active').length;
@@ -1087,7 +1221,10 @@
             document.getElementById('totalRegistrations').textContent = registrations.length;
             
             const thisMonth = new Date().getMonth();
-            const monthlyRegs = registrations.filter(r => new Date(r.registrationDate).getMonth() === thisMonth).length;
+            const monthlyRegs = registrations.filter(r => {
+                const regDate = new Date(r.registrationDate || r.date || new Date());
+                return regDate.getMonth() === thisMonth;
+            }).length;
             document.getElementById('monthlyRegistrations').textContent = monthlyRegs;
             
             document.getElementById('pendingItems').textContent = events.filter(e => e.status === 'pending').length;
@@ -1149,6 +1286,246 @@
                 tbody.appendChild(row);
             });
         }
+
+        // =============== NEW: REGISTRATIONS FUNCTIONS ===============
+
+        // Show registrations table
+        window.showRegistrations = function() {
+            document.getElementById('eventsTable').style.display = 'none';
+            document.getElementById('usersTable').style.display = 'none';
+            document.getElementById('registrationsTable').style.display = 'block';
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            loadRegistrations();
+        };
+
+        // Load registrations
+        function loadRegistrations() {
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            
+            const tbody = document.getElementById('registrationsTableBody');
+            const filterSelect = document.getElementById('registrationFilter');
+            
+            // Update filter dropdown
+            let eventOptions = '<option value="all">All Events</option>';
+            events.forEach(event => {
+                eventOptions += `<option value="${event.id}">${event.title}</option>`;
+            });
+            filterSelect.innerHTML = eventOptions;
+            
+            tbody.innerHTML = '';
+            
+            if (registrations.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 50px;">No registrations found</td></tr>';
+                return;
+            }
+            
+            // Sort by date (newest first)
+            registrations.sort((a, b) => new Date(b.registrationDate || b.date) - new Date(a.registrationDate || a.date));
+            
+            registrations.forEach(reg => {
+                const event = events.find(e => e.id == reg.eventId) || { title: reg.eventTitle || 'Unknown Event' };
+                const regDate = new Date(reg.registrationDate || reg.date || new Date());
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>EVT${reg.eventId}</strong></td>
+                    <td>${event.title || reg.eventTitle}</td>
+                    <td>${reg.userName || reg.name || 'N/A'}</td>
+                    <td>${reg.userEmail || reg.email || 'N/A'}</td>
+                    <td>${reg.studentId || reg.userId || 'N/A'}</td>
+                    <td>${regDate.toLocaleDateString()} ${regDate.toLocaleTimeString()}</td>
+                    <td><span class="status-badge status-active">${reg.status || 'Confirmed'}</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="icon-btn view" onclick="viewRegistration('${reg.id}')" title="View Details"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn edit" onclick="openReminderModal('${reg.id}')" title="Send Reminder"><i class="fas fa-bell"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Filter registrations by event
+        window.filterRegistrations = function() {
+            const eventId = document.getElementById('registrationFilter').value;
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            
+            const tbody = document.getElementById('registrationsTableBody');
+            tbody.innerHTML = '';
+            
+            let filteredRegs = registrations;
+            if (eventId !== 'all') {
+                filteredRegs = registrations.filter(r => r.eventId == eventId);
+            }
+            
+            if (filteredRegs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 50px;">No registrations found</td></tr>';
+                return;
+            }
+            
+            filteredRegs.sort((a, b) => new Date(b.registrationDate || b.date) - new Date(a.registrationDate || a.date));
+            
+            filteredRegs.forEach(reg => {
+                const event = events.find(e => e.id == reg.eventId) || { title: reg.eventTitle || 'Unknown Event' };
+                const regDate = new Date(reg.registrationDate || reg.date || new Date());
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>EVT${reg.eventId}</strong></td>
+                    <td>${event.title || reg.eventTitle}</td>
+                    <td>${reg.userName || reg.name || 'N/A'}</td>
+                    <td>${reg.userEmail || reg.email || 'N/A'}</td>
+                    <td>${reg.studentId || reg.userId || 'N/A'}</td>
+                    <td>${regDate.toLocaleDateString()} ${regDate.toLocaleTimeString()}</td>
+                    <td><span class="status-badge status-active">${reg.status || 'Confirmed'}</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="icon-btn view" onclick="viewRegistration('${reg.id}')" title="View Details"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn edit" onclick="openReminderModal('${reg.id}')" title="Send Reminder"><i class="fas fa-bell"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // View registration details
+        let currentRegistrationId = null;
+
+        window.viewRegistration = function(regId) {
+            currentRegistrationId = regId;
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            const registration = registrations.find(r => r.id === regId);
+            
+            if (registration) {
+                const events = JSON.parse(localStorage.getItem('events') || '[]');
+                const event = events.find(e => e.id == registration.eventId) || { title: registration.eventTitle };
+                const eventDate = new Date(registration.date || new Date());
+                const regDate = new Date(registration.registrationDate || new Date());
+                
+                const content = document.getElementById('registrationDetailsContent');
+                content.innerHTML = `
+                    <h3 style="color: #003366; margin-bottom: 15px;">Registration Details</h3>
+                    <p><strong>Registration ID:</strong> ${registration.id}</p>
+                    <p><strong>Event:</strong> ${event.title || registration.eventTitle}</p>
+                    <p><strong>Event Date:</strong> ${eventDate.toLocaleDateString()} at ${registration.time || 'N/A'}</p>
+                    <p><strong>Venue:</strong> ${registration.venue || 'N/A'}</p>
+                    <hr style="margin: 15px 0;">
+                    <h4 style="color: #003366;">Student Information</h4>
+                    <p><strong>Name:</strong> ${registration.userName || registration.name || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${registration.userEmail || registration.email || 'N/A'}</p>
+                    <p><strong>Student ID:</strong> ${registration.studentId || registration.userId || 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${registration.phone || 'N/A'}</p>
+                    <p><strong>Registration Date:</strong> ${regDate.toLocaleString()}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-active">${registration.status || 'Confirmed'}</span></p>
+                `;
+                
+                document.getElementById('viewRegistrationModal').classList.add('active');
+            }
+        };
+
+        // Open reminder modal
+        window.openReminderModal = function(regId) {
+            currentRegistrationId = regId;
+            document.getElementById('reminderMessage').value = 'This is a reminder about your upcoming event registration. Please don\'t forget to attend!';
+            document.getElementById('reminderModal').classList.add('active');
+        };
+
+        // Send reminder
+        window.sendReminder = function() {
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            const registration = registrations.find(r => r.id === currentRegistrationId);
+            
+            if (registration) {
+                const message = document.getElementById('reminderMessage').value;
+                const method = document.getElementById('reminderMethod').value;
+                
+                // Add notification for student
+                const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                notifications.push({
+                    id: 'NOTIF-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+                    title: 'Event Reminder',
+                    message: message,
+                    type: 'info',
+                    timestamp: new Date().toISOString(),
+                    read: false,
+                    userId: registration.userEmail || registration.email,
+                    registrationId: registration.id
+                });
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+                
+                let reminderMethod = '';
+                if (method === 'notification') reminderMethod = 'in-app notification';
+                else if (method === 'email') reminderMethod = 'email';
+                else reminderMethod = 'in-app notification and email';
+                
+                showToast('Success', `Reminder sent to ${registration.userName || registration.name} via ${reminderMethod}`, 'success');
+                
+                // Close modals
+                closeModal('reminderModal');
+                closeModal('viewRegistrationModal');
+                
+                // Update notification badge
+                updateNotificationBadge();
+            }
+        };
+
+        // Send reminder from modal
+        window.sendReminderFromModal = function() {
+            closeModal('viewRegistrationModal');
+            openReminderModal(currentRegistrationId);
+        };
+
+        // Export registrations to CSV
+        window.exportRegistrations = function() {
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            
+            if (registrations.length === 0) {
+                showToast('Error', 'No registrations to export', 'error');
+                return;
+            }
+            
+            // Prepare CSV data
+            const csvData = [];
+            csvData.push(['Event ID', 'Event Name', 'Student Name', 'Student Email', 'Student ID', 'Registration Date', 'Status']);
+            
+            registrations.forEach(reg => {
+                const event = events.find(e => e.id == reg.eventId) || { title: reg.eventTitle || 'Unknown' };
+                csvData.push([
+                    `EVT${reg.eventId}`,
+                    event.title || reg.eventTitle,
+                    reg.userName || reg.name || 'N/A',
+                    reg.userEmail || reg.email || 'N/A',
+                    reg.studentId || reg.userId || 'N/A',
+                    new Date(reg.registrationDate || reg.date || new Date()).toLocaleString(),
+                    reg.status || 'Confirmed'
+                ]);
+            });
+            
+            // Convert to CSV string
+            const csvString = csvData.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+            
+            // Add BOM for Excel UTF-8
+            const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `registrations-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showToast('Success', `${registrations.length} registrations exported successfully!`, 'success');
+        };
 
         // =============== EVENT FUNCTIONS ===============
         window.createNewEvent = function() {
@@ -1232,13 +1609,23 @@
         window.showUserManagement = function() {
             document.getElementById('eventsTable').style.display = 'none';
             document.getElementById('usersTable').style.display = 'block';
+            document.getElementById('registrationsTable').style.display = 'none';
             loadUsersTable();
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
         };
 
         window.showEventManagement = function() {
             document.getElementById('usersTable').style.display = 'none';
             document.getElementById('eventsTable').style.display = 'block';
+            document.getElementById('registrationsTable').style.display = 'none';
             loadEventsTable();
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
         };
 
         window.createNewUser = function() {
@@ -1404,7 +1791,7 @@
                     filename = 'users-report';
                     break;
                 case 'registrations':
-                    data = getRegistrations();
+                    data = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
                     filename = 'registrations-report';
                     break;
                 case 'certificates':
@@ -1534,7 +1921,7 @@
             
             const events = getEvents();
             const users = getUsers();
-            const registrations = getRegistrations();
+            const registrations = JSON.parse(localStorage.getItem('myRegistrations') || '[]');
             
             const eventResults = events.filter(e => 
                 e.title.toLowerCase().includes(searchTerm) ||
@@ -1549,7 +1936,7 @@
             );
             
             showToast('Search Results', 
-                `Found ${eventResults.length} events and ${userResults.length} users matching "${searchTerm}"`, 
+                `Found ${eventResults.length} events, ${userResults.length} users, and ${registrations.length} registrations matching "${searchTerm}"`, 
                 'success'
             );
         };
